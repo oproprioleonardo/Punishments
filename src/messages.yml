@@ -1,0 +1,51 @@
+Messages:
+  permission-error: "&cVocê não possui permissão para utilizar tal função."
+  write-evidences: "&7Envie as provas por vez no chat, para finalizar digite \"pronto\"."
+  invalid-link: "&cEsse é um link inválido. Digite \"pronto\" caso queira finalizar a operação."
+  next-link: "&aLink anexado com sucesso, caso queira parar por aqui, digite \"pronto\"."
+  operation-cancel: "&aOperação cancelada com sucesso."
+Announcements:
+  ban:
+    - ""
+    - "&c * O usuário {nickname} foi banido por {reason}."
+    - ""
+  mute:
+    - ""
+    - "&c * O usuário {nickname} foi silenciado por {reason}."
+    - ""
+Runners:
+  ban-kick:
+    - "&6&lRede Arcanth\n"
+    - "&cVocê foi banido do servidor.\n"
+    - "\n"
+    - "&c * Motivo: {reason}\n"
+    - "&c * Início: {startedAt}\n"
+    - "&c * Término: {finishAt}\n"
+    - "&c * Provas: {evidence}\n"
+    - "&c * Autor: {author}\n"
+    - "\n"
+    - "&cUse o ID &e#{id} &cpara fazer uma revisão em nosso discord: &c&nbit.ly/centralworks\n"
+    - "&c&lLOJA: &cloja.centralworks.com.\n"
+  mute-alert:
+    - "&6&lRede Arcanth\n"
+    - "&cVocê foi silenciado no servidor.\n"
+    - "\n"
+    - "&c * Motivo: {reason}\n"
+    - "&c * Início: {startedAt}\n"
+    - "&c * Término: {finishAt}\n"
+    - "&c * Provas: {evidence}\n"
+    - "&c * Autor: {author}\n"
+    - "\n"
+    - "&cUse o ID &e#{id} &cpara fazer uma revisão em nosso discord: &c&nbit.ly/centralworks\n"
+    - "&c&lLOJA: &cloja.centralworks.com.\n"
+  mute-status:
+    - "       &6&lRede Arcanth\n"
+    - "&cVocê foi silenciado no servidor.\n"
+    - "\n"
+    - "&c * Início: {startedAt}\n"
+    - "&c * Término: {finishAt}\n"
+    - "\n"
+    - "&cUse o ID &e#{id} &cpara fazer uma revisão em nosso discord: &c&nbit.ly/centralworks\n"
+    - "\n"
+
+

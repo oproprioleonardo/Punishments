@@ -1,0 +1,11 @@
+Usages:
+  #[] optional arguments
+  #() binding arguments
+  banConsole: "&cComando incorreto. Utilize: /ban (jogador) [provas separadas por \",\"] (motivo)."
+  banPlayer: "&cComando incorreto. Utilize: /ban (jogador) (motivo)."
+  tempBanConsole: "&cComando incorreto. Utilize: /ban (jogador) (numero:dias,numero:meses...) [provas separadas por \",\"] (motivo)."
+  tempBanPlayer: "&cComando incorreto. Utilize: /ban (jogador) (numero:dias,numero:meses...) (motivo)."
+  muteConsole: "&cComando incorreto. Utilize: /mute (jogador) [provas separadas por \".\"] (motivo)."
+  mutePlayer: "&cComando incorreto. Utilize: /mute (jogador) (motivo)."
+  tempMuteConsole: "&cComando incorreto. Utilize: /mute (jogador) (numero:dias,numero:meses...) [provas separadas por \".\"] (motivo)."
+  tempMutePlayer: "&cComando incorreto. Utilize: /mute (jogador) (numero:dias,numero:meses...) (motivo)."
