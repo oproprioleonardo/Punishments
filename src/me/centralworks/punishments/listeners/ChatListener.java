@@ -29,7 +29,7 @@ public class ChatListener implements Listener {
             e.setCancelled(true);
             if (message.equalsIgnoreCase("pronto")) {
                 task.remove(p.getName());
-                if (runner.getPunishmentType() == PunishmentType.BAN) {
+                if (runner.getPunishmentType() == PunishmentType.BAN || runner.getPunishmentType() == PunishmentType.TEMPBAN) {
                     runner.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
                     runner.setAnnouncer(generalLib.getFunctionAnnouncerBan());
                 }else {

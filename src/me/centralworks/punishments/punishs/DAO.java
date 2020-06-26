@@ -18,4 +18,6 @@ public interface DAO {
 
     void save();
 
+    Punishment especialRequire();
+
 }

@@ -27,7 +27,7 @@ Runners:
     - "&cUse o ID &e#{id} &cpara fazer uma revisão em nosso discord: &c&nbit.ly/centralworks\n"
     - "&c&lLOJA: &cloja.centralworks.com.\n"
   mute-alert:
-    - "&6&lRede Arcanth\n"
+    - "       &6&lRede Arcanth\n"
     - "&cVocê foi silenciado no servidor.\n"
     - "\n"
     - "&c * Motivo: {reason}\n"

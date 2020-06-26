@@ -6,7 +6,9 @@ import me.centralworks.punishments.punishs.OfflinePunishment;
 import me.centralworks.punishments.punishs.OnlinePunishment;
 import me.centralworks.punishments.punishs.Punishment;
 import net.md_5.bungee.api.connection.PendingConnection;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.LoginEvent;
+import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -15,8 +17,8 @@ import java.util.List;
 public class MuteListener implements Listener {
 
     @EventHandler
-    public void join(LoginEvent e){
-        final PendingConnection connection = e.getConnection();
+    public void js(PostLoginEvent e){
+        final ProxiedPlayer connection = e.getPlayer();
         final Punishment punishment;
         if (Main.isOnlineMode()) {
             final OnlinePunishment onlinePunishment = new OnlinePunishment();

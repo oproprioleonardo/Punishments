@@ -58,6 +58,8 @@ public class MutedPlayers {
     public void update(String playerMuted){
         if (exists(playerMuted)) {
             final MuteObject muteObject = get(playerMuted);
+            System.out.println(muteObject.getFinishAt());
+            System.out.println(System.currentTimeMillis());
             if (muteObject.getFinishAt() != 0L && muteObject.getFinishAt() < System.currentTimeMillis()) {
                 final Punishment o = General.getGeneralLib().easyInstance(playerMuted, playerMuted);
                 o.setId(muteObject.getId());
@@ -75,10 +77,10 @@ public class MutedPlayers {
         private Long finishAt;
         private Long startAt;
 
-        public MuteObject(String playerMuted, Integer id, Long finishAt, Long startAt) {
+        public MuteObject(String playerMuted, Integer id, Long startAt, Long finishAt) {
             this.playerMuted = playerMuted;
             this.id = id;
-            this.finishAt = finishAt;
+            this.finishAt = finishAt;t
             this.startAt = startAt;
         }
 

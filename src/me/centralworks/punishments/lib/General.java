@@ -42,13 +42,13 @@ public class General {
 
     public Consumer<Punishment> getFunctionMuteIfOn(){
         return punishment1 -> {
-            final ProxiedPlayer punishmentPlayer = punishment1.getPlayer();
-            final List<String> collect = applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), punishment1);
+            final Punishment newInstance = punishment1.especialRequire();
+            final ProxiedPlayer punishmentPlayer = newInstance.getPlayer();
+            final List<String> collect = applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance);
             final ComponentBuilder componentBuilder = new ComponentBuilder("");
             collect.forEach(componentBuilder::append);
             punishmentPlayer.sendMessage(componentBuilder.create());
-            final Punishment newInstance = punishment1.requireById();
-            new MutedPlayers.MuteObject(punishment1.getIdentifier(), newInstance.getId(), punishment1.getData().getStartedAt(), punishment1.getData().getFinishAt()).save();
+            if(!MutedPlayers.getInstance().exists(punishment1.getIdentifier())) new MutedPlayers.MuteObject(newInstance.getIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt()).save();
         };
     }
 

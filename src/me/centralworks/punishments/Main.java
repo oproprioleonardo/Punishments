@@ -5,9 +5,11 @@ import com.google.gson.Gson;
 import me.centralworks.punishments.cmds.CmdBan;
 import me.centralworks.punishments.cmds.CmdMute;
 import me.centralworks.punishments.cmds.CmdTempBan;
+import me.centralworks.punishments.cmds.CmdTempMute;
 import me.centralworks.punishments.db.dao.PunishmentDAO;
 import me.centralworks.punishments.lib.Date;
 import me.centralworks.punishments.listeners.ChatListener;
+import me.centralworks.punishments.listeners.MuteChatListener;
 import me.centralworks.punishments.listeners.join.BanListener;
 import me.centralworks.punishments.listeners.join.MuteListener;
 import me.centralworks.punishments.punishs.supliers.PunishmentReason;
@@ -23,7 +25,9 @@ import net.md_5.bungee.config.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class Main extends Plugin {
 
@@ -111,9 +115,11 @@ public class Main extends Plugin {
         registerCommand(new CmdBan());
         registerCommand(new CmdTempBan());
         registerCommand(new CmdMute());
+        registerCommand(new CmdTempMute());
         registerListener(new ChatListener());
         registerListener(new BanListener());
         registerListener(new MuteListener());
+        registerListener(new MuteChatListener());
         PunishmentDAO.getInstance().createTable();
     }
 

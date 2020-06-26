@@ -110,4 +110,9 @@ public abstract class Punishment implements Data, Identifier, DAO {
     public List<Punishment> requireAll() {
         return General.getGeneralLib().updateAll(PunishmentDAO.getInstance().loadAllByIdentifier(getIdentifier()));
     }
+
+    @Override
+    public Punishment especialRequire() {
+        return PunishmentDAO.getInstance().loadByObject(this);
+    }
 }

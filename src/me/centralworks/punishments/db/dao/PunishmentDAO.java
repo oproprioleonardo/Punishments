@@ -14,7 +14,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class PunishmentDAO {
 
@@ -56,6 +58,10 @@ public class PunishmentDAO {
         }
     }
 
+    public Punishment loadByObject(Punishment punishment){
+        return loadAllByIdentifier(punishment.getIdentifier()).stream().filter(punishment1 -> punishment1.getData().getPunishmentType().equals(punishment.getData().getPunishmentType()) && punishment1.getData().getReasonString().equals(punishment.getData().getReasonString())).findFirst().get();
+    }
+
     public Punishment loadByIdentifier(String identifier) {
         try {
             final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_punishments WHERE user = ?");
@@ -80,7 +86,7 @@ public class PunishmentDAO {
             pd.setFinishAt(rs.getDate("finishAt").getTime());
             pd.setReason(rs.getString("reason"));
             pd.setPunisher(rs.getString("punisher"));
-            pd.setPunishmentState(PunishmentState.getByIdentifier(rs.getString("identifier")));
+            pd.setPunishmentState(PunishmentState.getByIdentifier(rs.getString("punishmentState")));
             pd.setEvidences(rs.getString("evidences").equals("") ? Lists.newArrayList() : Lists.newArrayList(rs.getString("evidences").split(",")));
             pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
             p.setData(pd);
@@ -116,7 +122,7 @@ public class PunishmentDAO {
                 pd.setFinishAt(rs.getTimestamp("finishAt").getTime());
                 pd.setReason(rs.getString("reason"));
                 pd.setPunisher(rs.getString("punisher"));
-                pd.setPunishmentState(PunishmentState.getByIdentifier(rs.getString("identifier")));
+                pd.setPunishmentState(PunishmentState.getByIdentifier(rs.getString("punishmentState")));
                 pd.setEvidences(rs.getString("evidences").equals("") ? Lists.newArrayList() : Lists.newArrayList(rs.getString("evidences").split(",")));
                 pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
                 p.setData(pd);
@@ -152,7 +158,7 @@ public class PunishmentDAO {
             pd.setFinishAt(rs.getTimestamp("finishAt").getTime());
             pd.setReason(rs.getString("reason"));
             pd.setPunisher(rs.getString("punisher"));
-            pd.setPunishmentState(PunishmentState.getByIdentifier(rs.getString("identifier")));
+            pd.setPunishmentState(PunishmentState.getByIdentifier(rs.getString("punishmentState")));
             pd.setEvidences(rs.getString("evidences").equals("") ? Lists.newArrayList() : Lists.newArrayList(rs.getString("evidences").split(",")));
             pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
             p.setData(pd);
