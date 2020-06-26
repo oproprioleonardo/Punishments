@@ -31,7 +31,8 @@ public class MuteListener implements Listener {
             final General generalLib = General.getGeneralLib();
             final List<Punishment> instance = punishment.requireAll();
             if (!generalLib.hasActivePunishment(instance) || !generalLib.hasPunishmentMute(instance)) return;
-
+            final Punishment p = generalLib.getAllMuteP(instance).get(0);
+            generalLib.getFunctionMuteIfOn().accept(p);
         }
     }
 

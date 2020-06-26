@@ -58,15 +58,6 @@ public class OfflinePunishment extends Punishment {
         return getNickName();
     }
 
-    @Override
-    public Punishment update() {
-        if (this.getData().getPunishmentState() == PunishmentState.ACTIVE && this.getData().getFinishAt() != 0L && this.getData().getFinishAt() < System.currentTimeMillis()) {
-            this.getData().setPunishmentState(PunishmentState.FINISHED);
-            this.save();
-        }
-        return this;
-    }
-
     public OfflinePunishment require() {
         return (OfflinePunishment) super.require().update();
     }

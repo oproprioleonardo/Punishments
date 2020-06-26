@@ -1,6 +1,9 @@
 package me.centralworks.punishments.punishs.supliers.cached;
 
 import com.google.common.collect.Lists;
+import me.centralworks.punishments.lib.General;
+import me.centralworks.punishments.punishs.Punishment;
+import me.centralworks.punishments.punishs.supliers.enums.PunishmentState;
 
 import java.util.List;
 
@@ -42,6 +45,28 @@ public class MutedPlayers {
         final List<MuteObject> copy = copy();
         copy.removeIf(muteObject -> muteObject.getPlayerMuted().equals(playerMuted));
         setList(copy);
+    }
+
+    public MuteObject get(String playerMuted){
+        return getList().stream().filter(muteObject -> muteObject.getPlayerMuted().equalsIgnoreCase(playerMuted)).findFirst().get();
+    }
+
+    public boolean exists(String playerMuted){
+        return getList().stream().anyMatch(muteObject -> muteObject.getPlayerMuted().equalsIgnoreCase(playerMuted));
+    }
+
+    public void update(String playerMuted){
+        if (exists(playerMuted)) {
+            final MuteObject muteObject = get(playerMuted);
+            if (muteObject.getFinishAt() != 0L && muteObject.getFinishAt() < System.currentTimeMillis()) {
+                final Punishment o = General.getGeneralLib().easyInstance(playerMuted, playerMuted);
+                o.setId(muteObject.getId());
+                final Punishment punishment = o.requireById();
+                punishment.getData().setPunishmentState(PunishmentState.FINISHED);
+                punishment.save();
+                this.remove(muteObject);
+            }
+        }
     }
 
     public static class MuteObject {

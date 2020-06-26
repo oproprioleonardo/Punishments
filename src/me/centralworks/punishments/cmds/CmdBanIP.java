@@ -5,7 +5,7 @@ import me.centralworks.punishments.enums.Permission;
 import me.centralworks.punishments.lib.General;
 import me.centralworks.punishments.lib.Message;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
-import me.centralworks.punishments.punishs.supliers.runners.types.Ban;
+import me.centralworks.punishments.punishs.supliers.runners.Run;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -25,7 +25,7 @@ public class CmdBanIP extends Command {
             return;
         }
         final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-        final Ban ban = new Ban();
+        final Run ban = new Run();
         final General generalLib = General.getGeneralLib();
         ban.setPunishmentType(PunishmentType.BAN);
         ban.setPunisher(punisher);

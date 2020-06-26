@@ -19,61 +19,61 @@ import net.md_5.bungee.api.plugin.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class CmdTempBan extends Command {
+public class CmdTempMute extends Command {
 
-    public CmdTempBan() {
-        super("tempban", Permission.TEMPBAN.getPermission(), "tempbanir", "banirtemp");
+    public CmdTempMute() {
+        super("tempmute", Permission.TEMPMUTE.getPermission(), "silenciartemp", "tempsilenciar");
     }
 
     @Override
     public void execute(CommandSender s, String[] args) {
+        final ProxyServer proxy = Main.getInstance().getProxy();
+        final boolean isPlayer = s instanceof ProxiedPlayer;
         try {
-            final ProxyServer proxy = Main.getInstance().getProxy();
-            if (!Permission.hasPermission(s, Permission.TEMPBAN)) {
+            if (!Permission.hasPermission(s, Permission.BAN)) {
                 new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Run ban = new Run();
+            final Run mute = new Run();
             final General generalLib = General.getGeneralLib();
-            final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? generalLib.getPlayerUUID(args[0]).toString() : proxy.getPlayer(args[0]).getUniqueId().toString());
+            final String target = Main.isOnlineMode() ? proxy.getPlayer(args[0]) == null ? generalLib.getPlayerUUID(args[0]).toString() : proxy.getPlayer(args[0]).getUniqueId().toString() : proxy.getPlayer(args[0]).getName();
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
-            ban.setTarget(target);
-            ban.setPunishmentType(PunishmentType.TEMPBAN);
-            ban.setPunisher(punisher);
+            mute.setPunishmentType(PunishmentType.MUTE);
+            mute.setPunisher(punisher);
             if (args.length > 2) {
-                if (s instanceof ProxiedPlayer) {
+                if (isPlayer) {
                     final ProxiedPlayer p = ((ProxiedPlayer) s);
                     final List<String> reason = Arrays.asList(args).subList(2, args.length);
                     final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                     reasonObj.setDuration(duration);
-                    ban.setPunishmentReason(reasonObj);
+                    mute.setTarget(target);
+                    mute.setPunishmentReason(reasonObj);
                     new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
-                    Task.getInstance().add(p.getName(), ban);
+                    Task.getInstance().add(p.getName(), mute);
                 } else {
+                    mute.setTarget(target);
                     if (!(args.length == 3)) {
                         final List<String> reason = Arrays.asList(args).subList(2, args.length);
-                        final PunishmentReason rs = Reasons.getInstance().getByReason(String.join(" ", reason));
-                        ban.setPunishmentReason(rs);
+                        mute.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
                     } else {
                         List<String> evidences = Lists.newArrayList(Lists.newArrayList(args).subList(2, 3).get(0).split(","));
                         final List<String> reason = Arrays.asList(args).subList(3, args.length);
-                        final PunishmentReason rs = Reasons.getInstance().getByReason(String.join(" ", reason));
-                        ban.setPunishmentReason(rs);
-                        ban.setEvidences(evidences);
+                        mute.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
+                        mute.setEvidences(evidences);
                     }
-                    ban.getPunishmentReason().setDuration(duration);
-                    ban.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
-                    ban.setAnnouncer(generalLib.getFunctionAnnouncerBan());
-                    ban.execute();
+                    mute.getPunishmentReason().setDuration(duration);
+                    mute.setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
+                    mute.setAnnouncer(generalLib.getFunctionAnnouncerMute());
+                    mute.execute();
                 }
             } else {
-                if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.tempBanPlayer")).send(s);
-                else new Message(Main.getUsages().getString("Usages.tempBanConsole")).send(s);
+                if (isPlayer) new Message(Main.getUsages().getString("Usages.tempMutePlayer")).send(s);
+                else new Message(Main.getUsages().getString("Usages.tempMuteConsole")).send(s);
             }
         } catch (Exception e) {
-            if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.tempBanPlayer")).send(s);
-            else new Message(Main.getUsages().getString("Usages.tempBanConsole")).send(s);
+            if (isPlayer) new Message(Main.getUsages().getString("Usages.tempMutePlayer")).send(s);
+            else new Message(Main.getUsages().getString("Usages.tempMuteConsole")).send(s);
         }
     }
 }

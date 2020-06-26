@@ -2,6 +2,7 @@ package me.centralworks.punishments.punishs;
 
 import me.centralworks.punishments.db.dao.PunishmentDAO;
 import me.centralworks.punishments.lib.General;
+import me.centralworks.punishments.punishs.supliers.enums.PunishmentState;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
@@ -94,6 +95,15 @@ public abstract class Punishment implements Data, Identifier, DAO {
     public Punishment requireById() {
         if (id == null || id == 0) return null;
         return PunishmentDAO.getInstance().loadByID(getId());
+    }
+
+    @Override
+    public Punishment update() {
+        if (this.getData().getPunishmentState() == PunishmentState.ACTIVE && this.getData().getFinishAt() != 0L && this.getData().getFinishAt() < System.currentTimeMillis()) {
+            this.getData().setPunishmentState(PunishmentState.FINISHED);
+            this.save();
+        }
+        return this;
     }
 
     @Override

@@ -61,15 +61,6 @@ public class OnlinePunishment extends Punishment {
         return isOnline() ? getPlayer().getName() : MojangAPI.getInstance().getName(getUuid().toString());
     }
 
-    @Override
-    public Punishment update() {
-        if (this.getData().getPunishmentState() == PunishmentState.ACTIVE && this.getData().getFinishAt() != 0L && this.getData().getFinishAt() < System.currentTimeMillis()) {
-            this.getData().setPunishmentState(PunishmentState.FINISHED);
-            this.save();
-        }
-        return this;
-    }
-
     public OnlinePunishment require() {
         return (OnlinePunishment) super.require().update();
     }

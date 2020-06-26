@@ -3,11 +3,13 @@ package me.centralworks.punishments;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import me.centralworks.punishments.cmds.CmdBan;
+import me.centralworks.punishments.cmds.CmdMute;
 import me.centralworks.punishments.cmds.CmdTempBan;
 import me.centralworks.punishments.db.dao.PunishmentDAO;
 import me.centralworks.punishments.lib.Date;
 import me.centralworks.punishments.listeners.ChatListener;
 import me.centralworks.punishments.listeners.join.BanListener;
+import me.centralworks.punishments.listeners.join.MuteListener;
 import me.centralworks.punishments.punishs.supliers.PunishmentReason;
 import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
@@ -108,8 +110,10 @@ public class Main extends Plugin {
         reasons();
         registerCommand(new CmdBan());
         registerCommand(new CmdTempBan());
+        registerCommand(new CmdMute());
         registerListener(new ChatListener());
         registerListener(new BanListener());
+        registerListener(new MuteListener());
         PunishmentDAO.getInstance().createTable();
     }
 

@@ -146,7 +146,11 @@ public class General {
     }
 
     public List<Punishment> getAllBannedP(List<Punishment> punishments) {
-        return getAllByType(punishments, PunishmentType.BAN);
+        return getAllByTypes(punishments, PunishmentType.BAN, PunishmentType.TEMPBAN);
+    }
+
+    public List<Punishment> getAllMuteP(List<Punishment> punishments) {
+        return getAllByTypes(punishments, PunishmentType.MUTE, PunishmentType.TEMPMUTE);
     }
 
     public List<Punishment> getAllByType(List<Punishment> punishments, PunishmentType punishmentType) {

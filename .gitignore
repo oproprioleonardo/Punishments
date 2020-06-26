@@ -1,2 +1,14 @@
 # Project exclude paths
 /out/
+/.idea/
+.idea/$CACHE_FILE$
+.idea/.gitignore
+.idea/artifacts/
+.idea/codeStyles/
+.idea/dbnavigator.xml
+.idea/dictionaries/
+.idea/discord.xml
+.idea/libraries/
+.idea/misc.xml
+.idea/modules.xml
+.idea/uiDesigner.xml
