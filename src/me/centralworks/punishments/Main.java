@@ -10,8 +10,9 @@ import me.centralworks.punishments.db.dao.PunishmentDAO;
 import me.centralworks.punishments.lib.Date;
 import me.centralworks.punishments.listeners.ChatListener;
 import me.centralworks.punishments.listeners.MuteChatListener;
-import me.centralworks.punishments.listeners.join.BanListener;
+import me.centralworks.punishments.listeners.join.OfflineBanListener;
 import me.centralworks.punishments.listeners.join.MuteListener;
+import me.centralworks.punishments.listeners.join.OnlineBanListener;
 import me.centralworks.punishments.punishs.supliers.PunishmentReason;
 import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
@@ -25,9 +26,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 public class Main extends Plugin {
 
@@ -117,9 +116,10 @@ public class Main extends Plugin {
         registerCommand(new CmdMute());
         registerCommand(new CmdTempMute());
         registerListener(new ChatListener());
-        registerListener(new BanListener());
         registerListener(new MuteListener());
         registerListener(new MuteChatListener());
+        if (Main.isOnlineMode()) registerListener(new OnlineBanListener());
+        else registerListener(new OfflineBanListener());
         PunishmentDAO.getInstance().createTable();
     }
 

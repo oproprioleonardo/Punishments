@@ -9,29 +9,22 @@ import me.centralworks.punishments.punishs.Punishment;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.LoginEvent;
+import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
 import java.util.List;
 
-public class BanListener implements Listener {
+public class OfflineBanListener implements Listener {
 
     @EventHandler
-    public void join(LoginEvent e) {
+    public void join(PreLoginEvent e) {
         final PendingConnection connection = e.getConnection();
-        final Punishment punishment;
-        if (Main.isOnlineMode()) {
-            final OnlinePunishment onlinePunishment = new OnlinePunishment();
-            onlinePunishment.setIdentifier(connection.getUniqueId().toString());
-            punishment = onlinePunishment;
-        } else {
-            final OfflinePunishment offlinePunishment = new OfflinePunishment();
-            offlinePunishment.setIdentifier(connection.getName());
-            punishment = offlinePunishment;
-        }
-        if (punishment.exists()) {
+        final OfflinePunishment offlinePunishment = new OfflinePunishment();
+        offlinePunishment.setIdentifier(connection.getName());
+        if (offlinePunishment.exists()) {
             final General generalLib = General.getGeneralLib();
-            final List<Punishment> instance = punishment.requireAll();
+            final List<Punishment> instance = offlinePunishment.requireAll();
             if (!generalLib.hasActivePunishment(instance) || !generalLib.hasPunishmentBan(instance)) return;
             final Punishment p = generalLib.getAllBannedP(instance).get(0);
             final LongMessage longMessage = new LongMessage("Runners.ban-kick");
