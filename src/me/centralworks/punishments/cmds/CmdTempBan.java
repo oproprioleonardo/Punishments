@@ -34,12 +34,11 @@ public class CmdTempBan extends Command {
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Run ban = new Run();
+            final Run ban = new Run(PunishmentType.TEMPBAN);
             final General generalLib = General.getGeneralLib();
             final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? generalLib.getPlayerUUID(args[0]).toString() : proxy.getPlayer(args[0]).getUniqueId().toString());
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
             ban.setTarget(target);
-            ban.setPunishmentType(PunishmentType.TEMPBAN);
             ban.setPunisher(punisher);
             if (s instanceof ProxiedPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
@@ -62,8 +61,6 @@ public class CmdTempBan extends Command {
                     ban.setEvidences(evidences);
                 }
                 ban.getPunishmentReason().setDuration(duration);
-                ban.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
-                ban.setAnnouncer(generalLib.getFunctionAnnouncerBan());
                 ban.execute();
             }
         } catch (Exception e) {

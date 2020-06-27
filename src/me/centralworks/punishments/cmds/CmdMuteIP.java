@@ -35,7 +35,7 @@ public class CmdMuteIP extends Command {
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Run mute = new Run();
+            final Run mute = new Run(PunishmentType.MUTE);
             final General generalLib = General.getGeneralLib();
             final String target = Main.isOnlineMode() ? proxy.getPlayer(args[0]) == null ? generalLib.getPlayerUUID(args[0]).toString() : proxy.getPlayer(args[0]).getUniqueId().toString() : proxy.getPlayer(args[0]).getName();
             final AddressIP adr = AddressIP.getInstance();
@@ -44,7 +44,6 @@ public class CmdMuteIP extends Command {
                 return;
             }
             mute.setIp(adr.getByAccount(target).getHostName());
-            mute.setPunishmentType(PunishmentType.MUTE);
             mute.setPunisher(punisher);
             mute.setPermanent(true);
             mute.setTarget(target);
@@ -65,8 +64,6 @@ public class CmdMuteIP extends Command {
                     mute.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
                     mute.setEvidences(evidences);
                 }
-                mute.setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
-                mute.setAnnouncer(generalLib.getFunctionAnnouncerMute());
                 mute.execute();
             }
         } catch (Exception e) {

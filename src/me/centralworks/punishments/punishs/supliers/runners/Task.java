@@ -7,19 +7,19 @@ import java.util.HashMap;
 public class Task {
 
     protected static Task instance;
-    protected HashMap<String, Runner> hashMap = Maps.newHashMap();
+    protected HashMap<String, Run> hashMap = Maps.newHashMap();
 
     public static Task getInstance() {
         if (instance == null) instance = new Task();
         return instance;
     }
 
-    public void add(String proxy, Runner runner) {
-        hashMap.put(proxy, runner);
+    public void add(String proxy, Run run) {
+        hashMap.put(proxy, run);
     }
 
-    public void replace(String proxy, Runner runner) {
-        hashMap.replace(proxy, runner);
+    public void replace(String proxy, Run run) {
+        hashMap.replace(proxy, run);
     }
 
     public void remove(String proxy) {
@@ -30,7 +30,7 @@ public class Task {
         return hashMap.containsKey(proxy);
     }
 
-    public Runner get(String proxy) {
+    public Run get(String proxy) {
         return hashMap.get(proxy);
     }
 

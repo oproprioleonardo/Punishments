@@ -4,7 +4,7 @@ import me.centralworks.punishments.Main;
 import me.centralworks.punishments.lib.General;
 import me.centralworks.punishments.lib.Message;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
-import me.centralworks.punishments.punishs.supliers.runners.Runner;
+import me.centralworks.punishments.punishs.supliers.runners.Run;
 import me.centralworks.punishments.punishs.supliers.runners.Task;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -23,20 +23,20 @@ public class ChatListener implements Listener {
             final ProxiedPlayer p = (ProxiedPlayer) e.getSender();
             final Task task = Task.getInstance();
             final String message = e.getMessage();
-            final Runner runner = task.get(p.getName());
+            final Run run = task.get(p.getName());
             final General generalLib = General.getGeneralLib();
             if (!task.exists(p.getName())) return;
             e.setCancelled(true);
             if (message.equalsIgnoreCase("pronto")) {
                 task.remove(p.getName());
-                if (runner.getPunishmentType() == PunishmentType.BAN || runner.getPunishmentType() == PunishmentType.TEMPBAN) {
-                    runner.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
-                    runner.setAnnouncer(generalLib.getFunctionAnnouncerBan());
+                if (run.getPunishmentType() == PunishmentType.BAN || run.getPunishmentType() == PunishmentType.TEMPBAN) {
+                    run.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
+                    run.setAnnouncer(generalLib.getFunctionAnnouncerBan());
                 } else {
-                    runner.setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
-                    runner.setAnnouncer(generalLib.getFunctionAnnouncerMute());
+                    run.setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
+                    run.setAnnouncer(generalLib.getFunctionAnnouncerMute());
                 }
-                runner.execute();
+                run.execute();
                 return;
             }
             if (message.equalsIgnoreCase("cancelar")) {
@@ -49,7 +49,7 @@ public class ChatListener implements Listener {
                 return;
             }
             new Message(Main.getMessages().getString("Messages.next-link")).send(p);
-            runner.attachEvidence(message);
+            run.attachEvidence(message);
         }
     }
 }

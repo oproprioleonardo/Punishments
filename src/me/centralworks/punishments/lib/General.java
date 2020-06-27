@@ -5,6 +5,7 @@ import me.centralworks.punishments.Main;
 import me.centralworks.punishments.punishs.OfflinePunishment;
 import me.centralworks.punishments.punishs.OnlinePunishment;
 import me.centralworks.punishments.punishs.Punishment;
+import me.centralworks.punishments.punishs.supliers.cached.AddressIP;
 import me.centralworks.punishments.punishs.supliers.cached.MutedPlayers;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentState;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
@@ -55,6 +56,39 @@ public class General {
             punishmentPlayer.sendMessage(componentBuilder.create());
             if (!MutedPlayers.getInstance().exists(punishment1.getIdentifier()))
                 new MutedPlayers.MuteObject(newInstance.getIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent()).save();
+        };
+    }
+
+    public Consumer<Punishment> getFunctionBanIfAddress() {
+        return punishment1 -> {
+            final AddressIP.AddressIPObject byAddress = AddressIP.getInstance().getByAddress(punishment1.getIp());
+            byAddress.getAccounts().forEach(s -> {
+                if (Main.getInstance().getProxy().getPlayer(s) != null) {
+                    final ProxiedPlayer punishmentPlayer = Main.getInstance().getProxy().getPlayer(s);
+                    final LongMessage longMessage = new LongMessage("Runners.ban-kick");
+                    final List<String> collect = applyPlaceHolders(Lists.newArrayList(longMessage.getStringList()), punishment1);
+                    longMessage.setStringList(collect);
+                    final ComponentBuilder componentBuilder = new ComponentBuilder("");
+                    collect.forEach(componentBuilder::append);
+                    punishmentPlayer.disconnect(componentBuilder.create());
+                }
+            });
+        };
+    }
+
+    public Consumer<Punishment> getFunctionMuteIfAddress() {
+        return punishment1 -> {
+            final AddressIP.AddressIPObject byAddress = AddressIP.getInstance().getByAddress(punishment1.getIp());
+            byAddress.getAccounts().forEach(s -> {
+                final Punishment newInstance = punishment1.especialRequire();
+                final ProxiedPlayer punishmentPlayer = Main.getInstance().getProxy().getPlayer(s);
+                final List<String> collect = applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance);
+                final ComponentBuilder componentBuilder = new ComponentBuilder("");
+                collect.forEach(componentBuilder::append);
+                punishmentPlayer.sendMessage(componentBuilder.create());
+                if (!MutedPlayers.getInstance().exists(s))
+                    new MutedPlayers.MuteObject(s, newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent()).save();
+            });
         };
     }
 

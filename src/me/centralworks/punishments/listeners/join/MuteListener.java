@@ -5,8 +5,10 @@ import me.centralworks.punishments.lib.General;
 import me.centralworks.punishments.punishs.OfflinePunishment;
 import me.centralworks.punishments.punishs.OnlinePunishment;
 import me.centralworks.punishments.punishs.Punishment;
+import me.centralworks.punishments.punishs.supliers.cached.MutedPlayers;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -40,6 +42,14 @@ public class MuteListener implements Listener {
             } catch (NullPointerException ignored) {
             }
         });
+    }
+
+    @EventHandler
+    public void quit(PlayerDisconnectEvent e) {
+        final ProxiedPlayer p = e.getPlayer();
+        final String identifier = General.getGeneralLib().identifierCompare(p.getName(), p.getUniqueId().toString());
+        final MutedPlayers mp = MutedPlayers.getInstance();
+        if (mp.exists(identifier)) MutedPlayers.getInstance().remove(identifier);
     }
 
 }

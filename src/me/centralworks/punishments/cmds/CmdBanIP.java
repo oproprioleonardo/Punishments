@@ -34,7 +34,7 @@ public class CmdBanIP extends Command {
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Run ban = new Run();
+            final Run ban = new Run(PunishmentType.BAN);
             final General generalLib = General.getGeneralLib();
             final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? generalLib.getPlayerUUID(args[0]).toString() : proxy.getPlayer(args[0]).getUniqueId().toString());
             final AddressIP adr = AddressIP.getInstance();
@@ -43,7 +43,6 @@ public class CmdBanIP extends Command {
                 return;
             }
             ban.setIp(adr.getByAccount(target).getHostName());
-            ban.setPunishmentType(PunishmentType.BAN);
             ban.setPunisher(punisher);
             ban.setPermanent(true);
             if (s instanceof ProxiedPlayer) {
@@ -65,8 +64,6 @@ public class CmdBanIP extends Command {
                     ban.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
                     ban.setEvidences(evidences);
                 }
-                ban.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
-                ban.setAnnouncer(generalLib.getFunctionAnnouncerBan());
                 ban.execute();
             }
         } catch (Exception e) {
