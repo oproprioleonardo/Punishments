@@ -1,4 +1,4 @@
-package me.centralworks.punishments.listeners.join;
+package me.centralworks.punishments.listeners;
 
 import me.centralworks.punishments.Main;
 import me.centralworks.punishments.lib.General;
@@ -10,7 +10,7 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
-public class RegisterListener implements Listener {
+public class RegisterAddressListener implements Listener {
 
     @EventHandler
     public void registerIP(PostLoginEvent e) {

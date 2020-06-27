@@ -1,4 +1,4 @@
-package me.centralworks.punishments.listeners;
+package me.centralworks.punishments.listeners.withAddressIP;
 
 import me.centralworks.punishments.Main;
 import me.centralworks.punishments.lib.LongMessage;
@@ -12,7 +12,7 @@ import net.md_5.bungee.event.EventHandler;
 
 import java.text.SimpleDateFormat;
 
-public class MuteChatListener implements Listener {
+public class MuteIPChatListener implements Listener {
 
     @EventHandler
     public void talk(ChatEvent e) {
@@ -23,9 +23,11 @@ public class MuteChatListener implements Listener {
             final ProxiedPlayer p = (ProxiedPlayer) e.getSender();
             final MutedPlayers instance = MutedPlayers.getInstance();
             final String identifier = Main.isOnlineMode() ? p.getUniqueId().toString() : p.getName();
-            instance.update(identifier);
-            if (instance.exists(identifier)) {
-                final MutedPlayers.MuteObject muteObject = instance.get(identifier);
+            final String addressIP = p.getAddress().getAddress().getHostAddress();
+            instance.updateByAddress(addressIP);
+            if (instance.existsByAddress(addressIP)) {
+                final MutedPlayers.MuteObject muteObject = instance.getByAddress(addressIP);
+                if (muteObject.getPlayerMuted().equalsIgnoreCase(identifier)) return;
                 final ComponentBuilder componentBuilder = new ComponentBuilder("");
                 new LongMessage("Runners.mute-status").getColorfulList().stream().map(s -> s
                         .replace("{finishAt}", muteObject.isPermanent() ? "§cPermanente." : new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(muteObject.getFinishAt()))
@@ -49,9 +51,11 @@ public class MuteChatListener implements Listener {
             final ProxiedPlayer p = (ProxiedPlayer) e.getSender();
             final MutedPlayers instance = MutedPlayers.getInstance();
             final String identifier = Main.isOnlineMode() ? p.getUniqueId().toString() : p.getName();
-            instance.update(identifier);
-            if (instance.exists(identifier)) {
-                final MutedPlayers.MuteObject muteObject = instance.get(identifier);
+            final String addressIP = p.getAddress().getAddress().getHostAddress();
+            instance.updateByAddress(addressIP);
+            if (instance.existsByAddress(addressIP)) {
+                final MutedPlayers.MuteObject muteObject = instance.getByAddress(addressIP);
+                if (muteObject.getPlayerMuted().equalsIgnoreCase(identifier)) return;
                 final ComponentBuilder componentBuilder = new ComponentBuilder("");
                 new LongMessage("Runners.mute-status").getColorfulList().stream().map(s -> s
                         .replace("{finishAt}", muteObject.isPermanent() ? "§cPermanente." : new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(muteObject.getFinishAt()))

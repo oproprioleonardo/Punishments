@@ -55,11 +55,33 @@ public class MutedPlayers {
         return getList().stream().anyMatch(muteObject -> muteObject.getPlayerMuted().equalsIgnoreCase(playerMuted));
     }
 
+    public boolean existsByAddress(String address) {
+        return getList().stream().anyMatch(muteObject -> muteObject.getAddressIP().equalsIgnoreCase(address));
+    }
+
+    public MuteObject getByAddress(String address) {
+        return getList().stream().filter(muteObject -> muteObject.getAddressIP().equalsIgnoreCase(address)).findFirst().get();
+    }
+
     public void update(String playerMuted) {
         if (exists(playerMuted)) {
             final MuteObject muteObject = get(playerMuted);
             if (!muteObject.isPermanent() && muteObject.getFinishAt() < System.currentTimeMillis()) {
                 final Punishment o = General.getGeneralLib().easyInstance(playerMuted, playerMuted);
+                o.setId(muteObject.getId());
+                final Punishment punishment = o.requireById();
+                punishment.getData().setPunishmentState(PunishmentState.FINISHED);
+                punishment.save();
+                this.remove(muteObject);
+            }
+        }
+    }
+
+    public void updateByAddress(String address) {
+        if (existsByAddress(address)) {
+            final MuteObject muteObject = getByAddress(address);
+            if (!muteObject.isPermanent() && muteObject.getFinishAt() < System.currentTimeMillis()) {
+                final Punishment o = General.getGeneralLib().easyInstance(muteObject.getPlayerMuted(), muteObject.getPlayerMuted());
                 o.setId(muteObject.getId());
                 final Punishment punishment = o.requireById();
                 punishment.getData().setPunishmentState(PunishmentState.FINISHED);
@@ -75,13 +97,17 @@ public class MutedPlayers {
         private Long finishAt;
         private Long startAt;
         private boolean permanent = false;
+        private boolean ip = false;
+        private String addressIP;
 
-        public MuteObject(String playerMuted, Integer id, Long startAt, Long finishAt, boolean permanent) {
+        public MuteObject(String playerMuted, Integer id, Long startAt, Long finishAt, boolean permanent, String addressIP) {
             this.playerMuted = playerMuted;
             this.id = id;
             this.finishAt = finishAt;
             this.startAt = startAt;
             this.permanent = permanent;
+            this.addressIP = addressIP;
+            if (!addressIP.equalsIgnoreCase("")) setIp(true);
         }
 
         public MuteObject() {
@@ -133,6 +159,22 @@ public class MutedPlayers {
 
         public void setStartAt(Long startAt) {
             this.startAt = startAt;
+        }
+
+        public String getAddressIP() {
+            return addressIP;
+        }
+
+        public void setAddressIP(String addressIP) {
+            this.addressIP = addressIP;
+        }
+
+        public boolean isIp() {
+            return ip;
+        }
+
+        public void setIp(boolean ip) {
+            this.ip = ip;
         }
     }
 

@@ -115,4 +115,14 @@ public abstract class Punishment implements Data, Identifier, DAO {
     public Punishment especialRequire() {
         return PunishmentDAO.getInstance().loadByObject(this);
     }
+
+    @Override
+    public List<Punishment> requireAllByAddress() {
+        return PunishmentDAO.getInstance().loadByIP(getIp());
+    }
+
+    @Override
+    public boolean existsByAddress() {
+        return PunishmentDAO.getInstance().existsIp(getIp());
+    }
 }

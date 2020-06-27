@@ -20,4 +20,8 @@ public interface DAO {
 
     Punishment especialRequire();
 
+    List<Punishment> requireAllByAddress();
+
+    boolean existsByAddress();
+
 }

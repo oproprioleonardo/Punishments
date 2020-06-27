@@ -57,7 +57,11 @@ public class PunishmentDAO {
     }
 
     public Punishment loadByObject(Punishment punishment) {
-        return loadAllByIdentifier(punishment.getIdentifier()).stream().filter(punishment1 -> punishment1.getData().getPunishmentType().equals(punishment.getData().getPunishmentType()) && punishment1.getData().getReasonString().equals(punishment.getData().getReasonString())).findFirst().get();
+        return loadAllByIdentifier(punishment.getIdentifier()).stream().filter(punishment1 ->
+                punishment1.getData().getPunishmentType().equals(punishment.getData().getPunishmentType()) &&
+                        punishment1.getData().getPunishmentState().equals(punishment.getData().getPunishmentState()) &&
+                        punishment1.getData().getReasonString().equals(punishment.getData().getReasonString())
+        ).findFirst().get();
     }
 
     public Punishment loadByIdentifier(String identifier) {
@@ -94,6 +98,44 @@ public class PunishmentDAO {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<Punishment> loadByIP(String address) {
+        final List<Punishment> list = Lists.newArrayList();
+        try {
+            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_punishments WHERE addressIP = ?");
+            st.setObject(1, address);
+            final ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                final Punishment p;
+                final String user = rs.getString("user");
+                if (Main.isOnlineMode()) {
+                    final OnlinePunishment onlinePunishment = new OnlinePunishment();
+                    onlinePunishment.setIdentifier(user);
+                    p = onlinePunishment;
+                } else {
+                    final OfflinePunishment offlinePunishment = new OfflinePunishment();
+                    offlinePunishment.setIdentifier(user);
+                    p = offlinePunishment;
+                }
+                final PunishmentData pd = new PunishmentData();
+                p.setId(rs.getInt("id"));
+                if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
+                pd.setStartedAt(rs.getTimestamp("startedAt").getTime());
+                pd.setFinishAt(rs.getTimestamp("finishAt").getTime());
+                pd.setReason(rs.getString("reason"));
+                pd.setPunisher(rs.getString("punisher"));
+                pd.setPunishmentState(PunishmentState.getByIdentifier(rs.getString("punishmentState")));
+                pd.setEvidences(rs.getString("evidences").equals("") ? Lists.newArrayList() : Lists.newArrayList(rs.getString("evidences").split(",")));
+                pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
+                pd.setPermanent(rs.getBoolean("permanent"));
+                p.setData(pd);
+                list.add(p);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     public List<Punishment> loadAllByIdentifier(String identifier) {
@@ -255,5 +297,15 @@ public class PunishmentDAO {
         }
     }
 
+    public boolean existsIp(String ip) {
+        try {
+            final PreparedStatement st = connection.prepareStatement("SELECT ip FROM arcanth_punishments WHERE addressIP = ?");
+            st.setString(1, ip);
+            return st.executeQuery().next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
