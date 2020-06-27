@@ -7,6 +7,7 @@ import me.centralworks.punishments.lib.Date;
 import me.centralworks.punishments.lib.General;
 import me.centralworks.punishments.lib.Message;
 import me.centralworks.punishments.punishs.supliers.PunishmentReason;
+import me.centralworks.punishments.punishs.supliers.cached.AddressIP;
 import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
 import me.centralworks.punishments.punishs.supliers.runners.Run;
@@ -19,10 +20,10 @@ import net.md_5.bungee.api.plugin.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class CmdTempMute extends Command {
+public class CmdTempMuteIP extends Command {
 
-    public CmdTempMute() {
-        super("tempmute", Permission.TEMPMUTE.getPermission(), "silenciartemp", "tempsilenciar");
+    public CmdTempMuteIP() {
+        super("tempmuteip", Permission.TEMPMUTEIP.getPermission(), "tempsilenciarip");
     }
 
     @Override
@@ -30,7 +31,7 @@ public class CmdTempMute extends Command {
         final ProxyServer proxy = Main.getInstance().getProxy();
         final boolean isPlayer = s instanceof ProxiedPlayer;
         try {
-            if (!Permission.hasPermission(s, Permission.TEMPMUTE)) {
+            if (!Permission.hasPermission(s, Permission.TEMPMUTEIP)) {
                 new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
@@ -39,6 +40,12 @@ public class CmdTempMute extends Command {
             final General generalLib = General.getGeneralLib();
             final String target = Main.isOnlineMode() ? proxy.getPlayer(args[0]) == null ? generalLib.getPlayerUUID(args[0]).toString() : proxy.getPlayer(args[0]).getUniqueId().toString() : proxy.getPlayer(args[0]).getName();
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
+            final AddressIP adr = AddressIP.getInstance();
+            if (!adr.existsPlayer(target)) {
+                new Message(Main.getMessages().getString("Messages.ip-not-registered")).send(s);
+                return;
+            }
+            mute.setIp(adr.getByAccount(target).getHostName());
             mute.setPunishmentType(PunishmentType.MUTE);
             mute.setPunisher(punisher);
             mute.setTarget(target);
@@ -66,8 +73,8 @@ public class CmdTempMute extends Command {
                 mute.execute();
             }
         } catch (Exception e) {
-            if (isPlayer) new Message(Main.getUsages().getString("Usages.tempMutePlayer")).send(s);
-            else new Message(Main.getUsages().getString("Usages.tempMuteConsole")).send(s);
+            if (isPlayer) new Message(Main.getUsages().getString("Usages.tempMuteIPPlayer")).send(s);
+            else new Message(Main.getUsages().getString("Usages.tempMuteIPConsole")).send(s);
         }
     }
 }

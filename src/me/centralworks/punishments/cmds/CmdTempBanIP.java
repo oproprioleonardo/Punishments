@@ -3,9 +3,11 @@ package me.centralworks.punishments.cmds;
 import com.google.common.collect.Lists;
 import me.centralworks.punishments.Main;
 import me.centralworks.punishments.enums.Permission;
+import me.centralworks.punishments.lib.Date;
 import me.centralworks.punishments.lib.General;
 import me.centralworks.punishments.lib.Message;
 import me.centralworks.punishments.punishs.supliers.PunishmentReason;
+import me.centralworks.punishments.punishs.supliers.cached.AddressIP;
 import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
 import me.centralworks.punishments.punishs.supliers.runners.Run;
@@ -18,17 +20,17 @@ import net.md_5.bungee.api.plugin.Command;
 import java.util.Arrays;
 import java.util.List;
 
-public class CmdBan extends Command {
+public class CmdTempBanIP extends Command {
 
-    public CmdBan() {
-        super("ban", Permission.BAN.getPermission(), "banir");
+    public CmdTempBanIP() {
+        super("tempbanip", Permission.TEMPBANIP.getPermission(), "tempsilenciarip", "silenciartempip");
     }
 
     @Override
     public void execute(CommandSender s, String[] args) {
         try {
             final ProxyServer proxy = Main.getInstance().getProxy();
-            if (!Permission.hasPermission(s, Permission.BAN)) {
+            if (!Permission.hasPermission(s, Permission.TEMPBANIP)) {
                 new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
@@ -36,34 +38,44 @@ public class CmdBan extends Command {
             final Run ban = new Run();
             final General generalLib = General.getGeneralLib();
             final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? generalLib.getPlayerUUID(args[0]).toString() : proxy.getPlayer(args[0]).getUniqueId().toString());
-            ban.setPunishmentType(PunishmentType.BAN);
-            ban.setPunisher(punisher);
-            ban.setPermanent(true);
+            final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
+            final AddressIP adr = AddressIP.getInstance();
+            if (!adr.existsPlayer(target)) {
+                new Message(Main.getMessages().getString("Messages.ip-not-registered")).send(s);
+                return;
+            }
+            ban.setIp(adr.getByAccount(target).getHostName());
             ban.setTarget(target);
+            ban.setPunishmentType(PunishmentType.TEMPBAN);
+            ban.setPunisher(punisher);
             if (s instanceof ProxiedPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
-                final List<String> reason = Arrays.asList(args).subList(1, args.length);
+                final List<String> reason = Arrays.asList(args).subList(2, args.length);
                 final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
+                reasonObj.setDuration(duration);
                 ban.setPunishmentReason(reasonObj);
                 new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
                 Task.getInstance().add(p.getName(), ban);
             } else {
-                if (!(args.length == 2)) {
-                    final List<String> reason = Arrays.asList(args).subList(1, args.length);
-                    ban.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
-                } else {
-                    List<String> evidences = Lists.newArrayList(Lists.newArrayList(args).subList(1, 2).get(0).split(","));
+                if (!(args.length == 3)) {
                     final List<String> reason = Arrays.asList(args).subList(2, args.length);
-                    ban.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
+                    final PunishmentReason rs = Reasons.getInstance().getByReason(String.join(" ", reason));
+                    ban.setPunishmentReason(rs);
+                } else {
+                    List<String> evidences = Lists.newArrayList(Lists.newArrayList(args).subList(2, 3).get(0).split(","));
+                    final List<String> reason = Arrays.asList(args).subList(3, args.length);
+                    final PunishmentReason rs = Reasons.getInstance().getByReason(String.join(" ", reason));
+                    ban.setPunishmentReason(rs);
                     ban.setEvidences(evidences);
                 }
+                ban.getPunishmentReason().setDuration(duration);
                 ban.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
                 ban.setAnnouncer(generalLib.getFunctionAnnouncerBan());
                 ban.execute();
             }
         } catch (Exception e) {
-            if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.banPlayer")).send(s);
-            else new Message(Main.getUsages().getString("Usages.banConsole")).send(s);
+            if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.tempBanIPPlayer")).send(s);
+            else new Message(Main.getUsages().getString("Usages.tempBanIPConsole")).send(s);
         }
     }
 }

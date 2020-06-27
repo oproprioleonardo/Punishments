@@ -9,8 +9,11 @@ public enum Permission {
     STAFF("punishments.punir"),
     BAN("punishments.ban"),
     BANIP("punishments.ban.ip"),
-    MUTE("punishments.mute"),
+    TEMPBANIP("punishments.tempban.ip"),
     TEMPBAN("punishments.tempban"),
+    MUTE("punishments.mute"),
+    MUTEIP("punishments.mute.ip"),
+    TEMPMUTEIP("punishments.tempmute.ip"),
     TEMPMUTE("punishments.tempmute");
 
     private final String permission;

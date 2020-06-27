@@ -16,6 +16,10 @@ public class AddressIP {
         return instance;
     }
 
+    public String getHostAddress(String identifier) {
+        return getByAccount(identifier).getHostName();
+    }
+
     public List<AddressIPObject> getList() {
         return list;
     }
@@ -40,6 +44,10 @@ public class AddressIP {
         return getList().stream().anyMatch(addressIPObject -> addressIPObject.getHostName().equals(hostName));
     }
 
+    public boolean existsIPAndAccount(String host, String account) {
+        return getList().stream().anyMatch(addressIPObject -> addressIPObject.getHostName().equals(host) && addressIPObject.exists(account));
+    }
+
     public boolean existsPlayer(String account) {
         return getList().stream().anyMatch(addressIPObject -> addressIPObject.exists(account));
     }
@@ -48,14 +56,18 @@ public class AddressIP {
         return getList().stream().filter(addressIPObject -> addressIPObject.getHostName().equals(hostName)).findFirst().get();
     }
 
+    public AddressIPObject getByAddressAndAccount(String hostName, String account) {
+        return getList().stream().filter(addressIPObject -> addressIPObject.exists(account) && addressIPObject.getHostName().equals(hostName)).findFirst().get();
+    }
+
     public AddressIPObject getByAccount(String account) {
         return getList().stream().filter(addressIPObject -> addressIPObject.exists(account)).findFirst().get();
     }
 
     public static class AddressIPObject {
         private String hostName;
-        private List<String> accounts;
-        private Long lastUsage;
+        private List<String> accounts = Lists.newArrayList();
+        private Long lastUsage = System.currentTimeMillis();
 
         public AddressIPObject(String hostName, List<String> accounts, Long lastUsage) {
             this.hostName = hostName;
@@ -96,6 +108,10 @@ public class AddressIP {
             setAccounts(strings);
         }
 
+        public void update() {
+            setLastUsage(System.currentTimeMillis());
+        }
+
         public Timestamp getLastUsageTime() {
             return new Timestamp(getLastUsage());
         }
@@ -104,6 +120,7 @@ public class AddressIP {
             final ArrayList<String> strings = Lists.newArrayList(getAccounts());
             strings.remove(account);
             setAccounts(strings);
+            if (getAccounts().size() == 0) AddressIP.getInstance().remove(this);
         }
 
         public boolean exists(String account) {

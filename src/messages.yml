@@ -4,6 +4,7 @@ Messages:
   invalid-link: "&cEsse é um link inválido. Digite \"pronto\" caso queira finalizar a operação."
   next-link: "&aLink anexado com sucesso, caso queira parar por aqui, digite \"pronto\"."
   operation-cancel: "&aOperação cancelada com sucesso."
+  ip-not-registered: "&cO IP desse jogador não está registrado no nosso banco de dados, para mais informações contate o Dono."
 Announcements:
   ban:
     - ""

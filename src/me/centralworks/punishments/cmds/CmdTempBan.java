@@ -41,35 +41,30 @@ public class CmdTempBan extends Command {
             ban.setTarget(target);
             ban.setPunishmentType(PunishmentType.TEMPBAN);
             ban.setPunisher(punisher);
-            if (args.length > 2) {
-                if (s instanceof ProxiedPlayer) {
-                    final ProxiedPlayer p = ((ProxiedPlayer) s);
-                    final List<String> reason = Arrays.asList(args).subList(2, args.length);
-                    final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
-                    reasonObj.setDuration(duration);
-                    ban.setPunishmentReason(reasonObj);
-                    new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
-                    Task.getInstance().add(p.getName(), ban);
-                } else {
-                    if (!(args.length == 3)) {
-                        final List<String> reason = Arrays.asList(args).subList(2, args.length);
-                        final PunishmentReason rs = Reasons.getInstance().getByReason(String.join(" ", reason));
-                        ban.setPunishmentReason(rs);
-                    } else {
-                        List<String> evidences = Lists.newArrayList(Lists.newArrayList(args).subList(2, 3).get(0).split(","));
-                        final List<String> reason = Arrays.asList(args).subList(3, args.length);
-                        final PunishmentReason rs = Reasons.getInstance().getByReason(String.join(" ", reason));
-                        ban.setPunishmentReason(rs);
-                        ban.setEvidences(evidences);
-                    }
-                    ban.getPunishmentReason().setDuration(duration);
-                    ban.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
-                    ban.setAnnouncer(generalLib.getFunctionAnnouncerBan());
-                    ban.execute();
-                }
+            if (s instanceof ProxiedPlayer) {
+                final ProxiedPlayer p = ((ProxiedPlayer) s);
+                final List<String> reason = Arrays.asList(args).subList(2, args.length);
+                final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
+                reasonObj.setDuration(duration);
+                ban.setPunishmentReason(reasonObj);
+                new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
+                Task.getInstance().add(p.getName(), ban);
             } else {
-                if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.tempBanPlayer")).send(s);
-                else new Message(Main.getUsages().getString("Usages.tempBanConsole")).send(s);
+                if (!(args.length == 3)) {
+                    final List<String> reason = Arrays.asList(args).subList(2, args.length);
+                    final PunishmentReason rs = Reasons.getInstance().getByReason(String.join(" ", reason));
+                    ban.setPunishmentReason(rs);
+                } else {
+                    List<String> evidences = Lists.newArrayList(Lists.newArrayList(args).subList(2, 3).get(0).split(","));
+                    final List<String> reason = Arrays.asList(args).subList(3, args.length);
+                    final PunishmentReason rs = Reasons.getInstance().getByReason(String.join(" ", reason));
+                    ban.setPunishmentReason(rs);
+                    ban.setEvidences(evidences);
+                }
+                ban.getPunishmentReason().setDuration(duration);
+                ban.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
+                ban.setAnnouncer(generalLib.getFunctionAnnouncerBan());
+                ban.execute();
             }
         } catch (Exception e) {
             if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.tempBanPlayer")).send(s);

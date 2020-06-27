@@ -29,7 +29,7 @@ public class CmdMute extends Command {
         final ProxyServer proxy = Main.getInstance().getProxy();
         final boolean isPlayer = s instanceof ProxiedPlayer;
         try {
-            if (!Permission.hasPermission(s, Permission.BAN)) {
+            if (!Permission.hasPermission(s, Permission.MUTE)) {
                 new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
@@ -40,33 +40,27 @@ public class CmdMute extends Command {
             mute.setPunishmentType(PunishmentType.MUTE);
             mute.setPunisher(punisher);
             mute.setPermanent(true);
-            if (args.length > 1) {
-                if (isPlayer) {
-                    final ProxiedPlayer p = ((ProxiedPlayer) s);
-                    final List<String> reason = Arrays.asList(args).subList(1, args.length);
-                    final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
-                    mute.setTarget(target);
-                    mute.setPunishmentReason(reasonObj);
-                    new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
-                    Task.getInstance().add(p.getName(), mute);
-                } else {
-                    mute.setTarget(target);
-                    if (!(args.length == 2)) {
-                        final List<String> reason = Arrays.asList(args).subList(1, args.length);
-                        mute.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
-                    } else {
-                        List<String> evidences = Lists.newArrayList(Lists.newArrayList(args).subList(1, 2).get(0).split(","));
-                        final List<String> reason = Arrays.asList(args).subList(2, args.length);
-                        mute.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
-                        mute.setEvidences(evidences);
-                    }
-                    mute.setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
-                    mute.setAnnouncer(generalLib.getFunctionAnnouncerMute());
-                    mute.execute();
-                }
+            mute.setTarget(target);
+            if (isPlayer) {
+                final ProxiedPlayer p = ((ProxiedPlayer) s);
+                final List<String> reason = Arrays.asList(args).subList(1, args.length);
+                final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
+                mute.setPunishmentReason(reasonObj);
+                new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
+                Task.getInstance().add(p.getName(), mute);
             } else {
-                if (isPlayer) new Message(Main.getUsages().getString("Usages.mutePlayer")).send(s);
-                else new Message(Main.getUsages().getString("Usages.muteConsole")).send(s);
+                if (!(args.length == 2)) {
+                    final List<String> reason = Arrays.asList(args).subList(1, args.length);
+                    mute.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
+                } else {
+                    List<String> evidences = Lists.newArrayList(Lists.newArrayList(args).subList(1, 2).get(0).split(","));
+                    final List<String> reason = Arrays.asList(args).subList(2, args.length);
+                    mute.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
+                    mute.setEvidences(evidences);
+                }
+                mute.setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
+                mute.setAnnouncer(generalLib.getFunctionAnnouncerMute());
+                mute.execute();
             }
         } catch (Exception e) {
             if (isPlayer) new Message(Main.getUsages().getString("Usages.mutePlayer")).send(s);
