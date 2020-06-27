@@ -138,6 +138,7 @@ public abstract class Runner implements Execute {
         final Punishment punishment = generalLib.easyInstance(getTarget(), getTarget());
         final PunishmentData pd = new PunishmentData();
         final long now = System.currentTimeMillis();
+        punishment.setIp(getIp());
         pd.setEvidences(Lists.newArrayList(getEvidences()));
         pd.setPunishmentType(getPunishmentType());
         pd.setPunishmentState(PunishmentState.ACTIVE);
@@ -151,4 +152,5 @@ public abstract class Runner implements Execute {
         if (punishment.isOnline()) getFunctionIfOnline().accept(punishment);
         getAnnouncer().accept(punishment);
     }
+
 }

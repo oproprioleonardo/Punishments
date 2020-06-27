@@ -6,6 +6,7 @@ import me.centralworks.punishments.cmds.CmdBan;
 import me.centralworks.punishments.cmds.CmdMute;
 import me.centralworks.punishments.cmds.CmdTempBan;
 import me.centralworks.punishments.cmds.CmdTempMute;
+import me.centralworks.punishments.db.dao.AddressIPDAO;
 import me.centralworks.punishments.db.dao.PunishmentDAO;
 import me.centralworks.punishments.lib.Date;
 import me.centralworks.punishments.listeners.ChatListener;
@@ -121,10 +122,13 @@ public class Main extends Plugin {
         if (Main.isOnlineMode()) registerListener(new OnlineBanListener());
         else registerListener(new OfflineBanListener());
         PunishmentDAO.getInstance().createTable();
+        final AddressIPDAO adr = AddressIPDAO.getInstance();
+        adr.createTable();
+        adr.loadAll();
     }
 
     @Override
     public void onDisable() {
-
+        AddressIPDAO.getInstance().saveAll();
     }
 }
