@@ -14,9 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 public class PunishmentDAO {
 
@@ -58,7 +56,7 @@ public class PunishmentDAO {
         }
     }
 
-    public Punishment loadByObject(Punishment punishment){
+    public Punishment loadByObject(Punishment punishment) {
         return loadAllByIdentifier(punishment.getIdentifier()).stream().filter(punishment1 -> punishment1.getData().getPunishmentType().equals(punishment.getData().getPunishmentType()) && punishment1.getData().getReasonString().equals(punishment.getData().getReasonString())).findFirst().get();
     }
 

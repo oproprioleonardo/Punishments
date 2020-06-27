@@ -28,7 +28,12 @@ public class General {
 
     protected static General instance;
 
-    public Consumer<Punishment> getFunctionBanIfOn(){
+    public static General getGeneralLib() {
+        if (instance == null) instance = new General();
+        return instance;
+    }
+
+    public Consumer<Punishment> getFunctionBanIfOn() {
         return punishment1 -> {
             final ProxiedPlayer punishmentPlayer = punishment1.getPlayer();
             final LongMessage longMessage = new LongMessage("Runners.ban-kick");
@@ -40,7 +45,7 @@ public class General {
         };
     }
 
-    public Consumer<Punishment> getFunctionMuteIfOn(){
+    public Consumer<Punishment> getFunctionMuteIfOn() {
         return punishment1 -> {
             final Punishment newInstance = punishment1.especialRequire();
             final ProxiedPlayer punishmentPlayer = newInstance.getPlayer();
@@ -48,11 +53,12 @@ public class General {
             final ComponentBuilder componentBuilder = new ComponentBuilder("");
             collect.forEach(componentBuilder::append);
             punishmentPlayer.sendMessage(componentBuilder.create());
-            if(!MutedPlayers.getInstance().exists(punishment1.getIdentifier())) new MutedPlayers.MuteObject(newInstance.getIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent()).save();
+            if (!MutedPlayers.getInstance().exists(punishment1.getIdentifier()))
+                new MutedPlayers.MuteObject(newInstance.getIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent()).save();
         };
     }
 
-    public Consumer<Punishment> getFunctionAnnouncerBan(){
+    public Consumer<Punishment> getFunctionAnnouncerBan() {
         return punishment1 -> {
             final LongMessage longMessage = new LongMessage("Announcements.ban");
             final List<String> collect = applyPlaceHolders(longMessage.getStringList(), punishment1);
@@ -61,18 +67,13 @@ public class General {
         };
     }
 
-    public Consumer<Punishment> getFunctionAnnouncerMute(){
+    public Consumer<Punishment> getFunctionAnnouncerMute() {
         return punishment1 -> {
             final LongMessage longMessage = new LongMessage("Announcements.mute");
             final List<String> collect = applyPlaceHolders(longMessage.getStringList(), punishment1);
             longMessage.setStringList(collect);
             longMessage.getColorfulMessage().forEach(baseComponents -> Main.getInstance().getProxy().broadcast(baseComponents));
         };
-    }
-
-    public static General getGeneralLib() {
-        if (instance == null) instance = new General();
-        return instance;
     }
 
     /**
@@ -137,7 +138,7 @@ public class General {
         return punishments.stream().anyMatch(punishment -> punishment.getData().getPunishmentType() == PunishmentType.BAN || punishment.getData().getPunishmentType() == PunishmentType.TEMPBAN);
     }
 
-    public boolean hasPunishmentMute(List<Punishment> punishments){
+    public boolean hasPunishmentMute(List<Punishment> punishments) {
         return punishments.stream().anyMatch(punishment -> punishment.getData().getPunishmentType() == PunishmentType.MUTE || punishment.getData().getPunishmentType() == PunishmentType.TEMPMUTE);
     }
 
@@ -181,13 +182,13 @@ public class General {
 
 
     /**
-     *
      * This method creates a new instance for a punishment.
+     *
      * @param nick nickname player
      * @param uuid uuid player
      * @return instance onlinemode (uuid) or offlinemode (nick).
      */
-    public Punishment easyInstance(String nick, String uuid){
+    public Punishment easyInstance(String nick, String uuid) {
         Punishment punishment;
         if (Main.isOnlineMode()) {
             final OnlinePunishment onlinePunishment = new OnlinePunishment();
@@ -202,12 +203,11 @@ public class General {
     }
 
     /**
-     *
      * @param nick nick player
      * @param uuid uuid player
      * @return uuid if onlinemode or nick if offlinemode
      */
-    public String identifierCompare(String nick, String uuid){
+    public String identifierCompare(String nick, String uuid) {
         return Main.isOnlineMode() ? uuid : nick;
     }
 

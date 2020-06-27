@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class MuteChatListener implements Listener {
 
     @EventHandler
-    public void talk(ChatEvent e){
+    public void talk(ChatEvent e) {
         final Connection sender = e.getSender();
         if (e.isCommand()) return;
         if (e.isProxyCommand()) return;
@@ -25,7 +25,7 @@ public class MuteChatListener implements Listener {
             final MutedPlayers instance = MutedPlayers.getInstance();
             final String identifier = Main.isOnlineMode() ? p.getUniqueId().toString() : p.getName();
             instance.update(identifier);
-            if (instance.exists(identifier)){
+            if (instance.exists(identifier)) {
                 final MutedPlayers.MuteObject muteObject = instance.get(identifier);
                 final LongMessage longMessage = new LongMessage("Runners.mute-status");
                 longMessage.getColorfulList().stream().map(s -> s

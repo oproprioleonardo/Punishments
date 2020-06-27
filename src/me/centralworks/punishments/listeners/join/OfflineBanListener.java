@@ -1,14 +1,11 @@
 package me.centralworks.punishments.listeners.join;
 
-import me.centralworks.punishments.Main;
 import me.centralworks.punishments.lib.General;
 import me.centralworks.punishments.lib.LongMessage;
 import me.centralworks.punishments.punishs.OfflinePunishment;
-import me.centralworks.punishments.punishs.OnlinePunishment;
 import me.centralworks.punishments.punishs.Punishment;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.PendingConnection;
-import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;

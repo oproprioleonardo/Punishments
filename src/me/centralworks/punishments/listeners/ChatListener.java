@@ -32,7 +32,7 @@ public class ChatListener implements Listener {
                 if (runner.getPunishmentType() == PunishmentType.BAN || runner.getPunishmentType() == PunishmentType.TEMPBAN) {
                     runner.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
                     runner.setAnnouncer(generalLib.getFunctionAnnouncerBan());
-                }else {
+                } else {
                     runner.setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
                     runner.setAnnouncer(generalLib.getFunctionAnnouncerMute());
                 }

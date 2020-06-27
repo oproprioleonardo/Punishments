@@ -2,7 +2,6 @@ package me.centralworks.punishments.punishs;
 
 import me.centralworks.punishments.Main;
 import me.centralworks.punishments.db.dao.PunishmentDAO;
-import me.centralworks.punishments.punishs.supliers.enums.PunishmentState;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public class OfflinePunishment extends Punishment {

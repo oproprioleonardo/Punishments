@@ -47,15 +47,15 @@ public class MutedPlayers {
         setList(copy);
     }
 
-    public MuteObject get(String playerMuted){
+    public MuteObject get(String playerMuted) {
         return getList().stream().filter(muteObject -> muteObject.getPlayerMuted().equalsIgnoreCase(playerMuted)).findFirst().get();
     }
 
-    public boolean exists(String playerMuted){
+    public boolean exists(String playerMuted) {
         return getList().stream().anyMatch(muteObject -> muteObject.getPlayerMuted().equalsIgnoreCase(playerMuted));
     }
 
-    public void update(String playerMuted){
+    public void update(String playerMuted) {
         if (exists(playerMuted)) {
             final MuteObject muteObject = get(playerMuted);
             System.out.println(muteObject.getFinishAt());
@@ -97,11 +97,11 @@ public class MutedPlayers {
             this.permanent = permanent;
         }
 
-        public void save(){
+        public void save() {
             MutedPlayers.getInstance().add(this);
         }
 
-        public void erase(){
+        public void erase() {
             MutedPlayers.getInstance().remove(this);
         }
 

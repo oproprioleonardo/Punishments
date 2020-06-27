@@ -11,7 +11,7 @@ import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class Runner implements Execute{
+public abstract class Runner implements Execute {
 
     private String target;
     private String punisher = "Sistema";
@@ -48,10 +48,6 @@ public abstract class Runner implements Execute{
         this.permanent = permanent;
     }
 
-    public void setAnnouncer(Consumer<Punishment> announcer) {
-        this.announcer = announcer;
-    }
-
     public Consumer<Punishment> getFunctionIfOnline() {
         return functionIfOnline;
     }
@@ -62,6 +58,10 @@ public abstract class Runner implements Execute{
 
     public Consumer<Punishment> getAnnouncer() {
         return announcer;
+    }
+
+    public void setAnnouncer(Consumer<Punishment> announcer) {
+        this.announcer = announcer;
     }
 
     public String getTarget() {
