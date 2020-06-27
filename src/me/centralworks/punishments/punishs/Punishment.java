@@ -99,7 +99,7 @@ public abstract class Punishment implements Data, Identifier, DAO {
 
     @Override
     public Punishment update() {
-        if (this.getData().getPunishmentState() == PunishmentState.ACTIVE && this.getData().getFinishAt() != 0L && this.getData().getFinishAt() < System.currentTimeMillis()) {
+        if (this.getData().getPunishmentState() == PunishmentState.ACTIVE && !this.getData().isPermanent() && this.getData().getFinishAt() < System.currentTimeMillis()) {
             this.getData().setPunishmentState(PunishmentState.FINISHED);
             this.save();
         }

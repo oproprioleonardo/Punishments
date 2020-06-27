@@ -60,7 +60,7 @@ public class MutedPlayers {
             final MuteObject muteObject = get(playerMuted);
             System.out.println(muteObject.getFinishAt());
             System.out.println(System.currentTimeMillis());
-            if (muteObject.getFinishAt() != 0L && muteObject.getFinishAt() < System.currentTimeMillis()) {
+            if (!muteObject.isPermanent() && muteObject.getFinishAt() < System.currentTimeMillis()) {
                 final Punishment o = General.getGeneralLib().easyInstance(playerMuted, playerMuted);
                 o.setId(muteObject.getId());
                 final Punishment punishment = o.requireById();
@@ -76,15 +76,25 @@ public class MutedPlayers {
         private Integer id;
         private Long finishAt;
         private Long startAt;
+        private boolean permanent = false;
 
-        public MuteObject(String playerMuted, Integer id, Long startAt, Long finishAt) {
+        public MuteObject(String playerMuted, Integer id, Long startAt, Long finishAt, boolean permanent) {
             this.playerMuted = playerMuted;
             this.id = id;
-            this.finishAt = finishAt;t
+            this.finishAt = finishAt;
             this.startAt = startAt;
+            this.permanent = permanent;
         }
 
         public MuteObject() {
+        }
+
+        public boolean isPermanent() {
+            return permanent;
+        }
+
+        public void setPermanent(boolean permanent) {
+            this.permanent = permanent;
         }
 
         public void save(){

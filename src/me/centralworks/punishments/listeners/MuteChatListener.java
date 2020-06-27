@@ -29,7 +29,7 @@ public class MuteChatListener implements Listener {
                 final MutedPlayers.MuteObject muteObject = instance.get(identifier);
                 final LongMessage longMessage = new LongMessage("Runners.mute-status");
                 longMessage.getColorfulList().stream().map(s -> s
-                        .replace("{finishAt}", muteObject.getFinishAt() == 0L ? "§cPermanente." : new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(muteObject.getFinishAt()))
+                        .replace("{finishAt}", muteObject.isPermanent() ? "§cPermanente." : new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(muteObject.getFinishAt()))
                         .replace("{startedAt}", new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(muteObject.getStartAt()))
                         .replace("{id}", muteObject.getId().toString())
                 ).map(TextComponent::fromLegacyText).collect(Collectors.toList()).forEach(p::sendMessage);

@@ -48,7 +48,7 @@ public class General {
             final ComponentBuilder componentBuilder = new ComponentBuilder("");
             collect.forEach(componentBuilder::append);
             punishmentPlayer.sendMessage(componentBuilder.create());
-            if(!MutedPlayers.getInstance().exists(punishment1.getIdentifier())) new MutedPlayers.MuteObject(newInstance.getIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt()).save();
+            if(!MutedPlayers.getInstance().exists(punishment1.getIdentifier())) new MutedPlayers.MuteObject(newInstance.getIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent()).save();
         };
     }
 
@@ -117,7 +117,7 @@ public class General {
     public List<String> applyPlaceHolders(List<String> list, Punishment punishment) {
         return list.stream().map(s -> s
                 .replace("&", "§")
-                .replace("{finishAt}", punishment.getData().getFinishAt() == 0L ? "§cPermanente." : new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(punishment.getData().getFinishDate())
+                .replace("{finishAt}", punishment.getData().isPermanent() ? "§cPermanente." : new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(punishment.getData().getFinishDate())
                         .replace("-", " às "))
                 .replace("{author}", punishment.getData().getPunisher())
                 .replace("{id}", punishment.getId().toString())
@@ -168,7 +168,7 @@ public class General {
 
     public List<Punishment> updateAll(List<Punishment> punishments) {
         return punishments.stream().peek(punishment -> {
-            if (punishment.getData().getPunishmentState() == PunishmentState.ACTIVE && punishment.getData().getFinishAt() != 0L && punishment.getData().getFinishAt() < System.currentTimeMillis()) {
+            if (punishment.getData().getPunishmentState() == PunishmentState.ACTIVE && !punishment.getData().isPermanent() && punishment.getData().getFinishAt() < System.currentTimeMillis()) {
                 punishment.getData().setPunishmentState(PunishmentState.FINISHED);
                 punishment.save();
             }

@@ -22,18 +22,30 @@ public abstract class Runner implements Execute{
     private Consumer<Punishment> announcer;
     private Consumer<Punishment> functionIfOnline;
     private String ip = "";
+    private boolean permanent = false;
 
-    public Runner(String target, String punisher, Boolean isPreDefined, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, String ip) {
+    public Runner(String target, String punisher, Boolean isPreDefined, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, String ip, boolean permanent) {
         this.target = target;
         this.punisher = punisher;
         this.isPreDefined = isPreDefined;
         this.punishmentType = punishmentType;
         this.punishmentReason = punishmentReason;
         this.evidences = evidences;
+        this.announcer = announcer;
+        this.functionIfOnline = functionIfOnline;
         this.ip = ip;
+        this.permanent = permanent;
     }
 
     public Runner() {
+    }
+
+    public boolean isPermanent() {
+        return permanent;
+    }
+
+    public void setPermanent(boolean permanent) {
+        this.permanent = permanent;
     }
 
     public void setAnnouncer(Consumer<Punishment> announcer) {
@@ -126,14 +138,14 @@ public abstract class Runner implements Execute{
         final Punishment punishment = generalLib.easyInstance(getTarget(), getTarget());
         final PunishmentData pd = new PunishmentData();
         final long now = System.currentTimeMillis();
-        final Long dr = getPunishmentReason().getDuration();
         pd.setEvidences(Lists.newArrayList(getEvidences()));
         pd.setPunishmentType(getPunishmentType());
         pd.setPunishmentState(PunishmentState.ACTIVE);
         pd.setPunisher(getPunisher());
         pd.setReason(getPunishmentReason().getReason());
         pd.setStartedAt(now);
-        pd.setFinishAt(dr == 0L ? 0L : now + getPunishmentReason().getDuration());
+        pd.setFinishAt(isPermanent() ? now : now + getPunishmentReason().getDuration());
+        pd.setPermanent(isPermanent());
         punishment.setData(pd);
         punishment.save();
         if (punishment.isOnline()) getFunctionIfOnline().accept(punishment);

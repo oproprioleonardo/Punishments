@@ -20,12 +20,12 @@ public class PunishmentData {
     private PunishmentState punishmentState;
     private List<String> evidences = Lists.newArrayList();
     private PunishmentType punishmentType;
-
+    private boolean permanent;
 
     public PunishmentData() {
     }
 
-    public PunishmentData(Long startedAt, Long finishAt, String reason, String punisher, PunishmentState punishmentState, List<String> evidences, PunishmentType punishmentType) {
+    public PunishmentData(Long startedAt, Long finishAt, String reason, String punisher, PunishmentState punishmentState, List<String> evidences, PunishmentType punishmentType, boolean permanent) {
         this.startedAt = startedAt;
         this.finishAt = finishAt;
         this.reason = reason;
@@ -33,6 +33,15 @@ public class PunishmentData {
         this.punishmentState = punishmentState;
         this.evidences = evidences;
         this.punishmentType = punishmentType;
+        this.permanent = permanent;
+    }
+
+    public boolean isPermanent() {
+        return permanent;
+    }
+
+    public void setPermanent(boolean permanent) {
+        this.permanent = permanent;
     }
 
     public PunishmentType getPunishmentType() {

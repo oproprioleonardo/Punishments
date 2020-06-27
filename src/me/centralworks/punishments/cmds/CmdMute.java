@@ -39,6 +39,7 @@ public class CmdMute extends Command {
             final String target = Main.isOnlineMode() ? proxy.getPlayer(args[0]) == null ? generalLib.getPlayerUUID(args[0]).toString() : proxy.getPlayer(args[0]).getUniqueId().toString() : proxy.getPlayer(args[0]).getName();
             mute.setPunishmentType(PunishmentType.MUTE);
             mute.setPunisher(punisher);
+            mute.setPermanent(true);
             if (args.length > 1) {
                 if (isPlayer) {
                     final ProxiedPlayer p = ((ProxiedPlayer) s);

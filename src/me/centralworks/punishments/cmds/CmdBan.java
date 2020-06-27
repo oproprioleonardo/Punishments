@@ -37,6 +37,7 @@ public class CmdBan extends Command {
             final General generalLib = General.getGeneralLib();
             ban.setPunishmentType(PunishmentType.BAN);
             ban.setPunisher(punisher);
+            ban.setPermanent(true);
             if (args.length > 1) {
                 if (s instanceof ProxiedPlayer) {
                     final ProxiedPlayer p = ((ProxiedPlayer) s);

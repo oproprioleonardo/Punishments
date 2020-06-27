@@ -51,7 +51,7 @@ public class PunishmentDAO {
 
     public void createTable() {
         try {
-            final PreparedStatement st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS arcanth_punishments(ID INT NOT NULL AUTO_INCREMENT, user VARCHAR(80), addressIP VARCHAR(20), type VARCHAR(25), reason TEXT, startedAt TIMESTAMP, finishAt TIMESTAMP, punisher VARCHAR(16), evidences TEXT, punishmentState VARCHAR(40), PRIMARY KEY (ID));");
+            final PreparedStatement st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS arcanth_punishments(ID INT NOT NULL AUTO_INCREMENT, user VARCHAR(80), addressIP VARCHAR(20), type VARCHAR(25), reason TEXT, startedAt TIMESTAMP, finishAt TIMESTAMP, punisher VARCHAR(16), evidences TEXT, punishmentState VARCHAR(40), permanent BOOLEAN, PRIMARY KEY (ID));");
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -89,6 +89,7 @@ public class PunishmentDAO {
             pd.setPunishmentState(PunishmentState.getByIdentifier(rs.getString("punishmentState")));
             pd.setEvidences(rs.getString("evidences").equals("") ? Lists.newArrayList() : Lists.newArrayList(rs.getString("evidences").split(",")));
             pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
+            pd.setPermanent(rs.getBoolean("permanent"));
             p.setData(pd);
             return p;
         } catch (SQLException e) {
@@ -125,6 +126,7 @@ public class PunishmentDAO {
                 pd.setPunishmentState(PunishmentState.getByIdentifier(rs.getString("punishmentState")));
                 pd.setEvidences(rs.getString("evidences").equals("") ? Lists.newArrayList() : Lists.newArrayList(rs.getString("evidences").split(",")));
                 pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
+                pd.setPermanent(rs.getBoolean("permanent"));
                 p.setData(pd);
                 list.add(p);
             }
@@ -161,6 +163,7 @@ public class PunishmentDAO {
             pd.setPunishmentState(PunishmentState.getByIdentifier(rs.getString("punishmentState")));
             pd.setEvidences(rs.getString("evidences").equals("") ? Lists.newArrayList() : Lists.newArrayList(rs.getString("evidences").split(",")));
             pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
+            pd.setPermanent(rs.getBoolean("permanent"));
             p.setData(pd);
             return p;
         } catch (SQLException e) {
@@ -176,7 +179,7 @@ public class PunishmentDAO {
             final StringBuilder stringBuilder = new StringBuilder();
             pd.getEvidences().forEach(s -> stringBuilder.append(stringBuilder.toString().equals("") ? s : "," + s));
             if (!p.idIsValid()) {
-                st = connection.prepareStatement("INSERT INTO arcanth_punishments VALUES(DEFAULT, ?,?,?,?,?,?,?,?,?)");
+                st = connection.prepareStatement("INSERT INTO arcanth_punishments VALUES(DEFAULT, ?,?,?,?,?,?,?,?,?,?)");
                 st.setString(1, p.getIdentifier());
                 st.setString(2, !p.ipIsValid() ? "null" : p.getIp());
                 st.setString(3, pd.getPunishmentType().getIdentifier());
@@ -186,8 +189,9 @@ public class PunishmentDAO {
                 st.setString(7, pd.getPunisher());
                 st.setString(8, stringBuilder.toString());
                 st.setString(9, pd.getPunishmentState().getIdentifier());
+                st.setBoolean(10, pd.isPermanent());
             } else {
-                st = connection.prepareStatement("INSERT INTO arcanth_punishments VALUES(?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ID = ?, User = ?, addressIP = ?, type = ?, reason = ?, startedAt = ?, finishAt = ?, punisher = ?, evidences = ?, punishmentState = ?");
+                st = connection.prepareStatement("INSERT INTO arcanth_punishments VALUES(?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ID = ?, User = ?, addressIP = ?, type = ?, reason = ?, startedAt = ?, finishAt = ?, punisher = ?, evidences = ?, punishmentState = ?, permanent = ?");
                 st.setInt(1, p.getId());
                 st.setString(2, p.getIdentifier());
                 st.setString(3, !p.ipIsValid() ? "null" : p.getIp());
@@ -198,16 +202,18 @@ public class PunishmentDAO {
                 st.setString(8, pd.getPunisher());
                 st.setString(9, stringBuilder.toString());
                 st.setString(10, pd.getPunishmentState().getIdentifier());
-                st.setInt(11, p.getId());
-                st.setString(12, p.getIdentifier());
-                st.setString(13, !p.ipIsValid() ? "null" : p.getIp());
-                st.setString(14, pd.getPunishmentType().getIdentifier());
-                st.setString(15, pd.getReason().getReason());
-                st.setTimestamp(16, pd.getStartDateSQL());
-                st.setTimestamp(17, pd.getFinishDateSQL());
-                st.setString(18, pd.getPunisher());
-                st.setString(19, stringBuilder.toString());
-                st.setString(20, pd.getPunishmentState().getIdentifier());
+                st.setBoolean(11, pd.isPermanent());
+                st.setInt(12, p.getId());
+                st.setString(13, p.getIdentifier());
+                st.setString(14, !p.ipIsValid() ? "null" : p.getIp());
+                st.setString(15, pd.getPunishmentType().getIdentifier());
+                st.setString(16, pd.getReason().getReason());
+                st.setTimestamp(17, pd.getStartDateSQL());
+                st.setTimestamp(18, pd.getFinishDateSQL());
+                st.setString(19, pd.getPunisher());
+                st.setString(20, stringBuilder.toString());
+                st.setString(21, pd.getPunishmentState().getIdentifier());
+                st.setBoolean(22, pd.isPermanent());
             }
             st.executeUpdate();
         } catch (SQLException e) {
