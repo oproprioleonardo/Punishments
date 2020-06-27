@@ -54,7 +54,7 @@ public class AddressIPDAO {
 
     public void save(AddressIP.AddressIPObject addressIPObject) {
         try {
-            final PreparedStatement st = connection.prepareStatement("INSERT INTO arcanth_addressip(?,?,?) ON DUPLICATE KEY UPDATE addressIP = ?, accounts = ?, lastUsage = ?");
+            final PreparedStatement st = connection.prepareStatement("INSERT INTO arcanth_addressip VALUES(?,?,?) ON DUPLICATE KEY UPDATE addressIP = ?, accounts = ?, lastUsage = ?");
             st.setString(1, addressIPObject.getHostName());
             st.setString(2, String.join(",", addressIPObject.getAccounts()));
             st.setTimestamp(3, addressIPObject.getLastUsageTime());
@@ -71,7 +71,7 @@ public class AddressIPDAO {
         try {
             for (AddressIP.AddressIPObject addressIPObject : AddressIP.getInstance().getList()) {
                 if (addressIPObject.getLastUsage() + 7 * Date.getInstance().getDays() > System.currentTimeMillis()) {
-                    final PreparedStatement st = connection.prepareStatement("INSERT INTO arcanth_addressip(?,?,?) ON DUPLICATE KEY UPDATE addressIP = ?, accounts = ?, lastUsage = ?");
+                    final PreparedStatement st = connection.prepareStatement("INSERT INTO arcanth_addressip VALUES(?,?,?) ON DUPLICATE KEY UPDATE addressIP = ?, accounts = ?, lastUsage = ?");
                     st.setString(1, addressIPObject.getHostName());
                     st.setString(2, String.join(",", addressIPObject.getAccounts()));
                     st.setTimestamp(3, addressIPObject.getLastUsageTime());

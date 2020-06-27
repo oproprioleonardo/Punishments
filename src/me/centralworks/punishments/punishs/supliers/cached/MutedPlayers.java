@@ -58,8 +58,6 @@ public class MutedPlayers {
     public void update(String playerMuted) {
         if (exists(playerMuted)) {
             final MuteObject muteObject = get(playerMuted);
-            System.out.println(muteObject.getFinishAt());
-            System.out.println(System.currentTimeMillis());
             if (!muteObject.isPermanent() && muteObject.getFinishAt() < System.currentTimeMillis()) {
                 final Punishment o = General.getGeneralLib().easyInstance(playerMuted, playerMuted);
                 o.setId(muteObject.getId());

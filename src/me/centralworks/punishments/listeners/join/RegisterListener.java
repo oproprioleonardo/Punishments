@@ -38,10 +38,12 @@ public class RegisterListener implements Listener {
                     final AddressIP.AddressIPObject var = new AddressIP.AddressIPObject();
                     var.setHostName(hostAddress);
                     var.add(identifier);
+                    adr.add(var);
                 } else {
                     final AddressIP.AddressIPObject var = new AddressIP.AddressIPObject();
                     var.setHostName(hostAddress);
                     var.add(identifier);
+                    adr.add(var);
                 }
             } catch (NullPointerException ignored) {
             }
