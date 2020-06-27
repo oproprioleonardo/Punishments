@@ -4,6 +4,11 @@ MySQL:
   Host: 'localhost'
   Port: '3306'
   Database: 'arcanth_db'
+Commands-locked-when-silenced:
+  - "/g"
+  - "/l"
+  - "/anunciar"
+  - "/tell"
 Reasons: #Esses serão os motivos pré-definidos para utilizar no /punir
   reason1:
     reason: "Ofensa a jogador"

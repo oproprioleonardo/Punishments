@@ -13,7 +13,7 @@ Announcements:
     - ""
     - "&c * O usuário {nickname} foi silenciado por {reason}."
     - ""
-Runners:
+Runners: #Precisa \n para pular a linha.
   ban-kick:
     - "&6&lRede Arcanth\n"
     - "&cVocê foi banido do servidor.\n"
