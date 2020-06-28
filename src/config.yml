@@ -1,3 +1,11 @@
+#Uma coisa que quero deixar claro para quem visualizar o código é que,
+#a palavra "online" é fortemente relacionada a servidor online mode, ou seja,
+#servidores de minecraft original. Não confunda com jogador "online".
+#O código não está documentado, então por favor, não faça algo que não sabe, contate-me antes.
+#O identificador das punições dos servidores online-mode é UUID, já os piratas, nickname.
+#A distribuição do código é autorizada, desde que deixe claro quem fez o plugin e a rede de
+#servidor dona do projeto (Arcanth).
+#Críticas são fortemente aceitas e analisadas por mim, qualquer bug ou sugestão contate-me.
 MySQL:
   User: root
   Password: '123'

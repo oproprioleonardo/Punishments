@@ -2,7 +2,6 @@ package me.centralworks.punishments.punishs;
 
 import me.centralworks.punishments.Main;
 import me.centralworks.punishments.db.dao.PunishmentDAO;
-import me.centralworks.punishments.lib.MojangAPI;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
@@ -57,7 +56,7 @@ public class OnlinePunishment extends Punishment {
 
     @Override
     public String getName() {
-        return isOnline() ? getPlayer().getName() : MojangAPI.getInstance().getName(getUuid().toString());
+        return isOnline() ? getPlayer().getName() : getUuid().toString();
     }
 
     public OnlinePunishment require() {
