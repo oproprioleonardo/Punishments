@@ -33,13 +33,18 @@ public class CmdTempBan extends Command {
                 new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
+            if (Main.isOnlineMode() && proxy.getPlayer(args[0]) == null) {
+                new Message(Main.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
+                return;
+            }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
             final Run ban = new Run(PunishmentType.TEMPBAN);
             final General generalLib = General.getGeneralLib();
-            final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? generalLib.getPlayerUUID(args[0]).toString() : proxy.getPlayer(args[0]).getUniqueId().toString());
+            final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
             ban.setTarget(target);
             ban.setPunisher(punisher);
+            ban.setBanFunctions(false);
             if (s instanceof ProxiedPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
                 final List<String> reason = Arrays.asList(args).subList(2, args.length);

@@ -5,6 +5,7 @@ Messages:
   next-link: "&aLink anexado com sucesso, caso queira parar por aqui, digite \"pronto\"."
   operation-cancel: "&aOperação cancelada com sucesso."
   ip-not-registered: "&cO IP desse jogador não está registrado no nosso banco de dados, para mais informações contate o Dono."
+  onlinemode-offline-player: "&aEm servidores de Minecraft Original, será apenas possível punir jogadores online no servidor."
 Announcements:
   ban:
     - ""

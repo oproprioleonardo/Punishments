@@ -41,8 +41,6 @@ public class Run {
 
     public Run(PunishmentType pt) {
         this.punishmentType = pt;
-        if (pt == PunishmentType.BAN || pt == PunishmentType.TEMPBAN) setBanFunctions();
-        else setMuteFunctions();
     }
 
     public boolean isPermanent() {
@@ -145,18 +143,18 @@ public class Run {
         this.ip = ip;
     }
 
-    public void setMuteFunctions() {
+    public void setMuteFunctions(boolean ip) {
         final General generalLib = General.getGeneralLib();
         setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
         setAnnouncer(generalLib.getFunctionAnnouncerMute());
-        if (!getIp().equals("")) setFunctionIfAddress(generalLib.getFunctionMuteIfAddress());
+        if (ip) setFunctionIfAddress(generalLib.getFunctionMuteIfAddress());
     }
 
-    public void setBanFunctions() {
+    public void setBanFunctions(boolean ip) {
         final General generalLib = General.getGeneralLib();
         setFunctionIfOnline(generalLib.getFunctionBanIfOn());
         setAnnouncer(generalLib.getFunctionAnnouncerBan());
-        if (!getIp().equals("")) setFunctionIfAddress(generalLib.getFunctionBanIfAddress());
+        if (ip) setFunctionIfAddress(generalLib.getFunctionBanIfAddress());
     }
 
     public void execute() {

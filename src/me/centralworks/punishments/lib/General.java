@@ -9,14 +9,12 @@ import me.centralworks.punishments.punishs.supliers.cached.AddressIP;
 import me.centralworks.punishments.punishs.supliers.cached.MutedPlayers;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentState;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -118,30 +116,6 @@ public class General {
      */
     public boolean isLink(String text) {
         return Stream.of(".com", ".br", "www.", "http", "https").anyMatch(text::contains);
-    }
-
-    /**
-     * Method for online servers. Not recommended to offline servers.
-     *
-     * @param name Nickname player.
-     * @return UUID of player offline/online.
-     */
-    public UUID getPlayerUUID(String name) {
-        final ProxyServer proxy = Main.getInstance().getProxy();
-        if (proxy.getPlayer(name) != null) proxy.getPlayer(name).getUniqueId();
-        return MojangAPI.getInstance().getPlayerUUID(name);
-    }
-
-    /**
-     * Method for online servers. Not recommended to offline servers.
-     *
-     * @param uuid UUID player.
-     * @return nickname of player offline/online.
-     */
-    public String getPlayerName(UUID uuid) {
-        final ProxyServer proxy = Main.getInstance().getProxy();
-        if (proxy.getPlayer(uuid) != null) proxy.getPlayer(uuid).getName();
-        return MojangAPI.getInstance().getName(uuid.toString());
     }
 
     /**

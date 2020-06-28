@@ -33,10 +33,14 @@ public class CmdBanIP extends Command {
                 new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
+            if (Main.isOnlineMode() && proxy.getPlayer(args[0]) == null) {
+                new Message(Main.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
+                return;
+            }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
             final Run ban = new Run(PunishmentType.BAN);
             final General generalLib = General.getGeneralLib();
-            final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? generalLib.getPlayerUUID(args[0]).toString() : proxy.getPlayer(args[0]).getUniqueId().toString());
+            final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
             final AddressIP adr = AddressIP.getInstance();
             if (!adr.existsPlayer(target)) {
                 new Message(Main.getMessages().getString("Messages.ip-not-registered")).send(s);
@@ -45,6 +49,7 @@ public class CmdBanIP extends Command {
             ban.setIp(adr.getByAccount(target).getHostName());
             ban.setPunisher(punisher);
             ban.setPermanent(true);
+            ban.setBanFunctions(true);
             if (s instanceof ProxiedPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
                 final List<String> reason = Arrays.asList(args).subList(1, args.length);
@@ -67,6 +72,7 @@ public class CmdBanIP extends Command {
                 ban.execute();
             }
         } catch (Exception e) {
+            e.printStackTrace();
             if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.banIPPlayer")).send(s);
             else new Message(Main.getUsages().getString("Usages.banIPConsole")).send(s);
         }

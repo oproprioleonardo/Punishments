@@ -7,7 +7,12 @@ import me.centralworks.punishments.db.dao.AddressIPDAO;
 import me.centralworks.punishments.db.dao.PunishmentDAO;
 import me.centralworks.punishments.lib.Date;
 import me.centralworks.punishments.listeners.ChatListener;
+import me.centralworks.punishments.listeners.MuteQuitListener;
 import me.centralworks.punishments.listeners.RegisterAddressListener;
+import me.centralworks.punishments.listeners.withAddressIP.MuteIPChatListener;
+import me.centralworks.punishments.listeners.withAddressIP.join.MuteIPListener;
+import me.centralworks.punishments.listeners.withAddressIP.join.OfflineBanIPListener;
+import me.centralworks.punishments.listeners.withAddressIP.join.OnlineBanIPListener;
 import me.centralworks.punishments.listeners.withoutAddressIP.MuteChatListener;
 import me.centralworks.punishments.listeners.withoutAddressIP.join.MuteListener;
 import me.centralworks.punishments.listeners.withoutAddressIP.join.OfflineBanListener;
@@ -120,10 +125,18 @@ public class Main extends Plugin {
         registerCommand(new CmdTempMuteIP());
         registerListener(new ChatListener());
         registerListener(new MuteListener());
+        registerListener(new MuteIPListener());
         registerListener(new MuteChatListener());
+        registerListener(new MuteIPChatListener());
         registerListener(new RegisterAddressListener());
-        if (Main.isOnlineMode()) registerListener(new OnlineBanListener());
-        else registerListener(new OfflineBanListener());
+        registerListener(new MuteQuitListener());
+        if (Main.isOnlineMode()) {
+            registerListener(new OnlineBanListener());
+            registerListener(new OnlineBanIPListener());
+        } else {
+            registerListener(new OfflineBanListener());
+            registerListener(new OfflineBanIPListener());
+        }
         PunishmentDAO.getInstance().createTable();
         final AddressIPDAO adr = AddressIPDAO.getInstance();
         adr.createTable();

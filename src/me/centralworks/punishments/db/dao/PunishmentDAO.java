@@ -299,7 +299,7 @@ public class PunishmentDAO {
 
     public boolean existsIp(String ip) {
         try {
-            final PreparedStatement st = connection.prepareStatement("SELECT ip FROM arcanth_punishments WHERE addressIP = ?");
+            final PreparedStatement st = connection.prepareStatement("SELECT addressIP FROM arcanth_punishments WHERE addressIP = ?");
             st.setString(1, ip);
             return st.executeQuery().next();
         } catch (SQLException e) {

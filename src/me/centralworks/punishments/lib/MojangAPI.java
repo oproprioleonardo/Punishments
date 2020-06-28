@@ -21,6 +21,7 @@ public class MojangAPI {
 
     public UUID getPlayerUUID(String player) {
         try {
+
             final String responseBody = IOUtils.toString(new URL("https://api.mojang.com/users/profiles/minecraft/" + player));
             final JsonObject json = ((JsonObject) JSONValue.parse(responseBody));
             final JsonElement id = json.get("id");
