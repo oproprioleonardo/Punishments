@@ -11,6 +11,7 @@ public abstract class Punishment implements Data, Identifier, DAO {
 
     private PunishmentData punishmentData;
     private String ip;
+    private String breakNick;
     private Integer id = 0;
 
     public Punishment(PunishmentData punishmentData, String ip, Integer id) {
@@ -19,7 +20,57 @@ public abstract class Punishment implements Data, Identifier, DAO {
         this.id = id;
     }
 
+    /**
+     * necessary evil
+     *
+     * @param breakNick nickname player.
+     */
+    public Punishment(String breakNick) {
+        this.breakNick = breakNick;
+    }
+
     public Punishment() {
+    }
+
+    public void pardon() {
+        getPunishmentData().setPunishmentState(PunishmentState.REVOKED);
+        this.save();
+    }
+
+    /**
+     * necessary evil
+     *
+     * @return nickname player
+     */
+    public String getBreakNick() {
+        return breakNick;
+    }
+
+    /**
+     * necessary evil
+     *
+     * @param breakNick nickname player.
+     */
+    public void setBreakNick(String breakNick) {
+        this.breakNick = breakNick;
+    }
+
+    public PunishmentData getPunishmentData() {
+        return punishmentData;
+    }
+
+    public void setPunishmentData(PunishmentData punishmentData) {
+        this.punishmentData = punishmentData;
+    }
+
+    @Override
+    public String getSecondaryIdentifier() {
+        return breakNick;
+    }
+
+    @Override
+    public void setSecondaryIdentifier(String identifier) {
+        this.breakNick = identifier;
     }
 
     public boolean isOnline() {
@@ -75,14 +126,52 @@ public abstract class Punishment implements Data, Identifier, DAO {
         return id != null && id != 0;
     }
 
+    // DAO METHODS
+
     @Override
-    public Punishment require() {
-        return PunishmentDAO.getInstance().loadByIdentifier(getIdentifier());
+    public Punishment requireByPrimaryIdentifier() {
+        return PunishmentDAO.getInstance().loadByPrimaryIdentifier(getPrimaryIdentifier()).update();
     }
 
     @Override
-    public boolean exists() {
-        return PunishmentDAO.getInstance().existsIdentifier(getIdentifier());
+    public Punishment requireBySecondaryIdentifier() {
+        return PunishmentDAO.getInstance().loadBySecondaryIdentifier(getSecondaryIdentifier()).update();
+    }
+
+    @Override
+    public Punishment requireByInstance() {
+        return PunishmentDAO.getInstance().loadByObject(this).update();
+    }
+
+    @Override
+    public List<Punishment> requireAllByAddress() {
+        return General.getGeneralLib().updateAll(PunishmentDAO.getInstance().loadByIP(getIp()));
+    }
+
+    @Override
+    public Punishment requireById() {
+        if (id == null || id == 0) return null;
+        return PunishmentDAO.getInstance().loadByID(getId()).update();
+    }
+
+    @Override
+    public List<Punishment> requireAllByPrimaryIdentifier() {
+        return General.getGeneralLib().updateAll(PunishmentDAO.getInstance().loadAllByPrimaryIdentifier(getPrimaryIdentifier()));
+    }
+
+    @Override
+    public List<Punishment> requireAllBySecondaryIdentifier() {
+        return General.getGeneralLib().updateAll(PunishmentDAO.getInstance().loadAllBySecondaryIdentifier(getSecondaryIdentifier()));
+    }
+
+    @Override
+    public boolean existsPrimaryIdentifier() {
+        return PunishmentDAO.getInstance().existsPrimaryIdentifier(getPrimaryIdentifier());
+    }
+
+    @Override
+    public boolean existsSecondaryIdentifier() {
+        return PunishmentDAO.getInstance().existsSecondaryIdentifier(getSecondaryIdentifier());
     }
 
     @Override
@@ -91,10 +180,10 @@ public abstract class Punishment implements Data, Identifier, DAO {
         return PunishmentDAO.getInstance().existsId(getId());
     }
 
+
     @Override
-    public Punishment requireById() {
-        if (id == null || id == 0) return null;
-        return PunishmentDAO.getInstance().loadByID(getId());
+    public boolean existsByAddress() {
+        return PunishmentDAO.getInstance().existsIp(getIp());
     }
 
     @Override
@@ -107,22 +196,7 @@ public abstract class Punishment implements Data, Identifier, DAO {
     }
 
     @Override
-    public List<Punishment> requireAll() {
-        return General.getGeneralLib().updateAll(PunishmentDAO.getInstance().loadAllByIdentifier(getIdentifier()));
-    }
-
-    @Override
-    public Punishment especialRequire() {
-        return PunishmentDAO.getInstance().loadByObject(this);
-    }
-
-    @Override
-    public List<Punishment> requireAllByAddress() {
-        return PunishmentDAO.getInstance().loadByIP(getIp());
-    }
-
-    @Override
-    public boolean existsByAddress() {
-        return PunishmentDAO.getInstance().existsIp(getIp());
+    public void delete() {
+        PunishmentDAO.getInstance().delete(this);
     }
 }

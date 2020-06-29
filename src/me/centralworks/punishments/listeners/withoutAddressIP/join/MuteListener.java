@@ -19,9 +19,9 @@ public class MuteListener implements Listener {
             try {
                 final ProxiedPlayer connection = e.getPlayer();
                 final Punishment punishment = General.getGeneralLib().easyInstance(connection.getName(), connection.getUniqueId().toString());
-                if (punishment.exists()) {
+                if (punishment.existsPrimaryIdentifier()) {
                     final General generalLib = General.getGeneralLib();
-                    final List<Punishment> instance = punishment.requireAll();
+                    final List<Punishment> instance = punishment.requireAllByPrimaryIdentifier();
                     if (!generalLib.hasActivePunishment(instance) || !generalLib.hasPunishmentMute(instance)) return;
                     final Punishment p = generalLib.getAllMuteP(instance).get(0);
                     generalLib.getFunctionMuteIfOn().accept(p);

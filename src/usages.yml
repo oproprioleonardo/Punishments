@@ -17,3 +17,6 @@ Usages:
   muteIPPlayer: "&cComando incorreto. Utilize: /muteip (jogador) (motivo)."
   tempMuteIPConsole: "&cComando incorreto. Utilize: /tempmuteip (jogador) (numero:dias,numero:meses...) [provas separadas por \".\"] (motivo)."
   tempMuteIPPlayer: "&cComando incorreto. Utilize: /tempmuteip (jogador) (numero:dias,numero:meses...) (motivo)."
+  unban: "&cComando incorreto. Utilize: /unban (jogador)."
+  unmute: "&cComando incorreto. Utilize: /unmute (jogador)."
+  unpunish: "&cComando incorreto. Utilize: /unpunish (id)."

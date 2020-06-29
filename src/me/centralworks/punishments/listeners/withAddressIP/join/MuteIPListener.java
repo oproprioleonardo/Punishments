@@ -35,8 +35,8 @@ public class MuteIPListener implements Listener {
                     final ComponentBuilder componentBuilder = new ComponentBuilder("");
                     collect.forEach(componentBuilder::append);
                     connection.sendMessage(componentBuilder.create());
-                    if (!MutedPlayers.getInstance().exists(p.getIdentifier()))
-                        new MutedPlayers.MuteObject(p.getIdentifier(), p.getId(), p.getData().getStartedAt(), p.getData().getFinishAt(), p.getData().isPermanent(), p.getIp()).save();
+                    if (!MutedPlayers.getInstance().exists(p.getPrimaryIdentifier()))
+                        new MutedPlayers.MuteObject(p.getPrimaryIdentifier(), p.getId(), p.getData().getStartedAt(), p.getData().getFinishAt(), p.getData().isPermanent(), p.getIp()).save();
                 }
             } catch (NullPointerException ignored) {
             }

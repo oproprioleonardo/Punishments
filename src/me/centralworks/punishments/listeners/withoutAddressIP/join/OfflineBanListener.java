@@ -18,10 +18,10 @@ public class OfflineBanListener implements Listener {
     public void join(PreLoginEvent e) {
         final PendingConnection connection = e.getConnection();
         final OfflinePunishment offlinePunishment = new OfflinePunishment();
-        offlinePunishment.setIdentifier(connection.getName());
-        if (offlinePunishment.exists()) {
+        offlinePunishment.setPrimaryIdentifier(connection.getName());
+        if (offlinePunishment.existsPrimaryIdentifier()) {
             final General generalLib = General.getGeneralLib();
-            final List<Punishment> instance = offlinePunishment.requireAll();
+            final List<Punishment> instance = offlinePunishment.requireAllByPrimaryIdentifier();
             if (!generalLib.hasActivePunishment(instance) || !generalLib.hasPunishmentBan(instance)) return;
             final Punishment p = generalLib.getAllBannedP(instance).get(0);
             final LongMessage longMessage = new LongMessage("Runners.ban-kick");

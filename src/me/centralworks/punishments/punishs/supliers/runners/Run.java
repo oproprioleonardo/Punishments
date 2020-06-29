@@ -24,8 +24,9 @@ public class Run {
     private Consumer<Punishment> functionIfAddress;
     private String ip = "";
     private boolean permanent = false;
+    private String secondaryIdentifier;
 
-    public Run(String target, String punisher, Boolean isPreDefined, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, Consumer<Punishment> functionIfAddress, String ip, boolean permanent) {
+    public Run(String target, String punisher, Boolean isPreDefined, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, Consumer<Punishment> functionIfAddress, String ip, boolean permanent, String secondaryIdentifier) {
         this.target = target;
         this.punisher = punisher;
         this.isPreDefined = isPreDefined;
@@ -37,6 +38,7 @@ public class Run {
         this.functionIfAddress = functionIfAddress;
         this.ip = ip;
         this.permanent = permanent;
+        this.secondaryIdentifier = secondaryIdentifier;
     }
 
     public Run(PunishmentType pt) {
@@ -85,6 +87,14 @@ public class Run {
 
     public String getPunisher() {
         return punisher;
+    }
+
+    public String getSecondaryIdentifier() {
+        return secondaryIdentifier;
+    }
+
+    public void setSecondaryIdentifier(String secondaryIdentifier) {
+        this.secondaryIdentifier = secondaryIdentifier;
     }
 
     public void setPunisher(String punisher) {
@@ -157,7 +167,16 @@ public class Run {
         if (ip) setFunctionIfAddress(generalLib.getFunctionBanIfAddress());
     }
 
-    public void execute() {
+    public void run() {
+        if (getPunishmentType() == PunishmentType.BAN && getPunishmentType() == PunishmentType.TEMPBAN) {
+            setBanFunctions(!getIp().equals(""));
+        } else if (getPunishmentType() == PunishmentType.MUTE || getPunishmentType() == PunishmentType.TEMPMUTE) {
+            setMuteFunctions(!getIp().equals(""));
+        }
+        execute();
+    }
+
+    private void execute() {
         final General generalLib = General.getGeneralLib();
         final Punishment punishment = generalLib.easyInstance(getTarget(), getTarget());
         final PunishmentData pd = new PunishmentData();

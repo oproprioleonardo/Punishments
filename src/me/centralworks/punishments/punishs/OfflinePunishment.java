@@ -28,12 +28,12 @@ public class OfflinePunishment extends Punishment {
     }
 
     @Override
-    public String getIdentifier() {
+    public String getPrimaryIdentifier() {
         return nickName;
     }
 
     @Override
-    public void setIdentifier(String identifier) {
+    public void setPrimaryIdentifier(String identifier) {
         this.nickName = identifier;
     }
 
@@ -52,13 +52,8 @@ public class OfflinePunishment extends Punishment {
         return Main.getInstance().getProxy().getPlayer(getNickName());
     }
 
-    @Override
-    public String getName() {
-        return getNickName();
-    }
-
-    public OfflinePunishment require() {
-        return (OfflinePunishment) super.require().update();
+    public OfflinePunishment requireByPrimaryIdentifier() {
+        return (OfflinePunishment) super.requireByPrimaryIdentifier().update();
     }
 
     public OfflinePunishment requireById() {

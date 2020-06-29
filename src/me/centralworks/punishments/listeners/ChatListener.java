@@ -36,7 +36,7 @@ public class ChatListener implements Listener {
                     run.setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
                     run.setAnnouncer(generalLib.getFunctionAnnouncerMute());
                 }
-                run.execute();
+                run.run();
                 return;
             }
             if (message.equalsIgnoreCase("cancelar")) {

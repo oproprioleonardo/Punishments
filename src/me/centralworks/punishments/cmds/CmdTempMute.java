@@ -45,7 +45,7 @@ public class CmdTempMute extends Command {
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
             mute.setPunisher(punisher);
             mute.setTarget(target);
-            mute.setMuteFunctions(false);
+            mute.setSecondaryIdentifier(args[0]);
             if (isPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
                 final List<String> reason = Arrays.asList(args).subList(2, args.length);
@@ -65,7 +65,7 @@ public class CmdTempMute extends Command {
                     mute.setEvidences(evidences);
                 }
                 mute.getPunishmentReason().setDuration(duration);
-                mute.execute();
+                mute.run();
             }
         } catch (Exception e) {
             if (isPlayer) new Message(Main.getUsages().getString("Usages.tempMutePlayer")).send(s);

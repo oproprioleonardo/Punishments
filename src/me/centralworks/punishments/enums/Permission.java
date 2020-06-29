@@ -14,7 +14,10 @@ public enum Permission {
     MUTE("punishments.mute"),
     MUTEIP("punishments.mute.ip"),
     TEMPMUTEIP("punishments.tempmute.ip"),
-    TEMPMUTE("punishments.tempmute");
+    TEMPMUTE("punishments.tempmute"),
+    UNBAN("punishments.unban"),
+    UNMUTE("punishments.unmute"),
+    UNPUNISH("punishments.unpunish");
 
     private final String permission;
 

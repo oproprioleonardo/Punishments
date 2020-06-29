@@ -18,14 +18,14 @@ public class OnlineBanIPListener implements Listener {
     public void join(LoginEvent e) {
         final PendingConnection connection = e.getConnection();
         final OnlinePunishment onlinePunishment = new OnlinePunishment();
-        onlinePunishment.setIdentifier(connection.getUniqueId().toString());
+        onlinePunishment.setPrimaryIdentifier(connection.getUniqueId().toString());
         onlinePunishment.setIp(connection.getAddress().getAddress().getHostAddress());
-        if (onlinePunishment.exists()) {
+        if (onlinePunishment.existsPrimaryIdentifier()) {
             final General generalLib = General.getGeneralLib();
             final List<Punishment> instance = onlinePunishment.requireAllByAddress();
             if (!generalLib.hasActivePunishment(instance) || !generalLib.hasPunishmentBan(instance)) return;
             final Punishment p = generalLib.getAllBannedP(instance).get(0);
-            if (p.getIdentifier().equals(onlinePunishment.getIdentifier())) return;
+            if (p.getPrimaryIdentifier().equals(onlinePunishment.getPrimaryIdentifier())) return;
             final LongMessage longMessage = new LongMessage("Runners.ban-kick");
             final List<String> collect = General.getGeneralLib().applyPlaceHolders(longMessage.getStringList(), p);
             longMessage.setStringList(collect);

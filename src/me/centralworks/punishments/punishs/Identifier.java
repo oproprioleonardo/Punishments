@@ -2,9 +2,17 @@ package me.centralworks.punishments.punishs;
 
 public interface Identifier {
 
-    String getIdentifier();
+    /**
+     * @return Retorna UUID ou Nickname, depende do modo de jogo do servidor.
+     */
+    String getPrimaryIdentifier();
 
-    void setIdentifier(String identifier);
+    /**
+     * @param identifier Define o UUID ou Nickname, depende do modo de jogo do servidor.
+     */
+    void setPrimaryIdentifier(String identifier);
 
-    String getName();
+    String getSecondaryIdentifier();
+
+    void setSecondaryIdentifier(String identifier);
 }

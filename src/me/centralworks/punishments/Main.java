@@ -123,6 +123,9 @@ public class Main extends Plugin {
         registerCommand(new CmdBanIP());
         registerCommand(new CmdMuteIP());
         registerCommand(new CmdTempMuteIP());
+        registerCommand(new CmdUnban());
+        registerCommand(new CmdUnmute());
+        registerCommand(new CmdUnpunish());
         registerListener(new ChatListener());
         registerListener(new MuteListener());
         registerListener(new MuteIPListener());

@@ -51,7 +51,7 @@ public class CmdMuteIP extends Command {
             mute.setPunisher(punisher);
             mute.setPermanent(true);
             mute.setTarget(target);
-            mute.setMuteFunctions(true);
+            mute.setSecondaryIdentifier(args[0]);
             if (isPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
                 final List<String> reason = Arrays.asList(args).subList(1, args.length);
@@ -69,7 +69,7 @@ public class CmdMuteIP extends Command {
                     mute.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
                     mute.setEvidences(evidences);
                 }
-                mute.execute();
+                mute.run();
             }
         } catch (Exception e) {
             if (isPlayer) new Message(Main.getUsages().getString("Usages.muteIPPlayer")).send(s);

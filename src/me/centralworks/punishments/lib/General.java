@@ -46,14 +46,14 @@ public class General {
 
     public Consumer<Punishment> getFunctionMuteIfOn() {
         return punishment1 -> {
-            final Punishment newInstance = punishment1.especialRequire();
+            final Punishment newInstance = punishment1.requireByInstance();
             final ProxiedPlayer punishmentPlayer = newInstance.getPlayer();
             final List<String> collect = applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance);
             final ComponentBuilder componentBuilder = new ComponentBuilder("");
             collect.forEach(componentBuilder::append);
             punishmentPlayer.sendMessage(componentBuilder.create());
-            if (!MutedPlayers.getInstance().exists(punishment1.getIdentifier()))
-                new MutedPlayers.MuteObject(punishment1.getIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent(), newInstance.getIp()).save();
+            if (!MutedPlayers.getInstance().exists(punishment1.getPrimaryIdentifier()))
+                new MutedPlayers.MuteObject(punishment1.getPrimaryIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent(), newInstance.getIp()).save();
         };
     }
 
@@ -77,9 +77,9 @@ public class General {
     public Consumer<Punishment> getFunctionMuteIfAddress() {
         return punishment1 -> {
             final AddressIP.AddressIPObject byAddress = AddressIP.getInstance().getByAddress(punishment1.getIp());
-            final Punishment newInstance = punishment1.especialRequire();
+            final Punishment newInstance = punishment1.requireByInstance();
             byAddress.getAccounts().forEach(s -> {
-                if (!s.equalsIgnoreCase(punishment1.getIdentifier())) {
+                if (!s.equalsIgnoreCase(punishment1.getPrimaryIdentifier())) {
                     final ProxiedPlayer punishmentPlayer = Main.getInstance().getProxy().getPlayer(s);
                     final List<String> collect = applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance);
                     final ComponentBuilder componentBuilder = new ComponentBuilder("");
@@ -131,7 +131,7 @@ public class General {
                 .replace("{author}", punishment.getData().getPunisher())
                 .replace("{id}", punishment.getId().toString())
                 .replace("{evidence}", punishment.getData().getEvidencesFinally())
-                .replace("{nickname}", punishment.getName())
+                .replace("{nickname}", punishment.getSecondaryIdentifier())
                 .replace("{startedAt}", new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(punishment.getData().getStartDate())
                         .replace("-", " às "))
                 .replace("{reason}", punishment.getData().getReason().getReason()))
@@ -152,6 +152,38 @@ public class General {
 
     public boolean hasPunishmentType(List<Punishment> punishments, PunishmentType punishmentType) {
         return punishments.stream().anyMatch(punishment -> punishment.getData().getPunishmentType() == punishmentType);
+    }
+
+    public List<Punishment> getAllActive(List<Punishment> punishments) {
+        return getByState(punishments, PunishmentState.ACTIVE);
+    }
+
+    public List<Punishment> getAllFinished(List<Punishment> punishments) {
+        return getByState(punishments, PunishmentState.FINISHED);
+    }
+
+    public List<Punishment> getAllRevoked(List<Punishment> punishments) {
+        return getByState(punishments, PunishmentState.REVOKED);
+    }
+
+    public List<Punishment> getAllMutedPActive(List<Punishment> punishments) {
+        return getAllMuteP(getAllActive(punishments));
+    }
+
+    public List<Punishment> getAllBannedPActive(List<Punishment> punishments) {
+        return getAllBannedP(getAllActive(punishments));
+    }
+
+    public List<Punishment> getByState(List<Punishment> punishments, PunishmentState punishmentState) {
+        return punishments.stream().filter(punishment -> punishment.getData().getPunishmentState() == punishmentState).collect(Collectors.toList());
+    }
+
+    public List<Punishment> getByStates(List<Punishment> punishments, PunishmentState... punishmentStates) {
+        return punishments.stream().filter(punishment -> Lists.newArrayList(punishmentStates).contains(punishment.getData().getPunishmentState())).collect(Collectors.toList());
+    }
+
+    public List<Punishment> getByStates(List<Punishment> punishments, List<PunishmentState> punishmentStates) {
+        return punishments.stream().filter(punishment -> punishmentStates.contains(punishment.getData().getPunishmentState())).collect(Collectors.toList());
     }
 
     public List<Punishment> getAllBannedP(List<Punishment> punishments) {
@@ -200,13 +232,20 @@ public class General {
         Punishment punishment;
         if (Main.isOnlineMode()) {
             final OnlinePunishment onlinePunishment = new OnlinePunishment();
-            onlinePunishment.setIdentifier(uuid);
+            onlinePunishment.setPrimaryIdentifier(uuid);
             punishment = onlinePunishment;
         } else {
             final OfflinePunishment offlinePunishment = new OfflinePunishment();
-            offlinePunishment.setIdentifier(nick);
+            offlinePunishment.setPrimaryIdentifier(nick);
             punishment = offlinePunishment;
         }
+        return punishment;
+    }
+
+    public Punishment easyInstance() {
+        Punishment punishment;
+        if (Main.isOnlineMode()) punishment = new OnlinePunishment();
+        else punishment = new OfflinePunishment();
         return punishment;
     }
 

@@ -18,6 +18,15 @@ public class OnlinePunishment extends Punishment {
         this.uuid = uuid;
     }
 
+    /**
+     * necessary evil
+     *
+     * @param breakNick nickname player.
+     */
+    public OnlinePunishment(String breakNick) {
+        super(breakNick);
+    }
+
     public OnlinePunishment() {
     }
 
@@ -30,12 +39,12 @@ public class OnlinePunishment extends Punishment {
     }
 
     @Override
-    public String getIdentifier() {
+    public String getPrimaryIdentifier() {
         return uuid.toString();
     }
 
     @Override
-    public void setIdentifier(String identifier) {
+    public void setPrimaryIdentifier(String identifier) {
         this.uuid = UUID.fromString(identifier);
     }
 
@@ -54,13 +63,8 @@ public class OnlinePunishment extends Punishment {
         return Main.getInstance().getProxy().getPlayer(getUuid());
     }
 
-    @Override
-    public String getName() {
-        return isOnline() ? getPlayer().getName() : getUuid().toString();
-    }
-
-    public OnlinePunishment require() {
-        return (OnlinePunishment) super.require().update();
+    public OnlinePunishment requireByPrimaryIdentifier() {
+        return (OnlinePunishment) super.requireByPrimaryIdentifier().update();
     }
 
     public OnlinePunishment requireById() {

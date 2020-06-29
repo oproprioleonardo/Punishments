@@ -44,7 +44,7 @@ public class CmdTempBan extends Command {
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
             ban.setTarget(target);
             ban.setPunisher(punisher);
-            ban.setBanFunctions(false);
+            ban.setSecondaryIdentifier(args[0]);
             if (s instanceof ProxiedPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
                 final List<String> reason = Arrays.asList(args).subList(2, args.length);
@@ -66,7 +66,7 @@ public class CmdTempBan extends Command {
                     ban.setEvidences(evidences);
                 }
                 ban.getPunishmentReason().setDuration(duration);
-                ban.execute();
+                ban.run();
             }
         } catch (Exception e) {
             if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.tempBanPlayer")).send(s);

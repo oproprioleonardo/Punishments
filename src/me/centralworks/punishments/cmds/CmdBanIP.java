@@ -49,7 +49,7 @@ public class CmdBanIP extends Command {
             ban.setIp(adr.getByAccount(target).getHostName());
             ban.setPunisher(punisher);
             ban.setPermanent(true);
-            ban.setBanFunctions(true);
+            ban.setSecondaryIdentifier(args[0]);
             if (s instanceof ProxiedPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
                 final List<String> reason = Arrays.asList(args).subList(1, args.length);
@@ -69,7 +69,7 @@ public class CmdBanIP extends Command {
                     ban.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
                     ban.setEvidences(evidences);
                 }
-                ban.execute();
+                ban.run();
             }
         } catch (Exception e) {
             e.printStackTrace();

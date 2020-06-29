@@ -1,4 +1,4 @@
-Messages:
+Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
   permission-error: "&cVocê não possui permissão para utilizar tal função."
   write-evidences: "&7Envie as provas por vez no chat, para finalizar digite \"pronto\"."
   invalid-link: "&cEsse é um link inválido. Digite \"pronto\" caso queira finalizar a operação."
@@ -6,6 +6,12 @@ Messages:
   operation-cancel: "&aOperação cancelada com sucesso."
   ip-not-registered: "&cO IP desse jogador não está registrado no nosso banco de dados, para mais informações contate o Dono."
   onlinemode-offline-player: "&aEm servidores de Minecraft Original, será apenas possível punir jogadores online no servidor."
+  ban-not-found: "&cNão foi encontrado nenhum banimento para esse jogador."
+  ban-pardon: "&aTodos os banimentos ativos desse jogador foram revogados."
+  mute-not-found: "&cNão foi encontrado nenhum silenciamento para esse jogador."
+  mute-pardon: "&aTodos os silenciamentos ativos desse jogador foram revogados."
+  punish-pardon: "&cA punição do ID informado foi revogada com sucesso."
+  punish-not-found: "&cNão foi encontrado nenhuma punição com o ID informado."
 Announcements:
   ban:
     - ""

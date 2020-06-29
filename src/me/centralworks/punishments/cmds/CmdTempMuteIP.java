@@ -52,7 +52,7 @@ public class CmdTempMuteIP extends Command {
             mute.setIp(adr.getByAccount(target).getHostName());
             mute.setPunisher(punisher);
             mute.setTarget(target);
-            mute.setMuteFunctions(true);
+            mute.setSecondaryIdentifier(args[0]);
             if (isPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
                 final List<String> reason = Arrays.asList(args).subList(2, args.length);
@@ -72,7 +72,7 @@ public class CmdTempMuteIP extends Command {
                     mute.setEvidences(evidences);
                 }
                 mute.getPunishmentReason().setDuration(duration);
-                mute.execute();
+                mute.run();
             }
         } catch (Exception e) {
             if (isPlayer) new Message(Main.getUsages().getString("Usages.tempMuteIPPlayer")).send(s);

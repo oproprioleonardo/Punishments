@@ -51,7 +51,7 @@ public class CmdTempBanIP extends Command {
             ban.setIp(adr.getByAccount(target).getHostName());
             ban.setTarget(target);
             ban.setPunisher(punisher);
-            ban.setBanFunctions(true);
+            ban.setSecondaryIdentifier(args[0]);
             if (s instanceof ProxiedPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
                 final List<String> reason = Arrays.asList(args).subList(2, args.length);
@@ -73,7 +73,7 @@ public class CmdTempBanIP extends Command {
                     ban.setEvidences(evidences);
                 }
                 ban.getPunishmentReason().setDuration(duration);
-                ban.execute();
+                ban.run();
             }
         } catch (Exception e) {
             if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.tempBanIPPlayer")).send(s);

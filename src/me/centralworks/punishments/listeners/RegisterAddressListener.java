@@ -19,7 +19,7 @@ public class RegisterAddressListener implements Listener {
                 final ProxiedPlayer p = e.getPlayer();
                 final AddressIP adr = AddressIP.getInstance();
                 final General generalLib = General.getGeneralLib();
-                final String identifier = generalLib.easyInstance(p.getName(), p.getUniqueId().toString()).getIdentifier();
+                final String identifier = generalLib.easyInstance(p.getName(), p.getUniqueId().toString()).getPrimaryIdentifier();
                 final String hostAddress = p.getAddress().getAddress().getHostAddress();
                 if (adr.existsIPAndAccount(hostAddress, identifier)) {
                     final AddressIP.AddressIPObject var = adr.getByAddressAndAccount(hostAddress, identifier);
