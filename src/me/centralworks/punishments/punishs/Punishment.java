@@ -10,7 +10,7 @@ import java.util.List;
 public abstract class Punishment implements Data, Identifier, DAO {
 
     private PunishmentData punishmentData;
-    private String ip;
+    private String ip = "";
     private String breakNick;
     private Integer id = 0;
 
@@ -108,7 +108,7 @@ public abstract class Punishment implements Data, Identifier, DAO {
 
     @Override
     public boolean ipIsValid() {
-        return ip != null;
+        return ip != null && !ip.equalsIgnoreCase("");
     }
 
     @Override

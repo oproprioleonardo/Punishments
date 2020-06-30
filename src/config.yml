@@ -34,3 +34,4 @@ Reasons: #Esses serão os motivos pré-definidos para utilizar no /punir
     permission: "punir.moderador"
     type: BAN
     ip: false
+    duration: "7:dias,2:meses"

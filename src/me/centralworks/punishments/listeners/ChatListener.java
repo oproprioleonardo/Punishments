@@ -3,7 +3,6 @@ package me.centralworks.punishments.listeners;
 import me.centralworks.punishments.Main;
 import me.centralworks.punishments.lib.General;
 import me.centralworks.punishments.lib.Message;
-import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
 import me.centralworks.punishments.punishs.supliers.runners.Run;
 import me.centralworks.punishments.punishs.supliers.runners.Task;
 import net.md_5.bungee.api.connection.Connection;
@@ -29,13 +28,6 @@ public class ChatListener implements Listener {
             e.setCancelled(true);
             if (message.equalsIgnoreCase("pronto")) {
                 task.remove(p.getName());
-                if (run.getPunishmentType() == PunishmentType.BAN || run.getPunishmentType() == PunishmentType.TEMPBAN) {
-                    run.setFunctionIfOnline(generalLib.getFunctionBanIfOn());
-                    run.setAnnouncer(generalLib.getFunctionAnnouncerBan());
-                } else {
-                    run.setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
-                    run.setAnnouncer(generalLib.getFunctionAnnouncerMute());
-                }
                 run.run();
                 return;
             }

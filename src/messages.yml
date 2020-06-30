@@ -1,17 +1,32 @@
 Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
   permission-error: "&cVocê não possui permissão para utilizar tal função."
+  only-player: "&cEsse comando funciona apenas para jogadores conectados no servidor."
   write-evidences: "&7Envie as provas por vez no chat, para finalizar digite \"pronto\"."
   invalid-link: "&cEsse é um link inválido. Digite \"pronto\" caso queira finalizar a operação."
   next-link: "&aLink anexado com sucesso, caso queira parar por aqui, digite \"pronto\"."
   operation-cancel: "&aOperação cancelada com sucesso."
-  ip-not-registered: "&cO IP desse jogador não está registrado no nosso banco de dados, para mais informações contate o Dono."
-  onlinemode-offline-player: "&aEm servidores de Minecraft Original, será apenas possível punir jogadores online no servidor."
+  ip-not-registered: "&cO IP desse jogador não está registrado no nosso banco de&c dados, para mais informações contate o Dono."
+  onlinemode-offline-player: "&aEm servidores de Minecraft Original, será apenas&c possível punir jogadores online no servidor."
   ban-not-found: "&cNão foi encontrado nenhum banimento para esse jogador."
   ban-pardon: "&aTodos os banimentos ativos desse jogador foram revogados."
   mute-not-found: "&cNão foi encontrado nenhum silenciamento para esse jogador."
   mute-pardon: "&aTodos os silenciamentos ativos desse jogador foram revogados."
-  punish-pardon: "&cA punição do ID informado foi revogada com sucesso."
+  punish-pardon: "&aA punição do ID informado foi revogada com sucesso."
   punish-not-found: "&cNão foi encontrado nenhuma punição com o ID informado."
+  reason-not-found: "&cO motivo informado não foi encontrado."
+  wait: "&aAguarde, essa operação pode demorar... Estamos coletando alguns dados necessários."
+  history: "&ePunições do jogador {nickname}: {ids}."
+  angel: "&cEsse jogador não possui nenhuma punição."
+  punish:
+    title:
+      - "       &6&lRede Arcanth\n"
+      - "\n"
+    line:
+      message: "    &f&l• &f{reason}"
+      hoverMessage: "&eTipo: §a{type}\n&ePermissão: §a{permission}\n&ePor endereço de IP: {toggle}\n&eDuração: §a{duration}"
+      hoverWithoutPermission: "\n\n&cVocê não possui permissão para aplicar essa punição."
+    footer:
+      - "\n&cTenha cuidado ao aplicar punições no servidor, em caso de&c erro, contate um Administrador."
 Announcements:
   ban:
     - ""
@@ -55,5 +70,20 @@ Runners: #Precisa \n para pular a linha.
     - "\n"
     - "&cUse o ID &e#{id} &cpara fazer uma revisão em nosso discord: &c&nbit.ly/centralworks\n"
     - "\n"
+  punishment-view:
+    - "       &6&lRede Arcanth\n"
+    - "\n"
+    - "&c * ID da punição: {id}"
+    - "&c * Usuário: {identifier}" #Em servidores onlinemode, irá mostrar o UUID.
+    - "&c * Endereço IP: {andressIP}\n"
+    - "&c * Jogador: {nickname}\n"
+    - "&c * Motivo: {reason}\n"
+    - "&c * Início: {startedAt}\n"
+    - "&c * Término: {finishAt}\n"
+    - "&c * Autor: {author}\n"
+    - "&c * Estado: {state}\n"
+    - "&c * Provas: {evidence}\n"
+
+
 
 

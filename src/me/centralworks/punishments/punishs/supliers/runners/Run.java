@@ -89,16 +89,16 @@ public class Run {
         return punisher;
     }
 
+    public void setPunisher(String punisher) {
+        this.punisher = punisher;
+    }
+
     public String getSecondaryIdentifier() {
         return secondaryIdentifier;
     }
 
     public void setSecondaryIdentifier(String secondaryIdentifier) {
         this.secondaryIdentifier = secondaryIdentifier;
-    }
-
-    public void setPunisher(String punisher) {
-        this.punisher = punisher;
     }
 
     public Boolean getPreDefined() {
@@ -168,7 +168,7 @@ public class Run {
     }
 
     public void run() {
-        if (getPunishmentType() == PunishmentType.BAN && getPunishmentType() == PunishmentType.TEMPBAN) {
+        if (getPunishmentType() == PunishmentType.BAN || getPunishmentType() == PunishmentType.TEMPBAN) {
             setBanFunctions(!getIp().equals(""));
         } else if (getPunishmentType() == PunishmentType.MUTE || getPunishmentType() == PunishmentType.TEMPMUTE) {
             setMuteFunctions(!getIp().equals(""));
@@ -182,6 +182,7 @@ public class Run {
         final PunishmentData pd = new PunishmentData();
         final long now = System.currentTimeMillis();
         punishment.setIp(getIp());
+        punishment.setSecondaryIdentifier(getSecondaryIdentifier());
         pd.setEvidences(Lists.newArrayList(getEvidences()));
         pd.setPunishmentType(getPunishmentType());
         pd.setPunishmentState(PunishmentState.ACTIVE);
@@ -192,8 +193,12 @@ public class Run {
         pd.setPermanent(isPermanent());
         punishment.setData(pd);
         punishment.save();
-        if (punishment.isOnline()) getFunctionIfOnline().accept(punishment);
-        if (punishment.ipIsValid()) getFunctionIfAddress().accept(punishment);
+        if (punishment.isOnline()) {
+            getFunctionIfOnline().accept(punishment);
+        }
+        if (punishment.ipIsValid()) {
+            getFunctionIfAddress().accept(punishment);
+        }
         getAnnouncer().accept(punishment);
     }
 

@@ -23,6 +23,10 @@ public class Reasons {
         this.reasons = reasons;
     }
 
+    public boolean exists(String reason) {
+        return getReasons().stream().anyMatch(pr -> pr.getReason().equalsIgnoreCase(reason));
+    }
+
     public PunishmentReason getByReason(String reason) {
         return getReasons().stream().filter(pr -> pr.getReason().equalsIgnoreCase(reason)).findFirst().orElse(new PunishmentReason(reason));
     }

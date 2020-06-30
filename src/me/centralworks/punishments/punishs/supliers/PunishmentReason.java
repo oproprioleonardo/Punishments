@@ -10,13 +10,15 @@ public class PunishmentReason {
     private String permission = "";
     private Boolean withIP = false;
     private PunishmentType punishmentType;
+    private Boolean permanent = false;
 
-    public PunishmentReason(String reason, Long duration, String permission, Boolean withIP, PunishmentType punishmentType) {
+    public PunishmentReason(String reason, Long duration, String permission, Boolean withIP, PunishmentType punishmentType, Boolean permanent) {
         this.reason = reason;
         this.duration = duration;
         this.permission = permission;
         this.withIP = withIP;
         this.punishmentType = punishmentType;
+        this.permanent = permanent;
     }
 
     public PunishmentReason(String reason, Long duration, String permission, PunishmentType punishmentType) {
@@ -34,8 +36,20 @@ public class PunishmentReason {
     public PunishmentReason() {
     }
 
+    public Boolean isPermanent() {
+        return permanent;
+    }
+
+    public void setPermanent(Boolean permanent) {
+        this.permanent = permanent;
+    }
+
     public boolean isNone() {
         return none;
+    }
+
+    public void setNone(boolean none) {
+        this.none = none;
     }
 
     public String getReason() {

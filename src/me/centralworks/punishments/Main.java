@@ -93,7 +93,8 @@ public class Main extends Plugin {
             pr.setPunishmentType(PunishmentType.valueOf(getConfiguration().getString(path + "type")));
             if (pr.getPunishmentType().isTemp()) {
                 pr.setDuration(Date.getInstance().convertPunishmentDuration(Lists.newArrayList(getConfiguration().getString(path + "duration").split(","))));
-            }
+            } else pr.setPermanent(true);
+            list.add(pr);
         });
         Reasons.getInstance().setReasons(list);
     }
@@ -126,6 +127,9 @@ public class Main extends Plugin {
         registerCommand(new CmdUnban());
         registerCommand(new CmdUnmute());
         registerCommand(new CmdUnpunish());
+        registerCommand(new CmdPunish());
+        registerCommand(new CmdPunishView());
+        registerCommand(new CmdHistory());
         registerListener(new ChatListener());
         registerListener(new MuteListener());
         registerListener(new MuteIPListener());

@@ -12,17 +12,17 @@ import net.md_5.bungee.config.Configuration;
 
 import java.util.List;
 
-public class CmdUnmute extends Command {
+public class CmdHistory extends Command {
 
-    public CmdUnmute() {
-        super("unmute", Permission.UNMUTE.getPermission(), "desmutar");
+    public CmdHistory() {
+        super("punishhistory", Permission.PUNISHHISTORY.getPermission(), "phistory");
     }
 
     @Override
     public void execute(CommandSender s, String[] args) {
         final Configuration cfg = Main.getMessages();
         final General gnrlLib = General.getGeneralLib();
-        if (!Permission.hasPermission(s, Permission.UNMUTE)) {
+        if (!Permission.hasPermission(s, Permission.PUNISHHISTORY)) {
             new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
             return;
         }
@@ -32,15 +32,12 @@ public class CmdUnmute extends Command {
                 final Punishment punishment = gnrlLib.easyInstance();
                 punishment.setBreakNick(args[0]);
                 final List<Punishment> punishments = punishment.requireAllBySecondaryIdentifier();
-                if (gnrlLib.hasActivePunishment(punishments) && gnrlLib.hasPunishmentMute(punishments)) {
-                    final List<Punishment> ps = gnrlLib.getAllMutedPActive(punishments);
-                    ps.forEach(Punishment::pardon);
-                    new Message(cfg.getString("Messages.mute-pardon")).send(s);
-                } else new Message(cfg.getString("Messages.mute-not-found")).send(s);
+                if (punishments.size() > 0) {
+                    gnrlLib.sendHistory(s, punishments);
+                } else new Message(cfg.getString("Messages.angel")).send(s);
             } catch (Exception e) {
-                new Message(cfg.getString("Usages.unmute")).send(s);
+                new Message(Main.getUsages().getString("Usages.punishhistory")).send(s);
             }
         });
-
     }
 }

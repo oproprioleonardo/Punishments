@@ -2,15 +2,20 @@ package me.centralworks.punishments.lib;
 
 import com.google.common.collect.Lists;
 import me.centralworks.punishments.Main;
+import me.centralworks.punishments.enums.Permission;
 import me.centralworks.punishments.punishs.OfflinePunishment;
 import me.centralworks.punishments.punishs.OnlinePunishment;
 import me.centralworks.punishments.punishs.Punishment;
+import me.centralworks.punishments.punishs.PunishmentData;
 import me.centralworks.punishments.punishs.supliers.cached.AddressIP;
 import me.centralworks.punishments.punishs.supliers.cached.MutedPlayers;
+import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentState;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.config.Configuration;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,6 +35,82 @@ public class General {
     public static General getGeneralLib() {
         if (instance == null) instance = new General();
         return instance;
+    }
+
+    public void sendPunishments(ProxiedPlayer p, String target) {
+        final Configuration msg = Main.getMessages();
+        final ComponentBuilder title = new ComponentBuilder("");
+        msg.getStringList("Messages.punish.title").stream().map(s -> s.replace("&", "§")).forEach(title::append);
+        p.sendMessage(title.create());
+        final ComponentBuilder reasons = new ComponentBuilder("");
+        Reasons.getInstance().getReasons().forEach(reason -> {
+            final List<String> list = Lists.newArrayList(
+                    msg.getString("Messages.punish.line.hoverMessage")
+                            .replace("{type}", reason.getPunishmentType().getIdentifier())
+                            .replace("{toggle}", reason.getWithIP() ? "§aSim" : "§cNão")
+                            .replace("{duration}", reason.isPermanent() ? "Permanente" : new FormatTime(reason.getDuration()).format())
+                            .replace("{permission}", reason.getPermission()).replace("&", "§")
+            );
+            if (!p.hasPermission(reason.getPermission()) && !Permission.hasPermission(p, Permission.ADMIN))
+                list.add(msg.getString("Messages.punish.line.hoverWithoutPermission").replace("&", "§"));
+            new Message(msg.getString("Messages.punish.line.message").replace("&", "§").replace("{reason}", reason.getReason())).sendJson("/punir " + target + " " + reason.getReason(), String.join("", list), p);
+        });
+        p.sendMessage(reasons.create());
+        final ComponentBuilder footer = new ComponentBuilder("");
+        msg.getStringList("Messages.punish.footer").stream().map(s -> s.replace("&", "§")).forEach(footer::append);
+        p.sendMessage(footer.create());
+    }
+
+    public void sendPunishmentStatus(CommandSender s, Punishment p) {
+        final Configuration cfg = Main.getMessages();
+        final ComponentBuilder msg = new ComponentBuilder("");
+        final PunishmentData data = p.getData();
+        for (String s1 : cfg.getStringList("Runners.punishment-view")) {
+            msg.append(s1
+                    .replace("&", "§")
+                    .replace("{finishAt}", data.isPermanent() ? "§cPermanente." : new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(data.getFinishDate())
+                            .replace("-", " às "))
+                    .replace("{author}", data.getPunisher())
+                    .replace("{id}", p.getId().toString())
+                    .replace("{evidence}", formatEvidences(p))
+                    .replace("{nickname}", p.getSecondaryIdentifier())
+                    .replace("{startedAt}", new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(data.getStartDate())
+                            .replace("-", " às "))
+                    .replace("{reason}", data.getReason().getReason())
+                    .replace("{identifier}", p.getPrimaryIdentifier())
+                    .replace("{state}", data.getPunishmentState().getIdentifier())
+                    .replace("{andressIP}", p.getIp().equals("") ? "Não informado." : p.getIp()));
+        }
+        s.sendMessage(msg.create());
+    }
+
+    public void sendHistory(CommandSender s, List<Punishment> punishments) {
+        final Configuration cfg = Main.getMessages();
+        final StringBuilder builder = new StringBuilder();
+        punishments.forEach(punishment -> builder.append(builder.toString().equals("") ? "§e#" + punishment.getId() : "§7, " + "§e#" + punishment.getId()));
+        new Message(cfg.getString("Messages.history").replace("{nickname}", punishments.get(0).getBreakNick()).replace("{ids}", builder.toString())).send(s);
+    }
+
+    public String formatEvidences(Punishment p) {
+        final List<String> list = new ArrayList<>();
+        final List<String> cps = p.getData().getEvidences();
+        int pNumber = 1;
+        StringBuilder line = new StringBuilder("§7");
+        for (String cp : cps) {
+            line.append(cp);
+            if (pNumber == 2) {
+                list.add(line.toString());
+                line = new StringBuilder("§7");
+                pNumber = 1;
+            } else {
+                line.append("§7, ");
+                pNumber++;
+            }
+        }
+        if (pNumber != 1) {
+            list.add(line.substring(0, line.length() - 2));
+        }
+        return String.join("\n", list);
     }
 
     public Consumer<Punishment> getFunctionBanIfOn() {

@@ -17,7 +17,9 @@ public enum Permission {
     TEMPMUTE("punishments.tempmute"),
     UNBAN("punishments.unban"),
     UNMUTE("punishments.unmute"),
-    UNPUNISH("punishments.unpunish");
+    UNPUNISH("punishments.unpunish"),
+    PUNISHVIEW("punishments.view"),
+    PUNISHHISTORY("punishments.history");
 
     private final String permission;
 

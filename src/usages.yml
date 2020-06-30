@@ -20,3 +20,6 @@ Usages:
   unban: "&cComando incorreto. Utilize: /unban (jogador)."
   unmute: "&cComando incorreto. Utilize: /unmute (jogador)."
   unpunish: "&cComando incorreto. Utilize: /unpunish (id)."
+  punish: "&cComando incorreto. Utilize: /punish (jogador) [motivo]."
+  punishview: "&cComando incorreto. Utilize: /pview (id)."
+  punishhistory: "&cComando incorreto. Utilize: /phistory (jogador)."
