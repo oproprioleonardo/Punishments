@@ -12,6 +12,7 @@ import me.centralworks.punishments.punishs.supliers.cached.MutedPlayers;
 import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentState;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -82,6 +83,20 @@ public class General {
                     .replace("{andressIP}", p.getIp().equals("") ? "Não informado." : p.getIp()));
         }
         s.sendMessage(msg.create());
+    }
+
+    public void kickPlayer(ProxiedPlayer p, String author, String reason) {
+        final Configuration cfg = Main.getMessages();
+        final ComponentBuilder msg = new ComponentBuilder("");
+        for (String s1 : cfg.getStringList("Runners.kick")) {
+            msg.append(s1
+                    .replace("&", "§")
+                    .replace("{author}", author)
+                    .replace("{reason}", reason.equals("") ? "Não informado" : reason)
+            );
+        }
+        p.disconnect(msg.create());
+        cfg.getStringList("Announcements.kick").forEach(s -> BungeeCord.getInstance().broadcast(s.replace("{author}", author).replace("{reason}", reason.equals("") ? "Não informado" : reason)));
     }
 
     public void sendHistory(CommandSender s, List<Punishment> punishments) {

@@ -19,7 +19,8 @@ public enum Permission {
     UNMUTE("punishments.unmute"),
     UNPUNISH("punishments.unpunish"),
     PUNISHVIEW("punishments.view"),
-    PUNISHHISTORY("punishments.history");
+    PUNISHHISTORY("punishments.history"),
+    KICK("punishments.kick");
 
     private final String permission;
 

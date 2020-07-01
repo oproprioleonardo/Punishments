@@ -10,7 +10,6 @@ import me.centralworks.punishments.punishs.supliers.PunishmentReason;
 import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
 import me.centralworks.punishments.punishs.supliers.runners.Run;
-import me.centralworks.punishments.punishs.supliers.runners.Task;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -52,8 +51,8 @@ public class CmdTempMute extends Command {
                 final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                 reasonObj.setDuration(duration);
                 mute.setPunishmentReason(reasonObj);
+                mute.addTask();
                 new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
-                Task.getInstance().add(p.getName(), mute);
             } else {
                 if (!(args.length == 3)) {
                     final List<String> reason = Arrays.asList(args).subList(2, args.length);

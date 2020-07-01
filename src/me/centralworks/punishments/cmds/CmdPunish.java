@@ -9,7 +9,6 @@ import me.centralworks.punishments.punishs.supliers.PunishmentReason;
 import me.centralworks.punishments.punishs.supliers.cached.AddressIP;
 import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.runners.Run;
-import me.centralworks.punishments.punishs.supliers.runners.Task;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -70,8 +69,8 @@ public class CmdPunish extends Command {
                 punishment.setTarget(target);
                 punishment.setPunishmentReason(reason);
                 punishment.setPermanent(reason.isPermanent());
+                punishment.addTask();
                 new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
-                Task.getInstance().add(p.getName(), punishment);
             } else new Message(Main.getUsages().getString("Usages.punish")).send(s);
         } catch (Exception ignored) {
             new Message(Main.getUsages().getString("Usages.punish")).send(s);

@@ -130,6 +130,7 @@ public class Main extends Plugin {
         registerCommand(new CmdPunish());
         registerCommand(new CmdPunishView());
         registerCommand(new CmdHistory());
+        registerCommand(new CmdKick());
         registerListener(new ChatListener());
         registerListener(new MuteListener());
         registerListener(new MuteIPListener());

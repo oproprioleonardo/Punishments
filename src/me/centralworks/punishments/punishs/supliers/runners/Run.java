@@ -176,6 +176,10 @@ public class Run {
         execute();
     }
 
+    public void addTask() {
+        Task.getInstance().add(punisher, this);
+    }
+
     private void execute() {
         final General generalLib = General.getGeneralLib();
         final Punishment punishment = generalLib.easyInstance(getTarget(), getTarget());

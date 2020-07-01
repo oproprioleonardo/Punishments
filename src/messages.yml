@@ -30,11 +30,15 @@ Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
 Announcements:
   ban:
     - ""
-    - "&c * O usuário {nickname} foi banido por {reason}."
+    - "&c * O usuário {nickname} foi banido por {author}."
     - ""
   mute:
     - ""
-    - "&c * O usuário {nickname} foi silenciado por {reason}."
+    - "&c * O usuário {nickname} foi silenciado por {author}."
+    - ""
+  kick:
+    - ""
+    - "&c * O usuário {nickname} foi expulso por {author}."
     - ""
 Runners: #Precisa \n para pular a linha.
   ban-kick:
@@ -69,6 +73,15 @@ Runners: #Precisa \n para pular a linha.
     - "&c * Término: {finishAt}\n"
     - "\n"
     - "&cUse o ID &e#{id} &cpara fazer uma revisão em nosso discord: &c&nbit.ly/centralworks\n"
+    - "\n"
+  kick:
+    - "       &6&lRede Arcanth\n"
+    - "&cVocê foi expulso do servidor.\n"
+    - "\n"
+    - "&c * Motivo: {reason}\n"
+    - "&c * Autor: {author}\n"
+    - "\n"
+    - "&cCaso isso for um erro, solicite revisão em nosso discord: &c&nbit.ly/centralworks\n"
     - "\n"
   punishment-view:
     - "       &6&lRede Arcanth\n"

@@ -10,7 +10,6 @@ import me.centralworks.punishments.punishs.supliers.cached.AddressIP;
 import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
 import me.centralworks.punishments.punishs.supliers.runners.Run;
-import me.centralworks.punishments.punishs.supliers.runners.Task;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -56,8 +55,8 @@ public class CmdBanIP extends Command {
                 final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                 ban.setTarget(target);
                 ban.setPunishmentReason(reasonObj);
+                ban.addTask();
                 new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
-                Task.getInstance().add(p.getName(), ban);
             } else {
                 ban.setTarget(target);
                 if (!(args.length == 2)) {
