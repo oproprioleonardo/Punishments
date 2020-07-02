@@ -16,6 +16,10 @@ Commands-locked-when-silenced:
   - "/l"
   - "/anunciar"
   - "/tell"
+Warns:
+  tree:
+    warns: 3
+    command: "tempban {jogador} 3:dias Recebeu 3 pontos negativos."
 Reasons: #Esses serão os motivos pré-definidos para utilizar no /punir
   reason1:
     reason: "Ofensa a jogador"

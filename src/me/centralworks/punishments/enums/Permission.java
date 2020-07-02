@@ -20,7 +20,10 @@ public enum Permission {
     UNPUNISH("punishments.unpunish"),
     PUNISHVIEW("punishments.view"),
     PUNISHHISTORY("punishments.history"),
-    KICK("punishments.kick");
+    KICK("punishments.kick"),
+    WARN("punishments.warn"),
+    TEMPWARN("punishments.tempwarn"),
+    UNWARN("punishments.unwarn");
 
     private final String permission;
 

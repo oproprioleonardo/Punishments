@@ -2,6 +2,7 @@ package me.centralworks.punishments.lib;
 
 import com.google.common.collect.Lists;
 import me.centralworks.punishments.Main;
+import me.centralworks.punishments.db.dao.WarnDAO;
 import me.centralworks.punishments.enums.Permission;
 import me.centralworks.punishments.punishs.OfflinePunishment;
 import me.centralworks.punishments.punishs.OnlinePunishment;
@@ -12,6 +13,7 @@ import me.centralworks.punishments.punishs.supliers.cached.MutedPlayers;
 import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentState;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
+import me.centralworks.punishments.warns.Warn;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -99,11 +101,15 @@ public class General {
         cfg.getStringList("Announcements.kick").forEach(s -> BungeeCord.getInstance().broadcast(s.replace("{author}", author).replace("{reason}", reason.equals("") ? "Não informado" : reason)));
     }
 
+    public void warnPlayer(ProxiedPlayer p, String author, String reason) {
+
+    }
+
     public void sendHistory(CommandSender s, List<Punishment> punishments) {
         final Configuration cfg = Main.getMessages();
         final StringBuilder builder = new StringBuilder();
         punishments.forEach(punishment -> builder.append(builder.toString().equals("") ? "§e#" + punishment.getId() : "§7, " + "§e#" + punishment.getId()));
-        new Message(cfg.getString("Messages.history").replace("{nickname}", punishments.get(0).getBreakNick()).replace("{ids}", builder.toString())).send(s);
+        new Message(cfg.getString("Messages.history").replace("{nickname}", punishments.get(0).getSecondaryIdentifier()).replace("{ids}", builder.toString())).send(s);
     }
 
     public String formatEvidences(Punishment p) {
@@ -310,6 +316,17 @@ public class General {
                 punishment.save();
             }
         }).collect(Collectors.toList());
+    }
+
+    public List<Warn> updateAllWarns(List<Warn> warns) {
+        final List<Warn> ws = Lists.newArrayList(warns);
+        ws.forEach(warn -> {
+            if (!warn.isPermanent() && warn.getFinishAt() < System.currentTimeMillis()) {
+                WarnDAO.getInstance().deleteById(warn.getId());
+                ws.remove(warn);
+            }
+        });
+        return ws;
     }
 
     public boolean isAddressIP(String text) {

@@ -14,7 +14,7 @@ Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
   punish-pardon: "&aA punição do ID informado foi revogada com sucesso."
   punish-not-found: "&cNão foi encontrado nenhuma punição com o ID informado."
   reason-not-found: "&cO motivo informado não foi encontrado."
-  wait: "&aAguarde, essa operação pode demorar... Estamos coletando alguns dados necessários."
+  wait: "&aAguarde, essa operação pode demorar... \n&aEstamos depurando e coletando alguns dados necessários. &cNÃO REPITA O COMANDO!"
   history: "&ePunições do jogador {nickname}: {ids}."
   angel: "&cEsse jogador não possui nenhuma punição."
   punish:
@@ -26,7 +26,7 @@ Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
       hoverMessage: "&eTipo: §a{type}\n&ePermissão: §a{permission}\n&ePor endereço de IP: {toggle}\n&eDuração: §a{duration}"
       hoverWithoutPermission: "\n\n&cVocê não possui permissão para aplicar essa punição."
     footer:
-      - "\n&cTenha cuidado ao aplicar punições no servidor, em caso de&c erro, contate um Administrador."
+      - "\n&cTenha cuidado ao aplicar punições no servidor, em caso de \n&cerro, contate um Administrador."
 Announcements:
   ban:
     - ""
@@ -39,6 +39,10 @@ Announcements:
   kick:
     - ""
     - "&c * O usuário {nickname} foi expulso por {author}."
+    - ""
+  warn:
+    - ""
+    - "&c * O usuário {nickname} foi alertado por {author}."
     - ""
 Runners: #Precisa \n para pular a linha.
   ban-kick:
@@ -96,6 +100,14 @@ Runners: #Precisa \n para pular a linha.
     - "&c * Autor: {author}\n"
     - "&c * Estado: {state}\n"
     - "&c * Provas: {evidence}\n"
+  warn:
+    - "       &6&lRede Arcanth\n"
+    - "\n"
+    - "&cVocê recebeu um aviso, de {punisher}.\n"
+    - "\n"
+    - "&c * Motivo: {reason}\n"
+    - "&c * Início: {startedAt}\n"
+    - "&c * Término: {finishAt}\n"
 
 
 

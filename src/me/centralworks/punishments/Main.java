@@ -20,6 +20,7 @@ import me.centralworks.punishments.listeners.withoutAddressIP.join.OnlineBanList
 import me.centralworks.punishments.punishs.supliers.PunishmentReason;
 import me.centralworks.punishments.punishs.supliers.cached.Reasons;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
+import me.centralworks.punishments.warns.WarnPunishment;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -40,6 +41,7 @@ public class Main extends Plugin {
     protected static Configuration usages;
     protected static boolean onlineMode;
     protected static Gson gson;
+    protected static List<WarnPunishment> wps;
 
     public static Configuration getConfiguration() {
         return configuration;
@@ -59,6 +61,10 @@ public class Main extends Plugin {
 
     public static Main getInstance() {
         return instance;
+    }
+
+    public static List<WarnPunishment> getWps() {
+        return wps;
     }
 
     public static Gson getGson() {
@@ -99,6 +105,18 @@ public class Main extends Plugin {
         Reasons.getInstance().setReasons(list);
     }
 
+    protected void wps() {
+        final List<WarnPunishment> wp = Lists.newArrayList();
+        for (String warn : getConfiguration().getSection("Warns").getKeys()) {
+            final WarnPunishment wpo = new WarnPunishment();
+            wpo.setId(warn);
+            wpo.setAmount(getConfiguration().getInt("Warns." + warn + ".warns"));
+            wpo.setCommand(getConfiguration().getString("Warns." + warn + ".command"));
+            wp.add(wpo);
+        }
+        wps = wp;
+    }
+
     protected void registerCommand(Command command) {
         getProxy().getPluginManager().registerCommand(instance, command);
     }
@@ -116,6 +134,7 @@ public class Main extends Plugin {
         usages = getConfiguration("usages.yml");
         gson = new Gson();
         reasons();
+        wps();
         registerCommand(new CmdBan());
         registerCommand(new CmdTempBan());
         registerCommand(new CmdMute());
@@ -131,6 +150,8 @@ public class Main extends Plugin {
         registerCommand(new CmdPunishView());
         registerCommand(new CmdHistory());
         registerCommand(new CmdKick());
+        registerCommand(new CmdTempWarn());
+        registerCommand(new CmdWarn());
         registerListener(new ChatListener());
         registerListener(new MuteListener());
         registerListener(new MuteIPListener());

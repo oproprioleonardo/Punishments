@@ -24,3 +24,4 @@ Usages:
   punishview: "&cComando incorreto. Utilize: /pview (id)."
   punishhistory: "&cComando incorreto. Utilize: /phistory (jogador)."
   kick: "&cComando incorreto. Utilize: /kick (jogador) [motivo]."
+  warn: "&cComando incorreto. Utilize: /warn (jogador) [motivo]."

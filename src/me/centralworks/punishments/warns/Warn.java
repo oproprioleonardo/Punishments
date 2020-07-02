@@ -1,13 +1,15 @@
 package me.centralworks.punishments.warns;
 
+import me.centralworks.punishments.db.dao.WarnDAO;
+
 public class Warn {
 
     private Integer id = 0;
     private String target;
     private String punisher;
     private String reason = "";
-    private Long startedAt;
-    private Long finishAt;
+    private Long startedAt = System.currentTimeMillis();
+    private Long finishAt = System.currentTimeMillis();
     private boolean permanent = false;
 
     public Warn(Integer id, String target, String punisher, String reason, Long startedAt, Long finishAt, boolean permanent) {
@@ -81,5 +83,13 @@ public class Warn {
 
     public void setPermanent(boolean permanent) {
         this.permanent = permanent;
+    }
+
+    public void saveAsync() {
+        Warns.getInstance().add(this);
+    }
+
+    public void saveSync() {
+        WarnDAO.getInstance().save(this);
     }
 }

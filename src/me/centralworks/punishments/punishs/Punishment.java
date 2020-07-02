@@ -37,24 +37,6 @@ public abstract class Punishment implements Data, Identifier, DAO {
         this.save();
     }
 
-    /**
-     * necessary evil
-     *
-     * @return nickname player
-     */
-    public String getBreakNick() {
-        return breakNick;
-    }
-
-    /**
-     * necessary evil
-     *
-     * @param breakNick nickname player.
-     */
-    public void setBreakNick(String breakNick) {
-        this.breakNick = breakNick;
-    }
-
     public PunishmentData getPunishmentData() {
         return punishmentData;
     }
