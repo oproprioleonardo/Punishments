@@ -25,3 +25,6 @@ Usages:
   punishhistory: "&cComando incorreto. Utilize: /phistory (jogador)."
   kick: "&cComando incorreto. Utilize: /kick (jogador) [motivo]."
   warn: "&cComando incorreto. Utilize: /warn (jogador) [motivo]."
+  tempwarn: "&cComando incorreto. Utilize: /tempwarn (jogador) (numero:dias,numero:meses) [motivo]."
+  unwarn: "&cComando incorreto. Utilize: /unwarn (jogador/id)."
+  warns: "&cComando incorreto. Utilize: /warns (jogador)."

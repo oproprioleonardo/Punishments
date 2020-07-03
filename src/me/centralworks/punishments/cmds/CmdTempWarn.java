@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import me.centralworks.punishments.Main;
 import me.centralworks.punishments.enums.Permission;
 import me.centralworks.punishments.lib.Date;
-import me.centralworks.punishments.lib.General;
 import me.centralworks.punishments.lib.Message;
 import me.centralworks.punishments.warns.Warn;
 import net.md_5.bungee.api.CommandSender;
@@ -26,9 +25,7 @@ public class CmdTempWarn extends Command {
             return;
         }
         final ProxyServer proxy = Main.getInstance().getProxy();
-        final General lib = General.getGeneralLib();
         final Configuration cfg = Main.getMessages();
-        final ProxiedPlayer p = ((ProxiedPlayer) s);
         final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
         try {
             final String target = args[0];
@@ -47,7 +44,7 @@ public class CmdTempWarn extends Command {
             new Message(cfg.getString("Messages.wait")).send(s);
             warn.saveAsync();
         } catch (Exception e) {
-            new Message(Main.getUsages().getString("Messages.warn")).send(s);
+            new Message(Main.getUsages().getString("Usages.tempwarn")).send(s);
         }
     }
 }

@@ -112,6 +112,13 @@ public class General {
         new Message(cfg.getString("Messages.history").replace("{nickname}", punishments.get(0).getSecondaryIdentifier()).replace("{ids}", builder.toString())).send(s);
     }
 
+    public void sendHistoryWarn(CommandSender s, List<Warn> warns) {
+        final Configuration cfg = Main.getMessages();
+        final StringBuilder builder = new StringBuilder();
+        warns.forEach(w -> builder.append(builder.toString().equals("") ? "§e#" + w.getId() : "§7, " + "§e#" + w.getId()));
+        new Message(cfg.getString("Messages.warns").replace("{nickname}", warns.get(0).getTarget()).replace("{ids}", builder.toString())).send(s);
+    }
+
     public String formatEvidences(Punishment p) {
         final List<String> list = new ArrayList<>();
         final List<String> cps = p.getData().getEvidences();

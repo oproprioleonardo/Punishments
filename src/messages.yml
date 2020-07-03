@@ -17,6 +17,9 @@ Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
   wait: "&aAguarde, essa operação pode demorar... \n&aEstamos depurando e coletando alguns dados necessários. &cNÃO REPITA O COMANDO!"
   history: "&ePunições do jogador {nickname}: {ids}."
   angel: "&cEsse jogador não possui nenhuma punição."
+  warn-not-found: "&cNão foi encontrado nenhum aviso com esse id/nome."
+  warn-deleted: "&cO aviso foi deletado com sucesso."
+  warns: "&eAvisos do jogador {nickname}: {ids}."
   punish:
     title:
       - "       &6&lRede Arcanth\n"

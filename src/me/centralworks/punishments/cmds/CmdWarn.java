@@ -47,7 +47,7 @@ public class CmdWarn extends Command {
             new Message(cfg.getString("Messages.wait")).send(s);
             warn.saveAsync();
         } catch (Exception e) {
-            new Message(Main.getUsages().getString("Messages.warn")).send(s);
+            new Message(Main.getUsages().getString("Usages.warn")).send(s);
         }
 
     }

@@ -30,7 +30,7 @@ public class CmdUnban extends Command {
         BungeeCord.getInstance().getScheduler().runAsync(Main.getInstance(), () -> {
             try {
                 final Punishment punishment = gnrlLib.easyInstance();
-                punishment.setBreakNick(args[0]);
+                punishment.setSecondaryIdentifier(args[0]);
                 final List<Punishment> punishments = punishment.requireAllBySecondaryIdentifier();
                 if (gnrlLib.hasActivePunishment(punishments) && gnrlLib.hasPunishmentBan(punishments)) {
                     final List<Punishment> ps = gnrlLib.getAllBannedPActive(punishments);

@@ -30,7 +30,7 @@ public class CmdHistory extends Command {
         BungeeCord.getInstance().getScheduler().runAsync(Main.getInstance(), () -> {
             try {
                 final Punishment punishment = gnrlLib.easyInstance();
-                punishment.setBreakNick(args[0]);
+                punishment.setSecondaryIdentifier(args[0]);
                 final List<Punishment> punishments = punishment.requireAllBySecondaryIdentifier();
                 if (punishments.size() > 0) {
                     gnrlLib.sendHistory(s, punishments);

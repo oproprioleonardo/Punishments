@@ -3,16 +3,17 @@ package me.centralworks.punishments.cmds;
 import me.centralworks.punishments.Main;
 import me.centralworks.punishments.db.dao.WarnDAO;
 import me.centralworks.punishments.enums.Permission;
+import me.centralworks.punishments.lib.General;
 import me.centralworks.punishments.lib.Message;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.config.Configuration;
 
-public class CmdUnwarn extends Command {
+public class CmdWarns extends Command {
 
-    public CmdUnwarn() {
-        super("unwarn", Permission.UNWARN.getPermission(), "desavisar");
+    public CmdWarns() {
+        super("warns", Permission.WARNS.getPermission(), "avisos");
     }
 
     @Override
@@ -23,26 +24,16 @@ public class CmdUnwarn extends Command {
         }
         final Configuration cfg = Main.getMessages();
         try {
-            final Integer id = Integer.valueOf(args[0]);
-            new Message(cfg.getString("Messages.wait")).send(s);
-            BungeeCord.getInstance().getScheduler().runAsync(Main.getInstance(), () -> {
-                if (WarnDAO.getInstance().existsID(id)) {
-                    WarnDAO.getInstance().deleteById(id);
-                    new Message("Messages.warn-deleted").send(s);
-                } else new Message("Messages.warn-not-found").send(s);
-            });
-        } catch (NumberFormatException e) {
             final String target = args[0];
             new Message(cfg.getString("Messages.wait")).send(s);
             BungeeCord.getInstance().getScheduler().runAsync(Main.getInstance(), () -> {
                 if (WarnDAO.getInstance().existsNickname(target)) {
-                    WarnDAO.getInstance().deleteAllByNickname(target);
-                    new Message("Messages.warn-deleted").send(s);
+                    final General lib = General.getGeneralLib();
+                    lib.sendHistoryWarn(s, lib.updateAllWarns(WarnDAO.getInstance().loadAllWarns(target)));
                 } else new Message("Messages.warn-not-found").send(s);
             });
-        } catch (Exception ex) {
-            new Message(Main.getUsages().getString("Usages.unwarn")).send(s);
+        } catch (Exception e) {
+            new Message(Main.getUsages().getString("Usages.warns")).send(s);
         }
-
     }
 }

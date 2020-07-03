@@ -152,6 +152,8 @@ public class Main extends Plugin {
         registerCommand(new CmdKick());
         registerCommand(new CmdTempWarn());
         registerCommand(new CmdWarn());
+        registerCommand(new CmdUnwarn());
+        registerCommand(new CmdWarns());
         registerListener(new ChatListener());
         registerListener(new MuteListener());
         registerListener(new MuteIPListener());

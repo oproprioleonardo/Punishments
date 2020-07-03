@@ -105,7 +105,7 @@ public class PunishmentDAO {
                 punishment1.getData().getPunishmentType().equals(punishment.getData().getPunishmentType()) &&
                         punishment1.getData().getPunishmentState().equals(punishment.getData().getPunishmentState()) &&
                         punishment1.getData().getReasonString().equals(punishment.getData().getReasonString()) &&
-                        punishment1.getBreakNick().equalsIgnoreCase(punishment.getBreakNick())
+                        punishment1.getSecondaryIdentifier().equalsIgnoreCase(punishment.getSecondaryIdentifier())
         ).findFirst().get();
     }
 
@@ -126,7 +126,7 @@ public class PunishmentDAO {
                 offlinePunishment.setPrimaryIdentifier(user);
                 p = offlinePunishment;
             }
-            p.setBreakNick(rs.getString("breakNick"));
+            p.setSecondaryIdentifier(rs.getString("breakNick"));
             final PunishmentData pd = new PunishmentData();
             p.setId(rs.getInt("id"));
             if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
@@ -164,7 +164,7 @@ public class PunishmentDAO {
                     offlinePunishment.setPrimaryIdentifier(user);
                     p = offlinePunishment;
                 }
-                p.setBreakNick(rs.getString("breakNick"));
+                p.setSecondaryIdentifier(rs.getString("breakNick"));
                 final PunishmentData pd = new PunishmentData();
                 p.setId(rs.getInt("id"));
                 if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
@@ -203,7 +203,7 @@ public class PunishmentDAO {
                     offlinePunishment.setPrimaryIdentifier(user);
                     p = offlinePunishment;
                 }
-                p.setBreakNick(rs.getString("breakNick"));
+                p.setSecondaryIdentifier(rs.getString("breakNick"));
                 final PunishmentData pd = new PunishmentData();
                 p.setId(rs.getInt("id"));
                 if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
@@ -241,7 +241,7 @@ public class PunishmentDAO {
                 offlinePunishment.setPrimaryIdentifier(user);
                 p = offlinePunishment;
             }
-            p.setBreakNick(rs.getString("breakNick"));
+            p.setSecondaryIdentifier(rs.getString("breakNick"));
             final PunishmentData pd = new PunishmentData();
             p.setId(rs.getInt("id"));
             if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
@@ -279,7 +279,7 @@ public class PunishmentDAO {
                 st.setString(8, stringBuilder.toString());
                 st.setString(9, pd.getPunishmentState().getIdentifier());
                 st.setBoolean(10, pd.isPermanent());
-                st.setString(11, p.getBreakNick());
+                st.setString(11, p.getSecondaryIdentifier());
             } else {
                 st = connection.prepareStatement("INSERT INTO arcanth_punishments VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ID = ?, User = ?, addressIP = ?, type = ?, reason = ?, startedAt = ?, finishAt = ?, punisher = ?, evidences = ?, punishmentState = ?, permanent = ?, breakNick = ?");
                 st.setInt(1, p.getId());
@@ -293,7 +293,7 @@ public class PunishmentDAO {
                 st.setString(9, stringBuilder.toString());
                 st.setString(10, pd.getPunishmentState().getIdentifier());
                 st.setBoolean(11, pd.isPermanent());
-                st.setString(12, p.getBreakNick());
+                st.setString(12, p.getSecondaryIdentifier());
                 st.setInt(13, p.getId());
                 st.setString(14, p.getPrimaryIdentifier());
                 st.setString(15, !p.ipIsValid() ? "null" : p.getIp());
@@ -305,7 +305,7 @@ public class PunishmentDAO {
                 st.setString(21, stringBuilder.toString());
                 st.setString(22, pd.getPunishmentState().getIdentifier());
                 st.setBoolean(23, pd.isPermanent());
-                st.setString(24, p.getBreakNick());
+                st.setString(24, p.getSecondaryIdentifier());
             }
             st.executeUpdate();
         } catch (SQLException e) {
