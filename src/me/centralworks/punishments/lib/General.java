@@ -208,12 +208,30 @@ public class General {
         };
     }
 
+    public Consumer<Warn> getFunctionAnnouncerWarn() {
+        return warn -> {
+            final LongMessage longMessage = new LongMessage("Announcements.warn");
+            longMessage.setStringList(applyPlaceHoldersWarn(longMessage.getStringList(), warn));
+            longMessage.getColorfulMessage().forEach(baseComponents -> Main.getInstance().getProxy().broadcast(baseComponents));
+        };
+    }
+
     public Consumer<Punishment> getFunctionAnnouncerMute() {
         return punishment1 -> {
             final LongMessage longMessage = new LongMessage("Announcements.mute");
             final List<String> collect = applyPlaceHolders(longMessage.getStringList(), punishment1);
             longMessage.setStringList(collect);
             longMessage.getColorfulMessage().forEach(baseComponents -> Main.getInstance().getProxy().broadcast(baseComponents));
+        };
+    }
+
+    public Consumer<Warn> getFunctionWarnIfOn() {
+        return warn -> {
+            final ProxiedPlayer punishmentPlayer = Main.getInstance().getProxy().getPlayer(warn.getTarget());
+            final List<String> collect = applyPlaceHoldersWarn(Lists.newArrayList(new LongMessage("Runners.warn-alert").getStringList()), warn);
+            final ComponentBuilder componentBuilder = new ComponentBuilder("");
+            collect.forEach(componentBuilder::append);
+            punishmentPlayer.sendMessage(componentBuilder.create());
         };
     }
 
@@ -245,6 +263,20 @@ public class General {
                         .replace("-", " às "))
                 .replace("{reason}", punishment.getData().getReason().getReason()))
                 .collect(Collectors.toList());
+    }
+
+    public List<String> applyPlaceHoldersWarn(List<String> list, Warn warn) {
+        return list.stream().map(s -> s
+                .replace("&", "§")
+                .replace("{nickname}", warn.getTarget())
+                .replace("{author}", warn.getPunisher())
+                .replace("{startedAt}", new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(warn.getStartedAt())
+                        .replace("-", " às "))
+                .replace("{finishAt}", warn.isPermanent() ? "§cPermanente." : new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(warn.getFinishAt())
+                        .replace("-", " às "))
+                .replace("{reason}", warn.getReason())
+                .replace("{id}", warn.getId().toString())
+        ).collect(Collectors.toList());
     }
 
     public boolean hasActivePunishment(List<Punishment> punishments) {
@@ -326,13 +358,13 @@ public class General {
     }
 
     public List<Warn> updateAllWarns(List<Warn> warns) {
-        final List<Warn> ws = Lists.newArrayList(warns);
-        ws.forEach(warn -> {
+        final List<Warn> ws = Lists.newCopyOnWriteArrayList(warns);
+        for (Warn warn : ws) {
             if (!warn.isPermanent() && warn.getFinishAt() < System.currentTimeMillis()) {
                 WarnDAO.getInstance().deleteById(warn.getId());
                 ws.remove(warn);
             }
-        });
+        }
         return ws;
     }
 

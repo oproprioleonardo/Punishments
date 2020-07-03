@@ -6,6 +6,8 @@ import me.centralworks.punishments.db.dao.WarnDAO;
 import me.centralworks.punishments.lib.General;
 import net.md_5.bungee.BungeeCord;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Warns {
@@ -37,6 +39,8 @@ public class Warns {
         task = true;
         BungeeCord.getInstance().getScheduler().runAsync(Main.getInstance(), () -> {
             final Warn warn = warns.get(0);
+            General.getGeneralLib().getFunctionAnnouncerWarn().accept(warn);
+            General.getGeneralLib().getFunctionWarnIfOn().accept(warn);
             WarnDAO.getInstance().save(warn);
             final List<Warn> w = Lists.newArrayList(warns);
             w.remove(warn);
@@ -57,6 +61,9 @@ public class Warns {
     private void purify(String target) {
         final WarnDAO wd = WarnDAO.getInstance();
         final List<Warn> wl = General.getGeneralLib().updateAllWarns(wd.loadAllWarns(target));
+        final List<WarnPunishment> wps = Main.getWps();
+        wps.sort(Comparator.comparingInt(WarnPunishment::getAmount));
+        Collections.reverse(wps);
         for (WarnPunishment wp : Main.getWps()) {
             if (wl.size() == wp.getAmount()) {
                 BungeeCord.getInstance().getPluginManager().dispatchCommand(BungeeCord.getInstance().getConsole(), wp.getCommand().replace("{jogador}", target));

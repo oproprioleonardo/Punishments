@@ -1,6 +1,6 @@
 package me.centralworks.punishments.db.dao;
 
-import com.massivecraft.massivecore.xlib.guava.collect.Lists;
+import com.google.common.collect.Lists;
 import me.centralworks.punishments.db.ConnectionFactory;
 import me.centralworks.punishments.warns.Warn;
 
@@ -93,7 +93,7 @@ public class WarnDAO {
     public List<Warn> loadAllWarns(String target) {
         final List<Warn> list = Lists.newArrayList();
         try {
-            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_warns WHERE target = ?");
+            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_warns WHERE user = ?");
             st.setString(1, target);
             final ResultSet rs = st.executeQuery();
             while (rs.next()) {

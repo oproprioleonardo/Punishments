@@ -23,7 +23,7 @@ public class OfflineBanListener implements Listener {
             final General generalLib = General.getGeneralLib();
             final List<Punishment> instance = offlinePunishment.requireAllByPrimaryIdentifier();
             if (!generalLib.hasActivePunishment(instance) || !generalLib.hasPunishmentBan(instance)) return;
-            final Punishment p = generalLib.getAllBannedP(instance).get(0);
+            final Punishment p = generalLib.getAllBannedPActive(instance).get(0);
             final LongMessage longMessage = new LongMessage("Runners.ban-kick");
             final List<String> collect = General.getGeneralLib().applyPlaceHolders(longMessage.getStringList(), p);
             longMessage.setStringList(collect);

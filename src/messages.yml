@@ -20,6 +20,7 @@ Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
   warn-not-found: "&cNão foi encontrado nenhum aviso com esse id/nome."
   warn-deleted: "&cO aviso foi deletado com sucesso."
   warns: "&eAvisos do jogador {nickname}: {ids}."
+  already-revoked: "&cEssa punição já está revogada."
   punish:
     title:
       - "       &6&lRede Arcanth\n"
@@ -93,8 +94,8 @@ Runners: #Precisa \n para pular a linha.
   punishment-view:
     - "       &6&lRede Arcanth\n"
     - "\n"
-    - "&c * ID da punição: {id}"
-    - "&c * Usuário: {identifier}" #Em servidores onlinemode, irá mostrar o UUID.
+    - "&c * ID da punição: {id}\n"
+    - "&c * Usuário: {identifier}\n" #Em servidores onlinemode, irá mostrar o UUID.
     - "&c * Endereço IP: {andressIP}\n"
     - "&c * Jogador: {nickname}\n"
     - "&c * Motivo: {reason}\n"
@@ -103,7 +104,7 @@ Runners: #Precisa \n para pular a linha.
     - "&c * Autor: {author}\n"
     - "&c * Estado: {state}\n"
     - "&c * Provas: {evidence}\n"
-  warn:
+  warn-alert:
     - "       &6&lRede Arcanth\n"
     - "\n"
     - "&cVocê recebeu um aviso, de {punisher}.\n"

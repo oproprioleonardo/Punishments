@@ -39,9 +39,8 @@ public class CmdWarn extends Command {
             final Warn warn = new Warn();
             warn.setTarget(t.getName());
             warn.setPunisher(punisher);
-            if (args.length == 1) {
-                warn.setPermanent(true);
-            } else {
+            warn.setPermanent(true);
+            if (args.length > 1) {
                 warn.setReason(String.join(" ", Lists.newArrayList(args).subList(1, args.length)));
             }
             new Message(cfg.getString("Messages.wait")).send(s);

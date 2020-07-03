@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import me.centralworks.punishments.cmds.*;
 import me.centralworks.punishments.db.dao.AddressIPDAO;
 import me.centralworks.punishments.db.dao.PunishmentDAO;
+import me.centralworks.punishments.db.dao.WarnDAO;
 import me.centralworks.punishments.lib.Date;
 import me.centralworks.punishments.listeners.ChatListener;
 import me.centralworks.punishments.listeners.MuteQuitListener;
@@ -172,6 +173,7 @@ public class Main extends Plugin {
         final AddressIPDAO adr = AddressIPDAO.getInstance();
         adr.createTable();
         adr.loadAll();
+        WarnDAO.getInstance().createTable();
     }
 
     @Override

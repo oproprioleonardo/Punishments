@@ -28,9 +28,8 @@ public class MuteIPListener implements Listener {
                     final General generalLib = General.getGeneralLib();
                     final List<Punishment> instance = punishment.requireAllByAddress();
                     if (!generalLib.hasActivePunishment(instance) || !generalLib.hasPunishmentMute(instance)) return;
-                    final Punishment p = generalLib.getAllMuteP(instance).get(0);
+                    final Punishment p = generalLib.getAllMutedPActive(instance).get(0);
                     generalLib.getFunctionMuteIfOn().accept(p);
-
                     final List<String> collect = generalLib.applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), p);
                     final ComponentBuilder componentBuilder = new ComponentBuilder("");
                     collect.forEach(componentBuilder::append);
