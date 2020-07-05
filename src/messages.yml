@@ -14,7 +14,7 @@ Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
   punish-pardon: "&aA punição do ID informado foi revogada com sucesso."
   punish-not-found: "&cNão foi encontrado nenhuma punição com o ID informado."
   reason-not-found: "&cO motivo informado não foi encontrado."
-  wait: "&aAguarde, essa operação pode demorar... \n&aEstamos depurando e coletando alguns dados necessários. &cNÃO REPITA O COMANDO!"
+  wait: "&aAguarde, essa operação pode demorar..."
   history: "&ePunições do jogador {nickname}: {ids}."
   angel: "&cEsse jogador não possui nenhuma punição."
   warn-not-found: "&cNão foi encontrado nenhum aviso com esse id/nome."

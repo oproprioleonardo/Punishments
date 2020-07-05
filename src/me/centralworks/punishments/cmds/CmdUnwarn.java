@@ -28,8 +28,8 @@ public class CmdUnwarn extends Command {
             BungeeCord.getInstance().getScheduler().runAsync(Main.getInstance(), () -> {
                 if (WarnDAO.getInstance().existsID(id)) {
                     WarnDAO.getInstance().deleteById(id);
-                    new Message("Messages.warn-deleted").send(s);
-                } else new Message("Messages.warn-not-found").send(s);
+                    new Message(cfg.getString("Messages.warn-deleted")).send(s);
+                } else new Message(cfg.getString("Messages.warn-not-found")).send(s);
             });
         } catch (NumberFormatException e) {
             final String target = args[0];
@@ -37,8 +37,8 @@ public class CmdUnwarn extends Command {
             BungeeCord.getInstance().getScheduler().runAsync(Main.getInstance(), () -> {
                 if (WarnDAO.getInstance().existsNickname(target)) {
                     WarnDAO.getInstance().deleteAllByNickname(target);
-                    new Message("Messages.warn-deleted").send(s);
-                } else new Message("Messages.warn-not-found").send(s);
+                    new Message(cfg.getString("Messages.warn-deleted")).send(s);
+                } else new Message(cfg.getString("Messages.warn-not-found")).send(s);
             });
         } catch (Exception ex) {
             new Message(Main.getUsages().getString("Usages.unwarn")).send(s);

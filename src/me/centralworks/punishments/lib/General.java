@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 
 /**
  * Class with simple auxiliary functions, be careful when using.
+ * not recommended to use without developer assistance
  */
 public class General {
 
@@ -75,7 +76,7 @@ public class General {
                             .replace("-", " às "))
                     .replace("{author}", data.getPunisher())
                     .replace("{id}", p.getId().toString())
-                    .replace("{evidence}", formatEvidences(p))
+                    .replace("{evidence}", p.getData().getEvidences().size() == 0 ? "Nenhuma anexada" : formatEvidences(p))
                     .replace("{nickname}", p.getSecondaryIdentifier())
                     .replace("{startedAt}", new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(data.getStartDate())
                             .replace("-", " às "))
@@ -99,10 +100,6 @@ public class General {
         }
         p.disconnect(msg.create());
         cfg.getStringList("Announcements.kick").forEach(s -> BungeeCord.getInstance().broadcast(s.replace("{author}", author).replace("{reason}", reason.equals("") ? "Não informado" : reason)));
-    }
-
-    public void warnPlayer(ProxiedPlayer p, String author, String reason) {
-
     }
 
     public void sendHistory(CommandSender s, List<Punishment> punishments) {

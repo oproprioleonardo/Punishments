@@ -20,7 +20,7 @@ import java.util.List;
 public class CmdMute extends Command {
 
     public CmdMute() {
-        super("mute", Permission.MUTE.getPermission(), "silenciar", "mutar");
+        super("mute", "", "silenciar", "mutar");
     }
 
     @Override

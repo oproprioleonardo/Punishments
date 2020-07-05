@@ -308,6 +308,9 @@ public class PunishmentDAO {
                 st.setString(24, p.getSecondaryIdentifier());
             }
             st.executeUpdate();
+            final ResultSet generatedKeys = st.getGeneratedKeys();
+            generatedKeys.next();
+            p.setId(generatedKeys.getInt("ID"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

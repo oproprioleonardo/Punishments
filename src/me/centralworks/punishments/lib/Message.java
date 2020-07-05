@@ -14,11 +14,13 @@ public class Message {
     }
 
     public void send(ProxiedPlayer p) {
-        p.sendMessage(getColorfulMessage());
+        if (getColorfulMessage().length > 0)
+            p.sendMessage(getColorfulMessage());
     }
 
     public void send(CommandSender cs) {
-        cs.sendMessage(getColorfulMessage());
+        if (getColorfulMessage().length > 0)
+            cs.sendMessage(getColorfulMessage());
     }
 
     public String getMessage() {

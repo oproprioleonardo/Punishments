@@ -2,7 +2,9 @@ package me.centralworks.punishments.punishs;
 
 import me.centralworks.punishments.db.dao.PunishmentDAO;
 import me.centralworks.punishments.lib.General;
+import me.centralworks.punishments.punishs.supliers.cached.MutedPlayers;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentState;
+import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
@@ -34,6 +36,10 @@ public abstract class Punishment implements Data, Identifier, DAO {
 
     public void pardon() {
         getPunishmentData().setPunishmentState(PunishmentState.REVOKED);
+        if (getPunishmentData().getPunishmentType() == PunishmentType.MUTE || getPunishmentData().getPunishmentType() == PunishmentType.TEMPMUTE) {
+            if (MutedPlayers.getInstance().exists(getPrimaryIdentifier()))
+                MutedPlayers.getInstance().remove(getPrimaryIdentifier());
+        }
         this.save();
     }
 
