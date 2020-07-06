@@ -310,7 +310,7 @@ public class PunishmentDAO {
             if (isNew) {
                 final ResultSet generatedKeys = st.getGeneratedKeys();
                 generatedKeys.next();
-                p.setId(generatedKeys.getInt("ID"));
+                p.setId(generatedKeys.getInt(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();

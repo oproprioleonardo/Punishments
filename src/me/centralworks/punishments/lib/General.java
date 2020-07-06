@@ -16,6 +16,7 @@ import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
 import me.centralworks.punishments.warns.Warn;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
@@ -182,17 +183,22 @@ public class General {
 
     public Consumer<Punishment> getFunctionMuteIfAddress() {
         return punishment1 -> {
+            final ProxyServer proxy = Main.getInstance().getProxy();
             final AddressIP.AddressIPObject byAddress = AddressIP.getInstance().getByAddress(punishment1.getIp());
             final Punishment newInstance = punishment1.requireByInstance();
-            byAddress.getAccounts().forEach(s -> {
-                if (!s.equalsIgnoreCase(punishment1.getPrimaryIdentifier())) {
-                    final ProxiedPlayer punishmentPlayer = Main.getInstance().getProxy().getPlayer(s);
-                    final List<String> collect = applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance);
-                    final ComponentBuilder componentBuilder = new ComponentBuilder("");
-                    collect.forEach(componentBuilder::append);
-                    punishmentPlayer.sendMessage(componentBuilder.create());
-                }
-            });
+            final List<ProxiedPlayer> onlines = byAddress.getAccounts().stream().filter(s -> proxy.getPlayer(s) != null).map(proxy::getPlayer).collect(Collectors.toList());
+            if (onlines.size() > 0) {
+                if (!MutedPlayers.getInstance().exists(punishment1.getPrimaryIdentifier()))
+                    new MutedPlayers.MuteObject(punishment1.getPrimaryIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent(), newInstance.getIp()).save();
+                onlines.forEach(p -> {
+                    if (!p.getName().equalsIgnoreCase(punishment1.getPrimaryIdentifier())) {
+                        final List<String> collect = applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance);
+                        final ComponentBuilder componentBuilder = new ComponentBuilder("");
+                        collect.forEach(componentBuilder::append);
+                        p.sendMessage(componentBuilder.create());
+                    }
+                });
+            }
         };
     }
 
