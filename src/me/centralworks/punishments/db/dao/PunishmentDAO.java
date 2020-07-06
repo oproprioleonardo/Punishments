@@ -10,10 +10,7 @@ import me.centralworks.punishments.punishs.PunishmentData;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentState;
 import me.centralworks.punishments.punishs.supliers.enums.PunishmentType;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class PunishmentDAO {
@@ -267,8 +264,9 @@ public class PunishmentDAO {
             final PreparedStatement st;
             final StringBuilder stringBuilder = new StringBuilder();
             pd.getEvidences().forEach(s -> stringBuilder.append(stringBuilder.toString().equals("") ? s : "," + s));
+            boolean isNew = false;
             if (!p.idIsValid()) {
-                st = connection.prepareStatement("INSERT INTO arcanth_punishments VALUES(DEFAULT, ?,?,?,?,?,?,?,?,?,?,?)");
+                st = connection.prepareStatement("INSERT INTO arcanth_punishments VALUES(DEFAULT, ?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
                 st.setString(1, p.getPrimaryIdentifier());
                 st.setString(2, !p.ipIsValid() ? "null" : p.getIp());
                 st.setString(3, pd.getPunishmentType().getIdentifier());
@@ -280,6 +278,7 @@ public class PunishmentDAO {
                 st.setString(9, pd.getPunishmentState().getIdentifier());
                 st.setBoolean(10, pd.isPermanent());
                 st.setString(11, p.getSecondaryIdentifier());
+                isNew = true;
             } else {
                 st = connection.prepareStatement("INSERT INTO arcanth_punishments VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ID = ?, User = ?, addressIP = ?, type = ?, reason = ?, startedAt = ?, finishAt = ?, punisher = ?, evidences = ?, punishmentState = ?, permanent = ?, breakNick = ?");
                 st.setInt(1, p.getId());
@@ -308,9 +307,11 @@ public class PunishmentDAO {
                 st.setString(24, p.getSecondaryIdentifier());
             }
             st.executeUpdate();
-            final ResultSet generatedKeys = st.getGeneratedKeys();
-            generatedKeys.next();
-            p.setId(generatedKeys.getInt("ID"));
+            if (isNew) {
+                final ResultSet generatedKeys = st.getGeneratedKeys();
+                generatedKeys.next();
+                p.setId(generatedKeys.getInt("ID"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
