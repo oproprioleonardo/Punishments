@@ -1,5 +1,5 @@
 name: cwPunishments
 version: 1.0.0
-main: me.centralworks.punishments.Main
+main: me.centralworks.Main
 author: <Leonardo/>
 description: A plugin developed by the CentralWorks team for the Archant server.
