@@ -5,12 +5,6 @@
 #O identificador das punições dos servidores online-mode é UUID, já os piratas, nickname.
 #Críticas são fortemente aceitas e analisadas por mim, qualquer bug ou sugestão contate-me.
 #Código livre! Caso queira consultar a source peça-me no privado do Discord.
-MySQL:
-  User: root
-  Password: '123'
-  Host: 'localhost'
-  Port: '3306'
-  Database: 'arcanth_db'
 Commands-locked-when-silenced:
   - "/g"
   - "/l"

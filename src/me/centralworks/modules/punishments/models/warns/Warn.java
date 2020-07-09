@@ -1,6 +1,6 @@
 package me.centralworks.modules.punishments.models.warns;
 
-import me.centralworks.modules.punishments.db.dao.WarnDAO;
+import me.centralworks.modules.punishments.dao.WarnDAO;
 
 public class Warn {
 

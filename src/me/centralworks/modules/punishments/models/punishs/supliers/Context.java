@@ -1,17 +1,17 @@
-package me.centralworks.modules.punishments.models.punishs.supliers.runners;
+package me.centralworks.modules.punishments.models.punishs.supliers;
 
 import com.google.common.collect.Lists;
 import me.centralworks.lib.General;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
 import me.centralworks.modules.punishments.models.punishs.PunishmentData;
-import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
+import me.centralworks.modules.punishments.models.punishs.supliers.cached.Contexts;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-public class Run {
+public class Context {
 
     private String target;
     private String punisher = "Sistema";
@@ -26,7 +26,7 @@ public class Run {
     private boolean permanent = false;
     private String secondaryIdentifier;
 
-    public Run(String target, String punisher, Boolean isPreDefined, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, Consumer<Punishment> functionIfAddress, String ip, boolean permanent, String secondaryIdentifier) {
+    public Context(String target, String punisher, Boolean isPreDefined, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, Consumer<Punishment> functionIfAddress, String ip, boolean permanent, String secondaryIdentifier) {
         this.target = target;
         this.punisher = punisher;
         this.isPreDefined = isPreDefined;
@@ -41,7 +41,7 @@ public class Run {
         this.secondaryIdentifier = secondaryIdentifier;
     }
 
-    public Run(PunishmentType pt) {
+    public Context(PunishmentType pt) {
         this.punishmentType = pt;
     }
 
@@ -177,7 +177,7 @@ public class Run {
     }
 
     public void addTask() {
-        Task.getInstance().add(punisher, this);
+        Contexts.getInstance().add(punisher, this);
     }
 
     private void execute() {

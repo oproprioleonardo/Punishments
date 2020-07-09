@@ -1,7 +1,7 @@
-package me.centralworks.modules.punishments.db.dao;
+package me.centralworks.modules.punishments.dao;
 
 import com.google.common.collect.Lists;
-import me.centralworks.modules.punishments.db.ConnectionFactory;
+import me.centralworks.database.ConnectionFactory;
 import me.centralworks.modules.punishments.models.warns.Warn;
 
 import java.sql.*;

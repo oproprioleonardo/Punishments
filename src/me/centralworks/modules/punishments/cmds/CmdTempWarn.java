@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import me.centralworks.Main;
 import me.centralworks.lib.Date;
 import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
 import me.centralworks.modules.punishments.models.warns.Warn;
 import net.md_5.bungee.api.CommandSender;
@@ -15,17 +16,17 @@ import net.md_5.bungee.config.Configuration;
 public class CmdTempWarn extends Command {
 
     public CmdTempWarn() {
-        super("tempwarn", Permission.TEMPWARN.getPermission(), "tempavisar");
+        super("tempwarn", "", "tempavisar");
     }
 
     @Override
     public void execute(CommandSender s, String[] args) {
         if (!Permission.hasPermission(s, Permission.TEMPWARN)) {
-            new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
+            new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
             return;
         }
         final ProxyServer proxy = Main.getInstance().getProxy();
-        final Configuration cfg = Main.getMessages();
+        final Configuration cfg = PunishmentPlugin.getMessages();
         final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
         try {
             final String target = args[0];
@@ -44,7 +45,7 @@ public class CmdTempWarn extends Command {
             new Message(cfg.getString("Messages.wait")).send(s);
             warn.saveAsync();
         } catch (Exception e) {
-            new Message(Main.getUsages().getString("Usages.tempwarn")).send(s);
+            new Message(PunishmentPlugin.getUsages().getString("Usages.tempwarn")).send(s);
         }
     }
 }

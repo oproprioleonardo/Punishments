@@ -3,6 +3,7 @@ package me.centralworks.modules.punishments.cmds;
 import me.centralworks.Main;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
 import net.md_5.bungee.BungeeCord;
@@ -15,18 +16,18 @@ import java.util.List;
 public class CmdUnban extends Command {
 
     public CmdUnban() {
-        super("unban", Permission.UNBAN.getPermission(), "desbanir");
+        super("unban", "", "desbanir");
     }
 
     @Override
     public void execute(CommandSender s, String[] args) {
-        final Configuration cfg = Main.getMessages();
+        final Configuration cfg = PunishmentPlugin.getMessages();
         final General gnrlLib = General.getGeneralLib();
         if (!Permission.hasPermission(s, Permission.UNBAN)) {
-            new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
+            new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
             return;
         }
-        new Message(Main.getMessages().getString("Messages.wait")).send(s);
+        new Message(PunishmentPlugin.getMessages().getString("Messages.wait")).send(s);
         BungeeCord.getInstance().getScheduler().runAsync(Main.getInstance(), () -> {
             try {
                 final Punishment punishment = gnrlLib.easyInstance();
@@ -38,7 +39,7 @@ public class CmdUnban extends Command {
                     new Message(cfg.getString("Messages.ban-pardon")).send(s);
                 } else new Message(cfg.getString("Messages.ban-not-found")).send(s);
             } catch (Exception e) {
-                new Message(cfg.getString("Usages.unban")).send(s);
+                new Message(PunishmentPlugin.getUsages().getString("Usages.unban")).send(s);
             }
         });
 

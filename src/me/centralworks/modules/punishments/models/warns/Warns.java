@@ -3,7 +3,8 @@ package me.centralworks.modules.punishments.models.warns;
 import com.google.common.collect.Lists;
 import me.centralworks.Main;
 import me.centralworks.lib.General;
-import me.centralworks.modules.punishments.db.dao.WarnDAO;
+import me.centralworks.modules.punishments.PunishmentPlugin;
+import me.centralworks.modules.punishments.dao.WarnDAO;
 import net.md_5.bungee.BungeeCord;
 
 import java.util.Collections;
@@ -61,10 +62,10 @@ public class Warns {
     private void purify(String target) {
         final WarnDAO wd = WarnDAO.getInstance();
         final List<Warn> wl = General.getGeneralLib().updateAllWarns(wd.loadAllWarns(target));
-        final List<WarnPunishment> wps = Main.getWps();
+        final List<WarnPunishment> wps = PunishmentPlugin.getWps();
         wps.sort(Comparator.comparingInt(WarnPunishment::getAmount));
         Collections.reverse(wps);
-        for (WarnPunishment wp : Main.getWps()) {
+        for (WarnPunishment wp : PunishmentPlugin.getWps()) {
             if (wl.size() == wp.getAmount()) {
                 BungeeCord.getInstance().getPluginManager().dispatchCommand(BungeeCord.getInstance().getConsole(), wp.getCommand().replace("{jogador}", target));
                 break;

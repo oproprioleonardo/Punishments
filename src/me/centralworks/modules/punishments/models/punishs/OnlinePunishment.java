@@ -1,7 +1,7 @@
 package me.centralworks.modules.punishments.models.punishs;
 
 import me.centralworks.Main;
-import me.centralworks.modules.punishments.db.dao.PunishmentDAO;
+import me.centralworks.modules.punishments.dao.PunishmentDAO;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;

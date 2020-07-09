@@ -2,7 +2,8 @@ package me.centralworks.modules.punishments.cmds;
 
 import me.centralworks.Main;
 import me.centralworks.lib.Message;
-import me.centralworks.modules.punishments.db.dao.WarnDAO;
+import me.centralworks.modules.punishments.PunishmentPlugin;
+import me.centralworks.modules.punishments.dao.WarnDAO;
 import me.centralworks.modules.punishments.enums.Permission;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
@@ -12,16 +13,16 @@ import net.md_5.bungee.config.Configuration;
 public class CmdUnwarn extends Command {
 
     public CmdUnwarn() {
-        super("unwarn", Permission.UNWARN.getPermission(), "desavisar");
+        super("unwarn", "", "desavisar");
     }
 
     @Override
     public void execute(CommandSender s, String[] args) {
         if (!Permission.hasPermission(s, Permission.UNWARN)) {
-            new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
+            new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
             return;
         }
-        final Configuration cfg = Main.getMessages();
+        final Configuration cfg = PunishmentPlugin.getMessages();
         try {
             final Integer id = Integer.valueOf(args[0]);
             new Message(cfg.getString("Messages.wait")).send(s);
@@ -41,7 +42,7 @@ public class CmdUnwarn extends Command {
                 } else new Message(cfg.getString("Messages.warn-not-found")).send(s);
             });
         } catch (Exception ex) {
-            new Message(Main.getUsages().getString("Usages.unwarn")).send(s);
+            new Message(PunishmentPlugin.getUsages().getString("Usages.unwarn")).send(s);
         }
 
     }

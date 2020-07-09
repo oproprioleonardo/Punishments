@@ -1,0 +1,6 @@
+MySQL:
+  User: root
+  Password: '123'
+  Host: 'localhost'
+  Port: '3306'
+  Database: 'arcanth_db'

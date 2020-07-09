@@ -1,6 +1,6 @@
 package me.centralworks.lib;
 
-import me.centralworks.Main;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -18,7 +18,7 @@ public class LongMessage {
     }
 
     public LongMessage(String pathMessage) {
-        this.stringList = Main.getMessages().getStringList(pathMessage);
+        this.stringList = PunishmentPlugin.getMessages().getStringList(pathMessage);
     }
 
     public List<String> getStringList() {

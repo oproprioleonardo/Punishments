@@ -1,7 +1,7 @@
 package me.centralworks.modules.punishments.models.punishs;
 
 import me.centralworks.lib.General;
-import me.centralworks.modules.punishments.db.dao.PunishmentDAO;
+import me.centralworks.modules.punishments.dao.PunishmentDAO;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.MutedPlayers;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;

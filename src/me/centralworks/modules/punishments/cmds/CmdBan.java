@@ -4,11 +4,12 @@ import com.google.common.collect.Lists;
 import me.centralworks.Main;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
+import me.centralworks.modules.punishments.models.punishs.supliers.Context;
 import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
-import me.centralworks.modules.punishments.models.punishs.supliers.runners.Run;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -20,7 +21,7 @@ import java.util.List;
 public class CmdBan extends Command {
 
     public CmdBan() {
-        super("ban", Permission.BAN.getPermission(), "banir");
+        super("ban", "", "banir");
     }
 
     @Override
@@ -28,15 +29,15 @@ public class CmdBan extends Command {
         try {
             final ProxyServer proxy = Main.getInstance().getProxy();
             if (!Permission.hasPermission(s, Permission.BAN)) {
-                new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
             if (Main.isOnlineMode() && proxy.getPlayer(args[0]) == null) {
-                new Message(Main.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Run ban = new Run(PunishmentType.BAN);
+            final Context ban = new Context(PunishmentType.BAN);
             final General generalLib = General.getGeneralLib();
             final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
             ban.setPunisher(punisher);
@@ -49,7 +50,7 @@ public class CmdBan extends Command {
                 final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                 ban.setPunishmentReason(reasonObj);
                 ban.addTask();
-                new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.write-evidences")).send(p);
             } else {
                 if (!(args.length == 2)) {
                     final List<String> reason = Arrays.asList(args).subList(1, args.length);
@@ -63,8 +64,9 @@ public class CmdBan extends Command {
                 ban.run();
             }
         } catch (Exception e) {
-            if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.banPlayer")).send(s);
-            else new Message(Main.getUsages().getString("Usages.banConsole")).send(s);
+            if (s instanceof ProxiedPlayer)
+                new Message(PunishmentPlugin.getUsages().getString("Usages.banPlayer")).send(s);
+            else new Message(PunishmentPlugin.getUsages().getString("Usages.banConsole")).send(s);
         }
     }
 }

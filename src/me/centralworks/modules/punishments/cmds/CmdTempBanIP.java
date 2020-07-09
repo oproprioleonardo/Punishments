@@ -5,12 +5,13 @@ import me.centralworks.Main;
 import me.centralworks.lib.Date;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
+import me.centralworks.modules.punishments.models.punishs.supliers.Context;
 import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
-import me.centralworks.modules.punishments.models.punishs.supliers.runners.Run;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -22,7 +23,7 @@ import java.util.List;
 public class CmdTempBanIP extends Command {
 
     public CmdTempBanIP() {
-        super("tempbanip", Permission.TEMPBANIP.getPermission(), "tempsilenciarip", "silenciartempip");
+        super("tempbanip", "", "tempsilenciarip", "silenciartempip");
     }
 
     @Override
@@ -30,21 +31,21 @@ public class CmdTempBanIP extends Command {
         try {
             final ProxyServer proxy = Main.getInstance().getProxy();
             if (!Permission.hasPermission(s, Permission.TEMPBANIP)) {
-                new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
             if (Main.isOnlineMode() && proxy.getPlayer(args[0]) == null) {
-                new Message(Main.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Run ban = new Run(PunishmentType.TEMPBAN);
+            final Context ban = new Context(PunishmentType.TEMPBAN);
             final General generalLib = General.getGeneralLib();
             final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
             final AddressIP adr = AddressIP.getInstance();
             if (!adr.existsPlayer(target)) {
-                new Message(Main.getMessages().getString("Messages.ip-not-registered")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.ip-not-registered")).send(s);
                 return;
             }
             ban.setIp(adr.getByAccount(target).getHostName());
@@ -58,7 +59,7 @@ public class CmdTempBanIP extends Command {
                 reasonObj.setDuration(duration);
                 ban.setPunishmentReason(reasonObj);
                 ban.addTask();
-                new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.write-evidences")).send(p);
             } else {
                 if (!(args.length == 3)) {
                     final List<String> reason = Arrays.asList(args).subList(2, args.length);
@@ -75,8 +76,9 @@ public class CmdTempBanIP extends Command {
                 ban.run();
             }
         } catch (Exception e) {
-            if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.tempBanIPPlayer")).send(s);
-            else new Message(Main.getUsages().getString("Usages.tempBanIPConsole")).send(s);
+            if (s instanceof ProxiedPlayer)
+                new Message(PunishmentPlugin.getUsages().getString("Usages.tempBanIPPlayer")).send(s);
+            else new Message(PunishmentPlugin.getUsages().getString("Usages.tempBanIPConsole")).send(s);
         }
     }
 }

@@ -1,9 +1,9 @@
-package me.centralworks.modules.punishments.db.dao;
+package me.centralworks.modules.punishments.dao;
 
 import com.google.common.collect.Lists;
 import me.centralworks.Main;
+import me.centralworks.database.ConnectionFactory;
 import me.centralworks.lib.Date;
-import me.centralworks.modules.punishments.db.ConnectionFactory;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
 import net.md_5.bungee.BungeeCord;
 

@@ -1,4 +1,4 @@
-package me.centralworks.modules.punishments.db;
+package me.centralworks.database;
 
 import me.centralworks.Main;
 import net.md_5.bungee.config.Configuration;
@@ -10,7 +10,7 @@ public class ConnectionFactory {
 
     public static Connection make() {
         try {
-            final Configuration configuration = Main.getConfiguration();
+            final Configuration configuration = Main.getDataConfiguration();
             String password = configuration.getString("MySQL.Password");
             String user = configuration.getString("MySQL.User");
             String host = configuration.getString("MySQL.Host");

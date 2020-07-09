@@ -5,11 +5,12 @@ import me.centralworks.Main;
 import me.centralworks.lib.Date;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
+import me.centralworks.modules.punishments.models.punishs.supliers.Context;
 import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
-import me.centralworks.modules.punishments.models.punishs.supliers.runners.Run;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,7 +22,7 @@ import java.util.List;
 public class CmdTempBan extends Command {
 
     public CmdTempBan() {
-        super("tempban", Permission.TEMPBAN.getPermission(), "tempbanir", "banirtemp");
+        super("tempban", "", "tempbanir", "banirtemp");
     }
 
     @Override
@@ -29,15 +30,15 @@ public class CmdTempBan extends Command {
         try {
             final ProxyServer proxy = Main.getInstance().getProxy();
             if (!Permission.hasPermission(s, Permission.TEMPBAN)) {
-                new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
             if (Main.isOnlineMode() && proxy.getPlayer(args[0]) == null) {
-                new Message(Main.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Run ban = new Run(PunishmentType.TEMPBAN);
+            final Context ban = new Context(PunishmentType.TEMPBAN);
             final General generalLib = General.getGeneralLib();
             final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
@@ -51,7 +52,7 @@ public class CmdTempBan extends Command {
                 reasonObj.setDuration(duration);
                 ban.setPunishmentReason(reasonObj);
                 ban.addTask();
-                new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.write-evidences")).send(p);
             } else {
                 if (!(args.length == 3)) {
                     final List<String> reason = Arrays.asList(args).subList(2, args.length);
@@ -68,8 +69,9 @@ public class CmdTempBan extends Command {
                 ban.run();
             }
         } catch (Exception e) {
-            if (s instanceof ProxiedPlayer) new Message(Main.getUsages().getString("Usages.tempBanPlayer")).send(s);
-            else new Message(Main.getUsages().getString("Usages.tempBanConsole")).send(s);
+            if (s instanceof ProxiedPlayer)
+                new Message(PunishmentPlugin.getUsages().getString("Usages.tempBanPlayer")).send(s);
+            else new Message(PunishmentPlugin.getUsages().getString("Usages.tempBanConsole")).send(s);
         }
     }
 }

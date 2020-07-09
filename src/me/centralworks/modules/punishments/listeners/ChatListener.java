@@ -1,10 +1,10 @@
 package me.centralworks.modules.punishments.listeners;
 
-import me.centralworks.Main;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
-import me.centralworks.modules.punishments.models.punishs.supliers.runners.Run;
-import me.centralworks.modules.punishments.models.punishs.supliers.runners.Task;
+import me.centralworks.modules.punishments.PunishmentPlugin;
+import me.centralworks.modules.punishments.models.punishs.supliers.Context;
+import me.centralworks.modules.punishments.models.punishs.supliers.cached.Contexts;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -20,28 +20,28 @@ public class ChatListener implements Listener {
         if (e.isProxyCommand()) return;
         if (sender instanceof ProxiedPlayer) {
             final ProxiedPlayer p = (ProxiedPlayer) e.getSender();
-            final Task task = Task.getInstance();
+            final Contexts contexts = Contexts.getInstance();
             final String message = e.getMessage();
-            final Run run = task.get(p.getName());
+            final Context context = contexts.get(p.getName());
             final General generalLib = General.getGeneralLib();
-            if (!task.exists(p.getName())) return;
+            if (!contexts.exists(p.getName())) return;
             e.setCancelled(true);
             if (message.equalsIgnoreCase("pronto")) {
-                task.remove(p.getName());
-                run.run();
+                contexts.remove(p.getName());
+                context.run();
                 return;
             }
             if (message.equalsIgnoreCase("cancelar")) {
-                task.remove(p.getName());
-                new Message(Main.getMessages().getString("Messages.operation-cancel")).send(p);
+                contexts.remove(p.getName());
+                new Message(PunishmentPlugin.getMessages().getString("Messages.operation-cancel")).send(p);
                 return;
             }
             if (!generalLib.isLink(message)) {
-                new Message(Main.getMessages().getString("Messages.invalid-link")).send(p);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.invalid-link")).send(p);
                 return;
             }
-            new Message(Main.getMessages().getString("Messages.next-link")).send(p);
-            run.attachEvidence(message);
+            new Message(PunishmentPlugin.getMessages().getString("Messages.next-link")).send(p);
+            context.attachEvidence(message);
         }
     }
 }

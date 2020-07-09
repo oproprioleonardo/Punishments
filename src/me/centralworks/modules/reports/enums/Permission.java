@@ -1,4 +1,4 @@
-package me.centralworks.modules.punishments.enums;
+package me.centralworks.modules.reports.enums;
 
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -6,25 +6,9 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 public enum Permission {
 
     ADMIN("punishments.admin"),
-    STAFF("punishments.punir"),
-    BAN("punishments.ban"),
-    BANIP("punishments.ban.ip"),
-    TEMPBANIP("punishments.tempban.ip"),
-    TEMPBAN("punishments.tempban"),
-    MUTE("punishments.mute"),
-    MUTEIP("punishments.mute.ip"),
-    TEMPMUTEIP("punishments.tempmute.ip"),
-    TEMPMUTE("punishments.tempmute"),
-    UNBAN("punishments.unban"),
-    UNMUTE("punishments.unmute"),
-    UNPUNISH("punishments.unpunish"),
-    PUNISHVIEW("punishments.view"),
-    PUNISHHISTORY("punishments.history"),
-    KICK("punishments.kick"),
-    WARN("punishments.warn"),
-    TEMPWARN("punishments.tempwarn"),
-    UNWARN("punishments.unwarn"),
-    WARNS("punishments.warns");
+    REPORT("punishments.report"),
+    REPORTS("punishments.reports");
+
 
     private final String permission;
 

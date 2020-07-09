@@ -4,11 +4,12 @@ import com.google.common.collect.Lists;
 import me.centralworks.Main;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
+import me.centralworks.modules.punishments.models.punishs.supliers.Context;
 import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
-import me.centralworks.modules.punishments.models.punishs.supliers.runners.Run;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -29,15 +30,15 @@ public class CmdMute extends Command {
         final boolean isPlayer = s instanceof ProxiedPlayer;
         try {
             if (!Permission.hasPermission(s, Permission.MUTE)) {
-                new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
             if (Main.isOnlineMode() && proxy.getPlayer(args[0]) == null) {
-                new Message(Main.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Run mute = new Run(PunishmentType.MUTE);
+            final Context mute = new Context(PunishmentType.MUTE);
             final General generalLib = General.getGeneralLib();
             final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
             mute.setPunisher(punisher);
@@ -50,7 +51,7 @@ public class CmdMute extends Command {
                 final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                 mute.setPunishmentReason(reasonObj);
                 mute.addTask();
-                new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.write-evidences")).send(p);
             } else {
                 if (!(args.length == 2)) {
                     final List<String> reason = Arrays.asList(args).subList(1, args.length);
@@ -64,8 +65,8 @@ public class CmdMute extends Command {
                 mute.run();
             }
         } catch (Exception e) {
-            if (isPlayer) new Message(Main.getUsages().getString("Usages.mutePlayer")).send(s);
-            else new Message(Main.getUsages().getString("Usages.muteConsole")).send(s);
+            if (isPlayer) new Message(PunishmentPlugin.getUsages().getString("Usages.mutePlayer")).send(s);
+            else new Message(PunishmentPlugin.getUsages().getString("Usages.muteConsole")).send(s);
         }
     }
 }

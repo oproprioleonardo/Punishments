@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import me.centralworks.Main;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
 import me.centralworks.modules.punishments.models.warns.Warn;
 import net.md_5.bungee.api.CommandSender;
@@ -15,18 +16,18 @@ import net.md_5.bungee.config.Configuration;
 public class CmdWarn extends Command {
 
     public CmdWarn() {
-        super("warn", Permission.WARN.getPermission(), "avisar");
+        super("warn", "", "avisar");
     }
 
     @Override
     public void execute(CommandSender s, String[] args) {
         if (!Permission.hasPermission(s, Permission.WARN)) {
-            new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
+            new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
             return;
         }
         final ProxyServer proxy = Main.getInstance().getProxy();
         final General lib = General.getGeneralLib();
-        final Configuration cfg = Main.getMessages();
+        final Configuration cfg = PunishmentPlugin.getMessages();
         final ProxiedPlayer p = ((ProxiedPlayer) s);
         final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
         try {
@@ -46,7 +47,7 @@ public class CmdWarn extends Command {
             new Message(cfg.getString("Messages.wait")).send(s);
             warn.saveAsync();
         } catch (Exception e) {
-            new Message(Main.getUsages().getString("Usages.warn")).send(s);
+            new Message(PunishmentPlugin.getUsages().getString("Usages.warn")).send(s);
         }
 
     }

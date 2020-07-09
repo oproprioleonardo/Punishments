@@ -2,6 +2,7 @@ package me.centralworks.modules.punishments.listeners.withAddressIP;
 
 import me.centralworks.Main;
 import me.centralworks.lib.LongMessage;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.MutedPlayers;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.Connection;
@@ -46,7 +47,7 @@ public class MuteIPChatListener implements Listener {
         if (e.isProxyCommand()) return;
         final Connection sender = e.getSender();
         if (sender instanceof ProxiedPlayer) {
-            if (Main.getConfiguration().getStringList("Commands-locked-when-silenced").stream().noneMatch(s -> s.equalsIgnoreCase(e.getMessage().split(" ")[0])))
+            if (PunishmentPlugin.getConfiguration().getStringList("Commands-locked-when-silenced").stream().noneMatch(s -> s.equalsIgnoreCase(e.getMessage().split(" ")[0])))
                 return;
             final ProxiedPlayer p = (ProxiedPlayer) e.getSender();
             final MutedPlayers instance = MutedPlayers.getInstance();

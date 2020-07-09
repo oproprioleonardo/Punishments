@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import me.centralworks.Main;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
@@ -15,19 +16,19 @@ import net.md_5.bungee.config.Configuration;
 public class CmdKick extends Command {
 
     public CmdKick() {
-        super("kick", Permission.KICK.getPermission(), "expulsar");
+        super("kick", "", "expulsar");
     }
 
     @Override
     public void execute(CommandSender s, String[] args) {
         try {
             if (!Permission.hasPermission(s, Permission.KICK)) {
-                new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
             final ProxyServer proxy = Main.getInstance().getProxy();
             final General lib = General.getGeneralLib();
-            final Configuration cfg = Main.getMessages();
+            final Configuration cfg = PunishmentPlugin.getMessages();
             final ProxiedPlayer p = BungeeCord.getInstance().getPlayer(args[0]);
             if (args.length == 1) {
                 lib.kickPlayer(p, s instanceof ProxiedPlayer ? s.getName() : "Sistema", "");
@@ -36,7 +37,7 @@ public class CmdKick extends Command {
                 lib.kickPlayer(p, s instanceof ProxiedPlayer ? s.getName() : "Sistema", reasonText);
             }
         } catch (Exception e) {
-            new Message(Main.getUsages().getString("Usages.kick")).send(s);
+            new Message(PunishmentPlugin.getUsages().getString("Usages.kick")).send(s);
         }
     }
 }

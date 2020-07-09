@@ -1,8 +1,8 @@
-package me.centralworks.modules.punishments.db.dao;
+package me.centralworks.modules.punishments.dao;
 
 import com.google.common.collect.Lists;
 import me.centralworks.Main;
-import me.centralworks.modules.punishments.db.ConnectionFactory;
+import me.centralworks.database.ConnectionFactory;
 import me.centralworks.modules.punishments.models.punishs.OfflinePunishment;
 import me.centralworks.modules.punishments.models.punishs.OnlinePunishment;
 import me.centralworks.modules.punishments.models.punishs.Punishment;

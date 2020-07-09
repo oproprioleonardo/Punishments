@@ -5,12 +5,13 @@ import me.centralworks.Main;
 import me.centralworks.lib.Date;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
+import me.centralworks.modules.punishments.models.punishs.supliers.Context;
 import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
-import me.centralworks.modules.punishments.models.punishs.supliers.runners.Run;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -22,7 +23,7 @@ import java.util.List;
 public class CmdTempMuteIP extends Command {
 
     public CmdTempMuteIP() {
-        super("tempmuteip", Permission.TEMPMUTEIP.getPermission(), "tempsilenciarip");
+        super("tempmuteip", "", "tempsilenciarip");
     }
 
     @Override
@@ -31,21 +32,21 @@ public class CmdTempMuteIP extends Command {
         final boolean isPlayer = s instanceof ProxiedPlayer;
         try {
             if (!Permission.hasPermission(s, Permission.TEMPMUTEIP)) {
-                new Message(Main.getMessages().getString("Messages.permission-error")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
                 return;
             }
             if (Main.isOnlineMode() && proxy.getPlayer(args[0]) == null) {
-                new Message(Main.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Run mute = new Run(PunishmentType.TEMPMUTE);
+            final Context mute = new Context(PunishmentType.TEMPMUTE);
             final General generalLib = General.getGeneralLib();
             final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
             final AddressIP adr = AddressIP.getInstance();
             if (!adr.existsPlayer(target)) {
-                new Message(Main.getMessages().getString("Messages.ip-not-registered")).send(s);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.ip-not-registered")).send(s);
                 return;
             }
             mute.setIp(adr.getByAccount(target).getHostName());
@@ -59,7 +60,7 @@ public class CmdTempMuteIP extends Command {
                 reasonObj.setDuration(duration);
                 mute.setPunishmentReason(reasonObj);
                 mute.addTask();
-                new Message(Main.getMessages().getString("Messages.write-evidences")).send(p);
+                new Message(PunishmentPlugin.getMessages().getString("Messages.write-evidences")).send(p);
             } else {
                 if (!(args.length == 3)) {
                     final List<String> reason = Arrays.asList(args).subList(2, args.length);
@@ -74,8 +75,8 @@ public class CmdTempMuteIP extends Command {
                 mute.run();
             }
         } catch (Exception e) {
-            if (isPlayer) new Message(Main.getUsages().getString("Usages.tempMuteIPPlayer")).send(s);
-            else new Message(Main.getUsages().getString("Usages.tempMuteIPConsole")).send(s);
+            if (isPlayer) new Message(PunishmentPlugin.getUsages().getString("Usages.tempMuteIPPlayer")).send(s);
+            else new Message(PunishmentPlugin.getUsages().getString("Usages.tempMuteIPConsole")).send(s);
         }
     }
 }

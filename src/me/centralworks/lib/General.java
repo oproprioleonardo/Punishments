@@ -2,7 +2,8 @@ package me.centralworks.lib;
 
 import com.google.common.collect.Lists;
 import me.centralworks.Main;
-import me.centralworks.modules.punishments.db.dao.WarnDAO;
+import me.centralworks.modules.punishments.PunishmentPlugin;
+import me.centralworks.modules.punishments.dao.WarnDAO;
 import me.centralworks.modules.punishments.enums.Permission;
 import me.centralworks.modules.punishments.models.punishs.OfflinePunishment;
 import me.centralworks.modules.punishments.models.punishs.OnlinePunishment;
@@ -43,7 +44,7 @@ public class General {
     }
 
     public void sendPunishments(ProxiedPlayer p, String target) {
-        final Configuration msg = Main.getMessages();
+        final Configuration msg = PunishmentPlugin.getMessages();
         final ComponentBuilder title = new ComponentBuilder("");
         msg.getStringList("Messages.punish.title").stream().map(s -> s.replace("&", "§")).forEach(title::append);
         p.sendMessage(title.create());
@@ -67,7 +68,7 @@ public class General {
     }
 
     public void sendPunishmentStatus(CommandSender s, Punishment p) {
-        final Configuration cfg = Main.getMessages();
+        final Configuration cfg = PunishmentPlugin.getMessages();
         final ComponentBuilder msg = new ComponentBuilder("");
         final PunishmentData data = p.getData();
         for (String s1 : cfg.getStringList("Runners.punishment-view")) {
@@ -90,7 +91,7 @@ public class General {
     }
 
     public void kickPlayer(ProxiedPlayer p, String author, String reason) {
-        final Configuration cfg = Main.getMessages();
+        final Configuration cfg = PunishmentPlugin.getMessages();
         final ComponentBuilder msg = new ComponentBuilder("");
         for (String s1 : cfg.getStringList("Runners.kick")) {
             msg.append(s1
@@ -104,14 +105,14 @@ public class General {
     }
 
     public void sendHistory(CommandSender s, List<Punishment> punishments) {
-        final Configuration cfg = Main.getMessages();
+        final Configuration cfg = PunishmentPlugin.getMessages();
         final StringBuilder builder = new StringBuilder();
         punishments.forEach(punishment -> builder.append(builder.toString().equals("") ? "§e#" + punishment.getId() : "§7, " + "§e#" + punishment.getId()));
         new Message(cfg.getString("Messages.history").replace("{nickname}", punishments.get(0).getSecondaryIdentifier()).replace("{ids}", builder.toString())).send(s);
     }
 
     public void sendHistoryWarn(CommandSender s, List<Warn> warns) {
-        final Configuration cfg = Main.getMessages();
+        final Configuration cfg = PunishmentPlugin.getMessages();
         final StringBuilder builder = new StringBuilder();
         warns.forEach(w -> builder.append(builder.toString().equals("") ? "§e#" + w.getId() : "§7, " + "§e#" + w.getId()));
         new Message(cfg.getString("Messages.warns").replace("{nickname}", warns.get(0).getTarget()).replace("{ids}", builder.toString())).send(s);
