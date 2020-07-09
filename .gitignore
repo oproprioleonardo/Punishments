@@ -13,3 +13,5 @@
 .idea/modules.xml
 .idea/uiDesigner.xml
 cwPunishments.iml
+src/test/
+target/
