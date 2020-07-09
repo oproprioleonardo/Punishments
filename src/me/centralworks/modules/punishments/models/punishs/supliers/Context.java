@@ -1,7 +1,10 @@
 package me.centralworks.modules.punishments.models.punishs.supliers;
 
 import com.google.common.collect.Lists;
+import me.centralworks.Main;
 import me.centralworks.lib.General;
+import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
 import me.centralworks.modules.punishments.models.punishs.PunishmentData;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Contexts;
@@ -181,6 +184,11 @@ public class Context {
     }
 
     private void execute() {
+        if (!getTarget().equalsIgnoreCase("Sistema") && Main.getUsersImmune().stream().anyMatch(s -> s.equalsIgnoreCase(getTarget()))) {
+            if (Main.getInstance().getProxy().getPlayer(getTarget()) != null)
+                new Message(PunishmentPlugin.getMessages().getString("Messages.immune")).send(Main.getInstance().getProxy().getPlayer(getTarget()));
+            return;
+        }
         final General generalLib = General.getGeneralLib();
         final Punishment punishment = generalLib.easyInstance(getTarget(), getTarget());
         final PunishmentData pd = new PunishmentData();

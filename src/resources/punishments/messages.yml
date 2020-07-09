@@ -21,6 +21,7 @@ Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
   warn-deleted: "&cO aviso foi deletado com sucesso."
   warns: "&eAvisos do jogador {nickname}: {ids}."
   already-revoked: "&cEssa punição já está revogada."
+  immune: "&cEsse jogador não pode ser punido."
   punish:
     title:
       - "       &6&lRede Arcanth\n"

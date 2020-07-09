@@ -1,6 +1,7 @@
 package me.centralworks;
 
 import me.centralworks.modules.punishments.PunishmentPlugin;
+import me.centralworks.modules.reports.ReportPlugin;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -9,12 +10,23 @@ import net.md_5.bungee.config.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 
 public class Main extends Plugin {
 
     protected static Main instance;
     protected static boolean onlineMode;
     protected static Configuration dataConfiguration;
+    protected static Configuration immune;
+    protected static List<String> usersImmune;
+
+    public static List<String> getUsersImmune() {
+        return usersImmune;
+    }
+
+    public static Configuration getImmune() {
+        return immune;
+    }
 
     public static Configuration getDataConfiguration() {
         return dataConfiguration;
@@ -66,14 +78,17 @@ public class Main extends Plugin {
         }
     }
 
+    @SuppressWarnings("InstantiationOfUtilityClass")
     @Override
     public void onEnable() {
         instance = this;
         onlineMode = Main.getInstance().getProxy().getConfig().isOnlineMode();
         dataConfiguration = Main.getConfiguration("data.yml", "/resources/");
+        immune = Main.getConfiguration("immune.yml", "/resources/");
+        usersImmune = getImmune().getStringList("Users");
         new PunishmentPlugin();
+        new ReportPlugin();
     }
-
     @Override
     public void onDisable() {
         PunishmentPlugin.getDisable().accept(PunishmentPlugin.getInstance());
