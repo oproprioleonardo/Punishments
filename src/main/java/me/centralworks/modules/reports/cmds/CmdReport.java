@@ -1,6 +1,8 @@
 package me.centralworks.modules.reports.cmds;
 
+import com.google.common.collect.Lists;
 import me.centralworks.Main;
+import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.reports.ReportPlugin;
@@ -21,6 +23,7 @@ public class CmdReport extends Command {
     public void execute(CommandSender s, String[] args) {
         try {
             final ProxyServer proxy = Main.getInstance().getProxy();
+            final General lib = General.getGeneralLib();
             if (!Permission.hasPermission(s, Permission.REPORT)) {
                 new Message(ReportPlugin.getMessages().getString("Messages.permission-error")).send(s);
                 return;
@@ -33,9 +36,16 @@ public class CmdReport extends Command {
                 new Message(ReportPlugin.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
                 return;
             }
-            final Context context = new Context();
+            final ProxiedPlayer p = (ProxiedPlayer) s;
             final String target = args[0];
-
+            if (args.length == 1) lib.sendReportList(p, target);
+            else {
+                final String reason = String.join(" ", Lists.newArrayList(args).subList(2, args.length));
+                final Context context = new Context();
+                context.setTarget(target);
+                context.setVictim(p.getName());
+                context.setReason(reason);
+            }
         } catch (Exception e) {
             new Message(ReportPlugin.getUsages().getString("Usages.report")).send(s);
         }

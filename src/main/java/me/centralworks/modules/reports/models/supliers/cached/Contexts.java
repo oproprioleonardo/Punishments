@@ -14,5 +14,17 @@ public class Contexts {
         if (instance == null) instance = new Contexts();
         return instance;
     }
+
+    public void add(Context context) {
+        contexts.add(context);
+    }
+
+    public void remove(Context context) {
+        contexts.remove(context);
+    }
+
+    public Context get(String victim) {
+        return contexts.stream().filter(context -> context.getVictim().equalsIgnoreCase(victim)).findFirst().get();
+    }
 }
 

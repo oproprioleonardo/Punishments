@@ -2,6 +2,9 @@ package me.centralworks.modules.reports;
 
 import com.google.gson.Gson;
 import me.centralworks.Main;
+import me.centralworks.modules.reports.cmds.CmdReport;
+import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
 
 import java.util.List;
@@ -22,6 +25,15 @@ public class ReportPlugin {
         usages = Main.getConfiguration("usages.yml", "reports", "/reports/");
         gson = new Gson();
         reasons = getConfiguration().getStringList("Reasons");
+        registerCommand(new CmdReport());
+    }
+
+    protected void registerCommand(Command command) {
+        Main.getInstance().getProxy().getPluginManager().registerCommand(Main.getInstance(), command);
+    }
+
+    protected void registerListener(Listener listener) {
+        Main.getInstance().getProxy().getPluginManager().registerListener(Main.getInstance(), listener);
     }
 
     public static List<String> getReasons() {
