@@ -1,6 +1,10 @@
 package me.centralworks.modules.reports.models.supliers;
 
 import com.google.common.collect.Lists;
+import me.centralworks.lib.Message;
+import me.centralworks.modules.reports.ReportPlugin;
+import me.centralworks.modules.reports.models.supliers.cached.Contexts;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
 
@@ -61,5 +65,10 @@ public class Context {
 
     public void setEvidences(List<String> evidences) {
         this.evidences = evidences;
+    }
+
+    public void applyOtherInformation(ProxiedPlayer victim) {
+        Contexts.getInstance().add(this);
+        new Message(ReportPlugin.getMessages().getString("Messages.write-evidences")).send(victim);
     }
 }

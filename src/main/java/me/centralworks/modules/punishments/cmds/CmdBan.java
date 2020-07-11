@@ -49,8 +49,7 @@ public class CmdBan extends Command {
                 final List<String> reason = Arrays.asList(args).subList(1, args.length);
                 final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                 ban.setPunishmentReason(reasonObj);
-                ban.addTask();
-                new Message(PunishmentPlugin.getMessages().getString("Messages.write-evidences")).send(p);
+                ban.addTask(p);
             } else {
                 if (!(args.length == 2)) {
                     final List<String> reason = Arrays.asList(args).subList(1, args.length);

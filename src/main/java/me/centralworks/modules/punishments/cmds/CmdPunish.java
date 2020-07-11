@@ -70,8 +70,7 @@ public class CmdPunish extends Command {
                 punishment.setTarget(target);
                 punishment.setPunishmentReason(reason);
                 punishment.setPermanent(reason.isPermanent());
-                punishment.addTask();
-                new Message(PunishmentPlugin.getMessages().getString("Messages.write-evidences")).send(p);
+                punishment.addTask(p);
             } else new Message(PunishmentPlugin.getUsages().getString("Usages.punish")).send(s);
         } catch (Exception ignored) {
             new Message(PunishmentPlugin.getUsages().getString("Usages.punish")).send(s);

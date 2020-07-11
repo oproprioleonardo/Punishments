@@ -10,6 +10,7 @@ import me.centralworks.modules.punishments.models.punishs.PunishmentData;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Contexts;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -179,8 +180,9 @@ public class Context {
         execute();
     }
 
-    public void addTask() {
+    public void addTask(ProxiedPlayer p) {
         Contexts.getInstance().add(punisher, this);
+        new Message(PunishmentPlugin.getMessages().getString("Messages.write-evidences")).send(p);
     }
 
     private void execute() {

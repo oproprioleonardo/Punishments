@@ -26,5 +26,13 @@ public class Contexts {
     public Context get(String victim) {
         return contexts.stream().filter(context -> context.getVictim().equalsIgnoreCase(victim)).findFirst().get();
     }
+
+    public boolean has(String victim) {
+        return contexts.stream().anyMatch(context -> context.getVictim().equalsIgnoreCase(victim));
+    }
+
+    public void remove(String victim) {
+        remove(get(victim));
+    }
 }
 

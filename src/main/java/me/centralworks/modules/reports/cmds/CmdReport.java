@@ -8,6 +8,7 @@ import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.reports.ReportPlugin;
 import me.centralworks.modules.reports.enums.Permission;
 import me.centralworks.modules.reports.models.supliers.Context;
+import me.centralworks.modules.reports.models.supliers.cached.Contexts;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -40,11 +41,17 @@ public class CmdReport extends Command {
             final String target = args[0];
             if (args.length == 1) lib.sendReportList(p, target);
             else {
+                final Contexts contexts = Contexts.getInstance();
+                if (contexts.has(p.getName())) {
+                    new Message("§cUma denúncia de cada vez, amigo.").send(p);
+                    return;
+                }
                 final String reason = String.join(" ", Lists.newArrayList(args).subList(2, args.length));
                 final Context context = new Context();
                 context.setTarget(target);
                 context.setVictim(p.getName());
                 context.setReason(reason);
+                context.applyOtherInformation(p);
             }
         } catch (Exception e) {
             new Message(ReportPlugin.getUsages().getString("Usages.report")).send(s);
