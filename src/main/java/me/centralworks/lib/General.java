@@ -15,9 +15,11 @@ import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reason
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
 import me.centralworks.modules.punishments.models.warns.Warn;
+import me.centralworks.modules.reports.ReportPlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
 
@@ -44,8 +46,7 @@ public class General {
 
     public void sendPunishments(ProxiedPlayer p, String target) {
         final Configuration msg = PunishmentPlugin.getMessages();
-        final ComponentBuilder title = new ComponentBuilder("");
-        msg.getStringList("Messages.punish.title").stream().map(s -> s.replace("&", "§")).forEach(title::append);
+        final ComponentBuilder title = new ComponentBuilder(msg.getStringList("Messages.punish.title").stream().map(s -> s.replace("&", "§")).collect(Collectors.joining()));
         p.sendMessage(title.create());
         final ComponentBuilder reasons = new ComponentBuilder("");
         Reasons.getInstance().getReasons().forEach(reason -> {
@@ -61,8 +62,19 @@ public class General {
             new Message(msg.getString("Messages.punish.line.message").replace("&", "§").replace("{reason}", reason.getReason())).sendJson("/punir " + target + " " + reason.getReason(), String.join("", list), p);
         });
         p.sendMessage(reasons.create());
-        final ComponentBuilder footer = new ComponentBuilder("");
-        msg.getStringList("Messages.punish.footer").stream().map(s -> s.replace("&", "§")).forEach(footer::append);
+        final ComponentBuilder footer = new ComponentBuilder(msg.getStringList("Messages.punish.footer").stream().map(s -> s.replace("&", "§")).collect(Collectors.joining()));
+        p.sendMessage(footer.create());
+    }
+
+    public void sendReportList(ProxiedPlayer p, String target) {
+        final Configuration msg = ReportPlugin.getMessages();
+        final ComponentBuilder title = new ComponentBuilder(msg.getStringList("Messages.report.title").stream().map(s -> s.replace("&", "§")).collect(Collectors.joining()));
+        p.sendMessage(title.create());
+        ReportPlugin.getReasons().forEach(s -> {
+            final Message message = new Message(msg.getString("Messages.report.line.message").replace("{reason}", s));
+            message.sendJson("/reportar " + target + " " + s, msg.getString("Messages.report.line.hoverMessage").replace("&", "§").replace("{user}", target).replace("{reason}", s), p);
+        });
+        final ComponentBuilder footer = new ComponentBuilder(msg.getStringList("Messages.report.footer").stream().map(s -> s.replace("&", "§")).collect(Collectors.joining()));
         p.sendMessage(footer.create());
     }
 
@@ -77,7 +89,7 @@ public class General {
                             .replace("-", " às "))
                     .replace("{author}", data.getPunisher())
                     .replace("{id}", p.getId().toString())
-                    .replace("{evidence}", p.getData().getEvidences().size() == 0 ? "Nenhuma anexada" : formatEvidences(p))
+                    .replace("{evidence}", p.getData().getEvidences().size() == 0 ? "§f§l• Nenhuma anexada" : formatEvidences(p))
                     .replace("{nickname}", p.getSecondaryIdentifier())
                     .replace("{startedAt}", new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(data.getStartDate())
                             .replace("-", " às "))
@@ -100,7 +112,7 @@ public class General {
             );
         }
         p.disconnect(msg.create());
-        cfg.getStringList("Announcements.kick").forEach(s -> Main.getInstance().getProxy().broadcast(s.replace("{author}", author).replace("{reason}", reason.equals("") ? "Não informado" : reason)));
+        cfg.getStringList("Announcements.kick").forEach(s -> Main.getInstance().getProxy().broadcast(new TextComponent(s.replace("{author}", author).replace("{reason}", reason.equals("") ? "Não informado" : reason))));
     }
 
     public void sendHistory(CommandSender s, List<Punishment> punishments) {
@@ -118,25 +130,26 @@ public class General {
     }
 
     public String formatEvidences(Punishment p) {
-        final List<String> list = new ArrayList<>();
-        final List<String> cps = p.getData().getEvidences();
-        int pNumber = 1;
-        StringBuilder line = new StringBuilder("§7");
-        for (String cp : cps) {
-            line.append(cp);
-            if (pNumber == 2) {
-                list.add(line.toString());
-                line = new StringBuilder("§7");
-                pNumber = 1;
+        final List<String> evidences = p.getData().getEvidences();
+        final List<List<String>> pares = Lists.newArrayList();
+        List<String> par = Lists.newArrayList();
+        for (int i = 0; i < evidences.size(); i++) {
+            final String evidence = evidences.get(i);
+            if (par.size() < 2) {
+                par.add(evidence);
+                if (evidences.size() - i == 1) pares.add(par);
             } else {
-                line.append("§7, ");
-                pNumber++;
+                pares.add(par);
+                par = Lists.newArrayList();
+                par.add(evidence);
             }
         }
-        if (pNumber != 1) {
-            list.add(line.substring(0, line.length() - 2));
-        }
-        return String.join("\n", list);
+        return pares.stream().map(strings -> {
+            final StringBuilder string = new StringBuilder("§f§l• §2" + strings.get(0));
+            if (strings.size() == 2) string.append("§7, §2").append(strings.get(1));
+            string.append("§7.");
+            return string.toString();
+        }).collect(Collectors.joining("\n"));
     }
 
     public Consumer<Punishment> getFunctionBanIfOn() {

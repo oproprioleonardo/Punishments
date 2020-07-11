@@ -34,6 +34,11 @@ public class CmdTempWarn extends Command {
                 new Message(cfg.getString("Messages.only-player")).send(s);
                 return;
             }
+            if (!target.equalsIgnoreCase("Sistema") && Main.getUsersImmune().stream().anyMatch(s1 -> s1.equalsIgnoreCase(target))) {
+                if (Main.getInstance().getProxy().getPlayer(target) != null)
+                    new Message(PunishmentPlugin.getMessages().getString("Messages.immune")).send(Main.getInstance().getProxy().getPlayer(target));
+                return;
+            }
             final ProxiedPlayer t = proxy.getPlayer(target);
             final Warn warn = new Warn();
             warn.setTarget(t.getName());

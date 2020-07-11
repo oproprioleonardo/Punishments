@@ -114,7 +114,7 @@ public abstract class Punishment implements Data, Identifier, DAO {
         return id != null && id != 0;
     }
 
-    // DAO METHODS
+    // CRUD
 
     @Override
     public Punishment requireByPrimaryIdentifier() {

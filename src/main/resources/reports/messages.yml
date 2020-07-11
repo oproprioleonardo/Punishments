@@ -1,0 +1,13 @@
+Messages:
+  permission-error: "&cVocê não possui permissão para utilizar tal função."
+  only-player: "&cEsse comando funciona apenas para jogadores conectados no servidor."
+  report:
+    title:
+      - "       &6&lRede Arcanth - Reportes\n"
+      - "\n"
+    line:
+      message: "    &f&l• &f{reason}"
+      hoverMessage: "&7Clique para reportar &f{user} &7por &f{reason}&7."
+      hoverWithoutPermission: "\n\n&cVocê não possui permissão para aplicar essa punição."
+    footer:
+      - "\n&cNão abuse do comando, ou resultará em punição."

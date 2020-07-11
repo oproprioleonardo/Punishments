@@ -24,7 +24,7 @@ Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
   immune: "&cEsse jogador não pode ser punido."
   punish:
     title:
-      - "       &6&lRede Arcanth\n"
+      - "       &6&lRede Arcanth - Punições\n"
       - "\n"
     line:
       message: "    &f&l• &f{reason}"
@@ -104,7 +104,7 @@ Runners: #Precisa \n para pular a linha.
     - "&c * Término: {finishAt}\n"
     - "&c * Autor: {author}\n"
     - "&c * Estado: {state}\n"
-    - "&c * Provas: {evidence}\n"
+    - "&c * Provas: \n{evidence}\n"
   warn-alert:
     - "       &6&lRede Arcanth\n"
     - "\n"
