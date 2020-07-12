@@ -58,7 +58,7 @@ public class CmdTempBanIP extends Command {
                 final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                 reasonObj.setDuration(duration);
                 ban.setPunishmentReason(reasonObj);
-                ban.addTask(p);
+                ban.applyOtherInformation(p);
             } else {
                 if (!(args.length == 3)) {
                     final List<String> reason = Arrays.asList(args).subList(2, args.length);

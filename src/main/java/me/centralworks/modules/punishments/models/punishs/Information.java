@@ -1,6 +1,6 @@
 package me.centralworks.modules.punishments.models.punishs;
 
-public interface Data {
+public interface Information {
 
     PunishmentData getData();
 

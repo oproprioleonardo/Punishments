@@ -1,11 +1,15 @@
 package me.centralworks.modules.punishments.models.punishs;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import me.centralworks.Main;
 import me.centralworks.modules.punishments.dao.PunishmentDAO;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
 
+@Data
+@RequiredArgsConstructor
 public class OnlinePunishment extends Punishment {
 
     private UUID uuid;
@@ -25,9 +29,6 @@ public class OnlinePunishment extends Punishment {
      */
     public OnlinePunishment(String breakNick) {
         super(breakNick);
-    }
-
-    public OnlinePunishment() {
     }
 
     public UUID getUuid() {

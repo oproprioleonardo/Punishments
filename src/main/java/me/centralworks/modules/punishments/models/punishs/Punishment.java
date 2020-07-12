@@ -1,5 +1,7 @@
 package me.centralworks.modules.punishments.models.punishs;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import me.centralworks.lib.General;
 import me.centralworks.modules.punishments.dao.PunishmentDAO;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.MutedPlayers;
@@ -9,56 +11,32 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
 
-public abstract class Punishment implements Data, Identifier, DAO {
+@Data
+@RequiredArgsConstructor
+public abstract class Punishment implements Information, Identifier, DAO {
 
-    private PunishmentData punishmentData;
+    private PunishmentData data;
     private String ip = "";
-    private String breakNick;
+    private String secondaryIdentifier;
     private Integer id = 0;
 
-    public Punishment(PunishmentData punishmentData, String ip, Integer id) {
-        this.punishmentData = punishmentData;
+    public Punishment(PunishmentData data, String ip, Integer id) {
+        this.data = data;
         this.ip = ip;
         this.id = id;
     }
 
-    /**
-     * necessary evil
-     *
-     * @param breakNick nickname player.
-     */
-    public Punishment(String breakNick) {
-        this.breakNick = breakNick;
-    }
-
-    public Punishment() {
+    public Punishment(String secondaryIdentifier) {
+        this.secondaryIdentifier = secondaryIdentifier;
     }
 
     public void pardon() {
-        getPunishmentData().setPunishmentState(PunishmentState.REVOKED);
-        if (getPunishmentData().getPunishmentType() == PunishmentType.MUTE || getPunishmentData().getPunishmentType() == PunishmentType.TEMPMUTE) {
+        getData().setPunishmentState(PunishmentState.REVOKED);
+        if (getData().getPunishmentType() == PunishmentType.MUTE || getData().getPunishmentType() == PunishmentType.TEMPMUTE) {
             if (MutedPlayers.getInstance().exists(getPrimaryIdentifier()))
                 MutedPlayers.getInstance().remove(getPrimaryIdentifier());
         }
         this.save();
-    }
-
-    public PunishmentData getPunishmentData() {
-        return punishmentData;
-    }
-
-    public void setPunishmentData(PunishmentData punishmentData) {
-        this.punishmentData = punishmentData;
-    }
-
-    @Override
-    public String getSecondaryIdentifier() {
-        return breakNick;
-    }
-
-    @Override
-    public void setSecondaryIdentifier(String identifier) {
-        this.breakNick = identifier;
     }
 
     public boolean isOnline() {
@@ -70,43 +48,13 @@ public abstract class Punishment implements Data, Identifier, DAO {
     }
 
     @Override
-    public PunishmentData getData() {
-        return punishmentData;
-    }
-
-    @Override
-    public void setData(PunishmentData punishmentData) {
-        this.punishmentData = punishmentData;
-    }
-
-    @Override
     public boolean dataIsLoaded() {
-        return punishmentData != null;
-    }
-
-    @Override
-    public String getIp() {
-        return ip;
-    }
-
-    @Override
-    public void setIp(String ip) {
-        this.ip = ip;
+        return data != null;
     }
 
     @Override
     public boolean ipIsValid() {
         return ip != null && !ip.equalsIgnoreCase("");
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     @Override
@@ -125,6 +73,7 @@ public abstract class Punishment implements Data, Identifier, DAO {
     public Punishment requireBySecondaryIdentifier() {
         return PunishmentDAO.getInstance().loadBySecondaryIdentifier(getSecondaryIdentifier()).update();
     }
+
 
     @Override
     public Punishment requireByInstance() {

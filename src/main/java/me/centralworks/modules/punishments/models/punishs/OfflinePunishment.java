@@ -1,40 +1,33 @@
 package me.centralworks.modules.punishments.models.punishs;
 
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import me.centralworks.Main;
 import me.centralworks.modules.punishments.dao.PunishmentDAO;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+@Data
+@RequiredArgsConstructor
 public class OfflinePunishment extends Punishment {
 
-    private String nickName;
+    private String primaryIdentifier;
 
     public OfflinePunishment(PunishmentData punishmentData, String ip, Integer id) {
         super(punishmentData, ip, id);
     }
 
     public OfflinePunishment(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public OfflinePunishment() {
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+        this.primaryIdentifier = nickName;
     }
 
     @Override
     public String getPrimaryIdentifier() {
-        return nickName;
+        return primaryIdentifier;
     }
 
     @Override
     public void setPrimaryIdentifier(String identifier) {
-        this.nickName = identifier;
+        this.primaryIdentifier = identifier;
     }
 
     @Override
@@ -44,13 +37,14 @@ public class OfflinePunishment extends Punishment {
 
     @Override
     public boolean isOnline() {
-        return Main.getInstance().getProxy().getPlayer(getNickName()) != null;
+        return Main.getInstance().getProxy().getPlayer(getPrimaryIdentifier()) != null;
     }
 
     @Override
     public ProxiedPlayer getPlayer() {
-        return Main.getInstance().getProxy().getPlayer(getNickName());
+        return Main.getInstance().getProxy().getPlayer(getPrimaryIdentifier());
     }
+
 
     public OfflinePunishment requireByPrimaryIdentifier() {
         return (OfflinePunishment) super.requireByPrimaryIdentifier().update();

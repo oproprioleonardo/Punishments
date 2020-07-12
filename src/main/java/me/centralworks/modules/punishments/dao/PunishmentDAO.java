@@ -46,7 +46,7 @@ public class PunishmentDAO {
 
     public void createTable() {
         try {
-            final PreparedStatement st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS arcanth_punishments(ID INT NOT NULL AUTO_INCREMENT, user VARCHAR(80), addressIP VARCHAR(20), type VARCHAR(25), reason TEXT, startedAt TIMESTAMP, finishAt TIMESTAMP, punisher VARCHAR(16), evidences TEXT, punishmentState VARCHAR(40), permanent BOOLEAN, breakNick VARCHAR(16), PRIMARY KEY (ID));");
+            final PreparedStatement st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS arcanth_punishments(ID INT NOT NULL AUTO_INCREMENT, user VARCHAR(80), addressIP VARCHAR(20), type VARCHAR(25), reason TEXT, startedAt TIMESTAMP, finishAt TIMESTAMP, punisher VARCHAR(16), evidences TEXT, punishmentState VARCHAR(40), permanent BOOLEAN, secondaryIdentifier VARCHAR(16), PRIMARY KEY (ID));");
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,7 +77,7 @@ public class PunishmentDAO {
 
     public boolean existsSecondaryIdentifier(String identifier) {
         try {
-            final PreparedStatement st = connection.prepareStatement("SELECT breakNick FROM arcanth_punishments WHERE breakNick = ?");
+            final PreparedStatement st = connection.prepareStatement("SELECT secondaryIdentifier FROM arcanth_punishments WHERE secondaryIdentifier = ?");
             st.setString(1, identifier);
             return st.executeQuery().next();
         } catch (SQLException e) {
@@ -123,7 +123,7 @@ public class PunishmentDAO {
                 offlinePunishment.setPrimaryIdentifier(user);
                 p = offlinePunishment;
             }
-            p.setSecondaryIdentifier(rs.getString("breakNick"));
+            p.setSecondaryIdentifier(rs.getString("secondaryIdentifier"));
             final PunishmentData pd = new PunishmentData();
             p.setId(rs.getInt("id"));
             if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
@@ -161,7 +161,7 @@ public class PunishmentDAO {
                     offlinePunishment.setPrimaryIdentifier(user);
                     p = offlinePunishment;
                 }
-                p.setSecondaryIdentifier(rs.getString("breakNick"));
+                p.setSecondaryIdentifier(rs.getString("secondaryIdentifier"));
                 final PunishmentData pd = new PunishmentData();
                 p.setId(rs.getInt("id"));
                 if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
@@ -185,7 +185,7 @@ public class PunishmentDAO {
     private List<Punishment> loadAllByIdentifier(String identifier, boolean isSecondary) {
         final List<Punishment> list = Lists.newArrayList();
         try {
-            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_punishments WHERE " + (isSecondary ? "breakNick" : "user") + " = ?");
+            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_punishments WHERE " + (isSecondary ? "secondaryIdentifier" : "user") + " = ?");
             st.setObject(1, identifier);
             final ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -200,7 +200,7 @@ public class PunishmentDAO {
                     offlinePunishment.setPrimaryIdentifier(user);
                     p = offlinePunishment;
                 }
-                p.setSecondaryIdentifier(rs.getString("breakNick"));
+                p.setSecondaryIdentifier(rs.getString("secondaryIdentifier"));
                 final PunishmentData pd = new PunishmentData();
                 p.setId(rs.getInt("id"));
                 if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
@@ -223,7 +223,7 @@ public class PunishmentDAO {
 
     private Punishment loadByIdentifier(String identifier, boolean isSecondary) {
         try {
-            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_punishments WHERE " + (isSecondary ? "breakNick" : "user") + " = ?");
+            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_punishments WHERE " + (isSecondary ? "secondaryIdentifier" : "user") + " = ?");
             st.setString(1, identifier);
             final ResultSet rs = st.executeQuery();
             rs.next();
@@ -238,7 +238,7 @@ public class PunishmentDAO {
                 offlinePunishment.setPrimaryIdentifier(user);
                 p = offlinePunishment;
             }
-            p.setSecondaryIdentifier(rs.getString("breakNick"));
+            p.setSecondaryIdentifier(rs.getString("secondaryIdentifier"));
             final PunishmentData pd = new PunishmentData();
             p.setId(rs.getInt("id"));
             if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
@@ -280,7 +280,7 @@ public class PunishmentDAO {
                 st.setString(11, p.getSecondaryIdentifier());
                 isNew = true;
             } else {
-                st = connection.prepareStatement("INSERT INTO arcanth_punishments VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ID = ?, User = ?, addressIP = ?, type = ?, reason = ?, startedAt = ?, finishAt = ?, punisher = ?, evidences = ?, punishmentState = ?, permanent = ?, breakNick = ?");
+                st = connection.prepareStatement("INSERT INTO arcanth_punishments VALUES(?,?,?,?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE ID = ?, User = ?, addressIP = ?, type = ?, reason = ?, startedAt = ?, finishAt = ?, punisher = ?, evidences = ?, punishmentState = ?, permanent = ?, secondaryIdentifier = ?");
                 st.setInt(1, p.getId());
                 st.setString(2, p.getPrimaryIdentifier());
                 st.setString(3, !p.ipIsValid() ? "null" : p.getIp());

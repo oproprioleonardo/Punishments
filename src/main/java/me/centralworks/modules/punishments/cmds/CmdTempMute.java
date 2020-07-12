@@ -52,7 +52,7 @@ public class CmdTempMute extends Command {
                 final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                 reasonObj.setDuration(duration);
                 mute.setPunishmentReason(reasonObj);
-                mute.addTask(p);
+                mute.applyOtherInformation(p);
             } else {
                 if (!(args.length == 3)) {
                     final List<String> reason = Arrays.asList(args).subList(2, args.length);

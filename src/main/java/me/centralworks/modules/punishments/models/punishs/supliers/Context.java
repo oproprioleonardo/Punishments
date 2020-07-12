@@ -1,6 +1,8 @@
 package me.centralworks.modules.punishments.models.punishs.supliers;
 
 import com.google.common.collect.Lists;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import me.centralworks.Main;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
@@ -15,11 +17,12 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.List;
 import java.util.function.Consumer;
 
+@Data
+@RequiredArgsConstructor
 public class Context {
 
     private String target;
     private String punisher = "Sistema";
-    private Boolean isPreDefined = false;
     private PunishmentType punishmentType;
     private PunishmentReason punishmentReason;
     private List<String> evidences = Lists.newArrayList();
@@ -30,10 +33,9 @@ public class Context {
     private boolean permanent = false;
     private String secondaryIdentifier;
 
-    public Context(String target, String punisher, Boolean isPreDefined, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, Consumer<Punishment> functionIfAddress, String ip, boolean permanent, String secondaryIdentifier) {
+    public Context(String target, String punisher, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, Consumer<Punishment> functionIfAddress, String ip, boolean permanent, String secondaryIdentifier) {
         this.target = target;
         this.punisher = punisher;
-        this.isPreDefined = isPreDefined;
         this.punishmentType = punishmentType;
         this.punishmentReason = punishmentReason;
         this.evidences = evidences;
@@ -49,94 +51,6 @@ public class Context {
         this.punishmentType = pt;
     }
 
-    public boolean isPermanent() {
-        return permanent;
-    }
-
-    public void setPermanent(boolean permanent) {
-        this.permanent = permanent;
-    }
-
-    public Consumer<Punishment> getFunctionIfOnline() {
-        return functionIfOnline;
-    }
-
-    public void setFunctionIfOnline(Consumer<Punishment> functionIfOnline) {
-        this.functionIfOnline = functionIfOnline;
-    }
-
-    public Consumer<Punishment> getAnnouncer() {
-        return announcer;
-    }
-
-    public void setAnnouncer(Consumer<Punishment> announcer) {
-        this.announcer = announcer;
-    }
-
-    public Consumer<Punishment> getFunctionIfAddress() {
-        return functionIfAddress;
-    }
-
-    public void setFunctionIfAddress(Consumer<Punishment> functionIfAddress) {
-        this.functionIfAddress = functionIfAddress;
-    }
-
-    public String getTarget() {
-        return target;
-    }
-
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    public String getPunisher() {
-        return punisher;
-    }
-
-    public void setPunisher(String punisher) {
-        this.punisher = punisher;
-    }
-
-    public String getSecondaryIdentifier() {
-        return secondaryIdentifier;
-    }
-
-    public void setSecondaryIdentifier(String secondaryIdentifier) {
-        this.secondaryIdentifier = secondaryIdentifier;
-    }
-
-    public Boolean getPreDefined() {
-        return isPreDefined;
-    }
-
-    public void setPreDefined(Boolean preDefined) {
-        isPreDefined = preDefined;
-    }
-
-    public PunishmentType getPunishmentType() {
-        return punishmentType;
-    }
-
-    public void setPunishmentType(PunishmentType punishmentType) {
-        this.punishmentType = punishmentType;
-    }
-
-    public PunishmentReason getPunishmentReason() {
-        return punishmentReason;
-    }
-
-    public void setPunishmentReason(PunishmentReason punishmentReason) {
-        this.punishmentReason = punishmentReason;
-    }
-
-    public List<String> getEvidences() {
-        return evidences;
-    }
-
-    public void setEvidences(List<String> evidences) {
-        this.evidences = evidences;
-    }
-
     public void attachEvidence(String evidence) {
         final List<String> copy = Lists.newArrayList(getEvidences());
         copy.add(evidence);
@@ -147,14 +61,6 @@ public class Context {
         final List<String> copy = Lists.newArrayList(getEvidences());
         copy.remove(evidence);
         setEvidences(copy);
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
     }
 
     public void setMuteFunctions(boolean ip) {
@@ -180,7 +86,7 @@ public class Context {
         execute();
     }
 
-    public void addTask(ProxiedPlayer p) {
+    public void applyOtherInformation(ProxiedPlayer p) {
         Contexts.getInstance().add(punisher, this);
         new Message(PunishmentPlugin.getMessages().getString("Messages.write-evidences")).send(p);
     }

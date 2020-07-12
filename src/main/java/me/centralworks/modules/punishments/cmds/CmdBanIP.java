@@ -56,7 +56,7 @@ public class CmdBanIP extends Command {
                 final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                 ban.setTarget(target);
                 ban.setPunishmentReason(reasonObj);
-                ban.addTask(p);
+                ban.applyOtherInformation(p);
             } else {
                 ban.setTarget(target);
                 if (!(args.length == 2)) {

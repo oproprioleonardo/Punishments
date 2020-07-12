@@ -57,7 +57,7 @@ public class CmdMuteIP extends Command {
                 final List<String> reason = Arrays.asList(args).subList(1, args.length);
                 final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                 mute.setPunishmentReason(reasonObj);
-                mute.addTask(p);
+                mute.applyOtherInformation(p);
             } else {
                 if (!(args.length == 2)) {
                     final List<String> reason = Arrays.asList(args).subList(1, args.length);
