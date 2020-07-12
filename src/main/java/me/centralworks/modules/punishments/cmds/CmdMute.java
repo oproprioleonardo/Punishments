@@ -6,8 +6,8 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.supliers.Context;
 import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
+import me.centralworks.modules.punishments.models.punishs.supliers.Service;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
 import net.md_5.bungee.api.CommandSender;
@@ -38,7 +38,7 @@ public class CmdMute extends Command {
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Context mute = new Context(PunishmentType.MUTE);
+            final Service mute = new Service(PunishmentType.MUTE);
             final General generalLib = General.getGeneralLib();
             final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
             mute.setPunisher(punisher);

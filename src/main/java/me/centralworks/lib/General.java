@@ -263,7 +263,7 @@ public class General {
 
     /**
      * @param list       Message to apply placeholders
-     * @param punishment Context punishments
+     * @param punishment Service punishments
      * @return new list with placeholders applied;
      */
     public List<String> applyPlaceHolders(List<String> list, Punishment punishment) {

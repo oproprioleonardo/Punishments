@@ -4,12 +4,13 @@ import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import me.centralworks.Main;
+import me.centralworks.lib.Context;
+import me.centralworks.lib.Contexts;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
 import me.centralworks.modules.punishments.models.punishs.PunishmentData;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.Contexts;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -19,7 +20,7 @@ import java.util.function.Consumer;
 
 @Data
 @RequiredArgsConstructor
-public class Context {
+public class Service implements Context {
 
     private String target;
     private String punisher = "Sistema";
@@ -33,7 +34,7 @@ public class Context {
     private boolean permanent = false;
     private String secondaryIdentifier;
 
-    public Context(String target, String punisher, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, Consumer<Punishment> functionIfAddress, String ip, boolean permanent, String secondaryIdentifier) {
+    public Service(String target, String punisher, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, Consumer<Punishment> functionIfAddress, String ip, boolean permanent, String secondaryIdentifier) {
         this.target = target;
         this.punisher = punisher;
         this.punishmentType = punishmentType;
@@ -47,7 +48,7 @@ public class Context {
         this.secondaryIdentifier = secondaryIdentifier;
     }
 
-    public Context(PunishmentType pt) {
+    public Service(PunishmentType pt) {
         this.punishmentType = pt;
     }
 
@@ -77,6 +78,12 @@ public class Context {
         if (ip) setFunctionIfAddress(generalLib.getFunctionBanIfAddress());
     }
 
+    @Override
+    public String getWhoRequired() {
+        return this.punisher;
+    }
+
+    @Override
     public void run() {
         if (getPunishmentType() == PunishmentType.BAN || getPunishmentType() == PunishmentType.TEMPBAN) {
             setBanFunctions(!getIp().equals(""));
@@ -86,12 +93,14 @@ public class Context {
         execute();
     }
 
+    @Override
     public void applyOtherInformation(ProxiedPlayer p) {
-        Contexts.getInstance().add(punisher, this);
+        Contexts.getInstance().add(this);
         new Message(PunishmentPlugin.getMessages().getString("Messages.write-evidences")).send(p);
     }
 
-    private void execute() {
+    @Override
+    public void execute() {
         if (!getTarget().equalsIgnoreCase("Sistema") && Main.getUsersImmune().stream().anyMatch(s -> s.equalsIgnoreCase(getTarget()))) {
             if (Main.getInstance().getProxy().getPlayer(getTarget()) != null)
                 new Message(PunishmentPlugin.getMessages().getString("Messages.immune")).send(Main.getInstance().getProxy().getPlayer(getTarget()));

@@ -3,16 +3,17 @@ package me.centralworks.modules.reports.models.supliers;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import me.centralworks.lib.Context;
+import me.centralworks.lib.Contexts;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.reports.ReportPlugin;
-import me.centralworks.modules.reports.models.supliers.cached.Contexts;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class Context {
+public class Service implements Context {
 
     private String target;
     private String victim;
@@ -20,7 +21,7 @@ public class Context {
     private String reason = "";
     private List<String> evidences = Lists.newArrayList();
 
-    public Context(String target, String victim, Long date, String reason, List<String> evidences) {
+    public Service(String target, String victim, Long date, String reason, List<String> evidences) {
         this.target = target;
         this.victim = victim;
         this.date = date;
@@ -45,7 +46,19 @@ public class Context {
         new Message(ReportPlugin.getMessages().getString("Messages.write-evidences")).send(victim);
     }
 
+    @Override
+    public String getWhoRequired() {
+        return this.victim;
+    }
+
+    @Override
     public void run() {
 
     }
+
+    @Override
+    public void execute() {
+
+    }
+
 }

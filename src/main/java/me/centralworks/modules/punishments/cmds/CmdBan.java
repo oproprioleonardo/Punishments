@@ -6,8 +6,8 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.supliers.Context;
 import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
+import me.centralworks.modules.punishments.models.punishs.supliers.Service;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
 import net.md_5.bungee.api.CommandSender;
@@ -37,7 +37,7 @@ public class CmdBan extends Command {
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
-            final Context ban = new Context(PunishmentType.BAN);
+            final Service ban = new Service(PunishmentType.BAN);
             final General generalLib = General.getGeneralLib();
             final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
             ban.setPunisher(punisher);

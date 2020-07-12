@@ -6,8 +6,8 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.supliers.Context;
 import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
+import me.centralworks.modules.punishments.models.punishs.supliers.Service;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import net.md_5.bungee.api.CommandSender;
@@ -48,7 +48,7 @@ public class CmdPunish extends Command {
                     return;
                 }
                 final PunishmentReason reason = reasons.getByReason(reasonText);
-                final Context punishment = new Context(reason.getPunishmentType());
+                final Service punishment = new Service(reason.getPunishmentType());
                 final String target = lib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
                 if (reason.getWithIP()) {
                     final AddressIP adr = AddressIP.getInstance();
