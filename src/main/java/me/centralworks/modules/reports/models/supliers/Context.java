@@ -67,8 +67,24 @@ public class Context {
         this.evidences = evidences;
     }
 
+    public void attachEvidence(String evidence) {
+        final List<String> copy = Lists.newArrayList(getEvidences());
+        copy.add(evidence);
+        setEvidences(copy);
+    }
+
+    public void removeEvidence(String evidence) {
+        final List<String> copy = Lists.newArrayList(getEvidences());
+        copy.remove(evidence);
+        setEvidences(copy);
+    }
+
     public void applyOtherInformation(ProxiedPlayer victim) {
         Contexts.getInstance().add(this);
         new Message(ReportPlugin.getMessages().getString("Messages.write-evidences")).send(victim);
+    }
+
+    public void run() {
+
     }
 }

@@ -27,7 +27,7 @@ public class Contexts {
         return contexts.stream().filter(context -> context.getVictim().equalsIgnoreCase(victim)).findFirst().get();
     }
 
-    public boolean has(String victim) {
+    public boolean exists(String victim) {
         return contexts.stream().anyMatch(context -> context.getVictim().equalsIgnoreCase(victim));
     }
 

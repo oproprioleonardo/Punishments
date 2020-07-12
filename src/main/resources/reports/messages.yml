@@ -3,6 +3,8 @@ Messages:
   only-player: "&cEsse comando funciona apenas para jogadores conectados no servidor."
   write-evidences: "&7Envie as provas por vez no chat, para finalizar digite \"pronto\"."
   invalid-link: "&cEsse é um link inválido. Digite \"pronto\" caso queira finalizar a operação."
+  next-link: "&aLink anexado com sucesso, caso queira parar por aqui, digite \"pronto\"."
+  operation-cancel: "&aOperação cancelada com sucesso."
   report:
     title:
       - "       &6&lRede Arcanth - Reportes\n"

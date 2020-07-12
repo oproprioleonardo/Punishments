@@ -30,4 +30,6 @@ public class ReportedPlayer {
     public void setData(List<Integer> data) {
         this.data = data;
     }
+
+
 }

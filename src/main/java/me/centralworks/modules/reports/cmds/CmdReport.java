@@ -42,7 +42,7 @@ public class CmdReport extends Command {
             if (args.length == 1) lib.sendReportList(p, target);
             else {
                 final Contexts contexts = Contexts.getInstance();
-                if (contexts.has(p.getName())) {
+                if (contexts.exists(p.getName())) {
                     new Message("§cUma denúncia de cada vez, amigo.").send(p);
                     return;
                 }
