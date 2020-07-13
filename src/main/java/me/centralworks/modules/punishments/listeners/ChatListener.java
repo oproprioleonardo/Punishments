@@ -1,5 +1,6 @@
 package me.centralworks.modules.punishments.listeners;
 
+import me.centralworks.lib.Context;
 import me.centralworks.lib.Contexts;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
@@ -22,26 +23,29 @@ public class ChatListener implements Listener {
             final ProxiedPlayer p = (ProxiedPlayer) e.getSender();
             final Contexts contexts = Contexts.getInstance();
             final String message = e.getMessage();
-            final Service service = (Service) contexts.get(p.getName());
             final General generalLib = General.getGeneralLib();
             if (!contexts.exists(p.getName())) return;
-            e.setCancelled(true);
-            if (message.equalsIgnoreCase("pronto")) {
-                contexts.remove(p.getName());
-                service.run();
-                return;
+            final Context context = contexts.get(p.getName());
+            if (context.getPlugin() == 1) {
+                final Service service = (Service) context;
+                e.setCancelled(true);
+                if (message.equalsIgnoreCase("pronto")) {
+                    contexts.remove(p.getName());
+                    service.run();
+                    return;
+                }
+                if (message.equalsIgnoreCase("cancelar")) {
+                    contexts.remove(p.getName());
+                    new Message(PunishmentPlugin.getMessages().getString("Messages.operation-cancel")).send(p);
+                    return;
+                }
+                if (!generalLib.isLink(message)) {
+                    new Message(PunishmentPlugin.getMessages().getString("Messages.invalid-link")).send(p);
+                    return;
+                }
+                new Message(PunishmentPlugin.getMessages().getString("Messages.next-link")).send(p);
+                service.attachEvidence(message);
             }
-            if (message.equalsIgnoreCase("cancelar")) {
-                contexts.remove(p.getName());
-                new Message(PunishmentPlugin.getMessages().getString("Messages.operation-cancel")).send(p);
-                return;
-            }
-            if (!generalLib.isLink(message)) {
-                new Message(PunishmentPlugin.getMessages().getString("Messages.invalid-link")).send(p);
-                return;
-            }
-            new Message(PunishmentPlugin.getMessages().getString("Messages.next-link")).send(p);
-            service.attachEvidence(message);
         }
     }
 }

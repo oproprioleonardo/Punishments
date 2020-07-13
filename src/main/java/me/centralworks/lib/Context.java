@@ -11,4 +11,6 @@ public interface Context {
     void execute();
 
     void applyOtherInformation(ProxiedPlayer informer);
+
+    int getPlugin();
 }

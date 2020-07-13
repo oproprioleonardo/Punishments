@@ -79,6 +79,11 @@ public class Service implements Context {
     }
 
     @Override
+    public int getPlugin() {
+        return 0;
+    }
+
+    @Override
     public String getWhoRequired() {
         return this.punisher;
     }

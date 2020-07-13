@@ -47,6 +47,11 @@ public class Service implements Context {
     }
 
     @Override
+    public int getPlugin() {
+        return 1;
+    }
+
+    @Override
     public String getWhoRequired() {
         return this.victim;
     }
