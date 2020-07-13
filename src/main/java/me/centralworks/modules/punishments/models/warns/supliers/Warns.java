@@ -1,10 +1,10 @@
-package me.centralworks.modules.punishments.models.warns;
+package me.centralworks.modules.punishments.models.warns.supliers;
 
 import com.google.common.collect.Lists;
 import me.centralworks.Main;
 import me.centralworks.lib.General;
-import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.dao.WarnDAO;
+import me.centralworks.modules.punishments.models.warns.Warn;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -61,10 +61,10 @@ public class Warns {
     private void purify(String target) {
         final WarnDAO wd = WarnDAO.getInstance();
         final List<Warn> wl = General.getGeneralLib().updateAllWarns(wd.loadAllWarns(target));
-        final List<WarnPunishment> wps = PunishmentPlugin.getWps();
+        final List<WarnPunishment> wps = WarnLoader.getWps();
         wps.sort(Comparator.comparingInt(WarnPunishment::getAmount));
         Collections.reverse(wps);
-        for (WarnPunishment wp : PunishmentPlugin.getWps()) {
+        for (WarnPunishment wp : WarnLoader.getWps()) {
             if (wl.size() == wp.getAmount()) {
                 Main.getInstance().getProxy().getPluginManager().dispatchCommand(Main.getInstance().getProxy().getConsole(), wp.getCommand().replace("{jogador}", target));
                 break;

@@ -22,7 +22,7 @@ import me.centralworks.modules.punishments.listeners.withoutAddressIP.join.Onlin
 import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
-import me.centralworks.modules.punishments.models.warns.WarnPunishment;
+import me.centralworks.modules.punishments.models.warns.supliers.WarnLoader;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
@@ -37,7 +37,6 @@ public class PunishmentPlugin {
     protected static Configuration messages;
     protected static Configuration usages;
     protected static Gson gson;
-    protected static List<WarnPunishment> wps;
     protected static Consumer<PunishmentPlugin> disable;
 
     public PunishmentPlugin() {
@@ -45,9 +44,10 @@ public class PunishmentPlugin {
         registerInstances();
         registerCommands();
         registerListeners();
-        registerWarnPunishments();
         registerReasons();
         registerData();
+        final WarnLoader warnLoader = new WarnLoader();
+        warnLoader.init(getConfiguration());
     }
 
     public static Consumer<PunishmentPlugin> getDisable() {
@@ -78,10 +78,6 @@ public class PunishmentPlugin {
         return gson;
     }
 
-    public static List<WarnPunishment> getWps() {
-        return wps;
-    }
-
     protected void registerReasons() {
         final List<PunishmentReason> list = Lists.newArrayList();
         getConfiguration().getSection("Reasons").getKeys().forEach(s -> {
@@ -97,18 +93,6 @@ public class PunishmentPlugin {
             list.add(pr);
         });
         Reasons.getInstance().setReasons(list);
-    }
-
-    protected void registerWarnPunishments() {
-        final List<WarnPunishment> wp = Lists.newArrayList();
-        for (String warn : getConfiguration().getSection("Warns").getKeys()) {
-            final WarnPunishment wpo = new WarnPunishment();
-            wpo.setId(warn);
-            wpo.setAmount(getConfiguration().getInt("Warns." + warn + ".warns"));
-            wpo.setCommand(getConfiguration().getString("Warns." + warn + ".command"));
-            wp.add(wpo);
-        }
-        wps = wp;
     }
 
     protected void registerCommand(Command command) {
