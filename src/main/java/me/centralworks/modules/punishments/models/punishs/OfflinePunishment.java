@@ -1,12 +1,14 @@
 package me.centralworks.modules.punishments.models.punishs;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import me.centralworks.Main;
 import me.centralworks.modules.punishments.dao.PunishmentDAO;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 @RequiredArgsConstructor
 public class OfflinePunishment extends Punishment {
 
