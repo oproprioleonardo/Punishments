@@ -6,7 +6,8 @@ import me.centralworks.database.ConnectionFactory;
 import me.centralworks.modules.punishments.models.punishs.OfflinePunishment;
 import me.centralworks.modules.punishments.models.punishs.OnlinePunishment;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.PunishmentData;
+import me.centralworks.modules.punishments.models.punishs.supliers.Elements;
+import me.centralworks.modules.punishments.models.punishs.supliers.Request;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
 
@@ -97,16 +98,11 @@ public class PunishmentDAO {
         }
     }
 
-    public Punishment loadByObject(Punishment punishment) {
-        return loadAllByPrimaryIdentifier(punishment.getPrimaryIdentifier()).stream().filter(punishment1 ->
-                punishment1.getData().getPunishmentType().equals(punishment.getData().getPunishmentType()) &&
-                        punishment1.getData().getPunishmentState().equals(punishment.getData().getPunishmentState()) &&
-                        punishment1.getData().getReasonString().equals(punishment.getData().getReasonString()) &&
-                        punishment1.getSecondaryIdentifier().equalsIgnoreCase(punishment.getSecondaryIdentifier())
-        ).findFirst().get();
+    public Request loadByObject(Punishment punishment) {
+        return loadAllByPrimaryIdentifier(punishment.getPrimaryIdentifier()).stream().filter(p1 -> p1.get().equals(punishment)).findFirst().get();
     }
 
-    public Punishment loadByID(Integer id) {
+    public Request loadByID(Integer id) {
         try {
             final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_punishments WHERE id = ?");
             st.setInt(1, id);
@@ -124,7 +120,7 @@ public class PunishmentDAO {
                 p = offlinePunishment;
             }
             p.setSecondaryIdentifier(rs.getString("secondaryIdentifier"));
-            final PunishmentData pd = new PunishmentData();
+            final Elements pd = new Elements();
             p.setId(rs.getInt("id"));
             if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
             pd.setStartedAt(rs.getTimestamp("startedAt").getTime());
@@ -136,15 +132,15 @@ public class PunishmentDAO {
             pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
             pd.setPermanent(rs.getBoolean("permanent"));
             p.setData(pd);
-            return p;
+            return new Request(p);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<Punishment> loadByIP(String address) {
-        final List<Punishment> list = Lists.newArrayList();
+    public List<Request> loadByIP(String address) {
+        final List<Request> list = Lists.newArrayList();
         try {
             final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_punishments WHERE addressIP = ?");
             st.setObject(1, address);
@@ -162,7 +158,7 @@ public class PunishmentDAO {
                     p = offlinePunishment;
                 }
                 p.setSecondaryIdentifier(rs.getString("secondaryIdentifier"));
-                final PunishmentData pd = new PunishmentData();
+                final Elements pd = new Elements();
                 p.setId(rs.getInt("id"));
                 if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
                 pd.setStartedAt(rs.getTimestamp("startedAt").getTime());
@@ -174,7 +170,7 @@ public class PunishmentDAO {
                 pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
                 pd.setPermanent(rs.getBoolean("permanent"));
                 p.setData(pd);
-                list.add(p);
+                list.add(new Request(p));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -182,8 +178,8 @@ public class PunishmentDAO {
         return list;
     }
 
-    private List<Punishment> loadAllByIdentifier(String identifier, boolean isSecondary) {
-        final List<Punishment> list = Lists.newArrayList();
+    private List<Request> loadAllByIdentifier(String identifier, boolean isSecondary) {
+        final List<Request> list = Lists.newArrayList();
         try {
             final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_punishments WHERE " + (isSecondary ? "secondaryIdentifier" : "user") + " = ?");
             st.setObject(1, identifier);
@@ -201,7 +197,7 @@ public class PunishmentDAO {
                     p = offlinePunishment;
                 }
                 p.setSecondaryIdentifier(rs.getString("secondaryIdentifier"));
-                final PunishmentData pd = new PunishmentData();
+                final Elements pd = new Elements();
                 p.setId(rs.getInt("id"));
                 if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
                 pd.setStartedAt(rs.getTimestamp("startedAt").getTime());
@@ -213,7 +209,7 @@ public class PunishmentDAO {
                 pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
                 pd.setPermanent(rs.getBoolean("permanent"));
                 p.setData(pd);
-                list.add(p);
+                list.add(p.query());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -221,7 +217,7 @@ public class PunishmentDAO {
         return list;
     }
 
-    private Punishment loadByIdentifier(String identifier, boolean isSecondary) {
+    private Request loadByIdentifier(String identifier, boolean isSecondary) {
         try {
             final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_punishments WHERE " + (isSecondary ? "secondaryIdentifier" : "user") + " = ?");
             st.setString(1, identifier);
@@ -239,7 +235,7 @@ public class PunishmentDAO {
                 p = offlinePunishment;
             }
             p.setSecondaryIdentifier(rs.getString("secondaryIdentifier"));
-            final PunishmentData pd = new PunishmentData();
+            final Elements pd = new Elements();
             p.setId(rs.getInt("id"));
             if (!rs.getString("addressIP").equals("null")) p.setIp(rs.getString("addressIP"));
             pd.setStartedAt(rs.getDate("startedAt").getTime());
@@ -251,7 +247,7 @@ public class PunishmentDAO {
             pd.setPunishmentType(PunishmentType.getByIdentifier(rs.getString("type")));
             pd.setPermanent(rs.getBoolean("permanent"));
             p.setData(pd);
-            return p;
+            return new Request(p);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -260,7 +256,7 @@ public class PunishmentDAO {
 
     public void save(Punishment p) {
         try {
-            final PunishmentData pd = p.getData();
+            final Elements pd = p.getData();
             final PreparedStatement st;
             final StringBuilder stringBuilder = new StringBuilder();
             pd.getEvidences().forEach(s -> stringBuilder.append(stringBuilder.toString().equals("") ? s : "," + s));
@@ -327,19 +323,19 @@ public class PunishmentDAO {
         }
     }
 
-    public Punishment loadByPrimaryIdentifier(String identifier) {
+    public Request loadByPrimaryIdentifier(String identifier) {
         return loadByIdentifier(identifier, false);
     }
 
-    public Punishment loadBySecondaryIdentifier(String identifier) {
+    public Request loadBySecondaryIdentifier(String identifier) {
         return loadByIdentifier(identifier, true);
     }
 
-    public List<Punishment> loadAllByPrimaryIdentifier(String identifier) {
+    public List<Request> loadAllByPrimaryIdentifier(String identifier) {
         return loadAllByIdentifier(identifier, false);
     }
 
-    public List<Punishment> loadAllBySecondaryIdentifier(String identifier) {
+    public List<Request> loadAllBySecondaryIdentifier(String identifier) {
         return loadAllByIdentifier(identifier, true);
     }
 

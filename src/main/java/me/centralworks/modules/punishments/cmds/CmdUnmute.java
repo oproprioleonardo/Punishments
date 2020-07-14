@@ -6,6 +6,9 @@ import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
+import me.centralworks.modules.punishments.models.punishs.supliers.CheckUp;
+import me.centralworks.modules.punishments.models.punishs.supliers.Filter;
+import me.centralworks.modules.punishments.models.punishs.supliers.Request;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.config.Configuration;
@@ -31,9 +34,10 @@ public class CmdUnmute extends Command {
             try {
                 final Punishment punishment = gnrlLib.easyInstance();
                 punishment.setSecondaryIdentifier(args[0]);
-                final List<Punishment> punishments = punishment.requireAllBySecondaryIdentifier();
-                if (gnrlLib.hasActivePunishment(punishments) && gnrlLib.hasPunishmentMute(punishments)) {
-                    final List<Punishment> ps = gnrlLib.getAllMutedPActive(punishments);
+                final List<Punishment> punishments = new Request(punishment).requireAllBySecondaryIdentifier();
+                final CheckUp checkUp = new CheckUp(punishments);
+                if (checkUp.hasActivePunishment() && checkUp.hasPunishmentMute()) {
+                    final List<Punishment> ps = new Filter(punishments).getAllMutedPActive();
                     ps.forEach(Punishment::pardon);
                     new Message(cfg.getString("Messages.mute-pardon")).send(s);
                 } else new Message(cfg.getString("Messages.mute-not-found")).send(s);

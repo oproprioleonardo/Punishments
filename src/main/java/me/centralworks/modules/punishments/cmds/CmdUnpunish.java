@@ -6,6 +6,7 @@ import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
+import me.centralworks.modules.punishments.models.punishs.supliers.Request;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
@@ -30,8 +31,9 @@ public class CmdUnpunish extends Command {
             try {
                 final Punishment punishment = gnrlLib.easyInstance();
                 punishment.setId(Integer.parseInt(args[0]));
-                if (punishment.existsById()) {
-                    final Punishment p = punishment.requireById();
+                final Request request = new Request(punishment);
+                if (request.existsById()) {
+                    final Punishment p = request.requireById();
                     if (p.getData().getPunishmentState() == PunishmentState.FINISHED || p.getData().getPunishmentState() == PunishmentState.REVOKED) {
                         new Message(cfg.getString("Messages.already-revoked")).send(s);
                         return;

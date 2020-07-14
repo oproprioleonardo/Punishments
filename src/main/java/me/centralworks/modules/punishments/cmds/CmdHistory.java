@@ -6,6 +6,7 @@ import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
+import me.centralworks.modules.punishments.models.punishs.supliers.Request;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.config.Configuration;
@@ -31,7 +32,7 @@ public class CmdHistory extends Command {
             try {
                 final Punishment punishment = gnrlLib.easyInstance();
                 punishment.setSecondaryIdentifier(args[0]);
-                final List<Punishment> punishments = punishment.requireAllBySecondaryIdentifier();
+                final List<Punishment> punishments = new Request(punishment).requireAllBySecondaryIdentifier();
                 if (punishments.size() > 0) {
                     gnrlLib.sendHistory(s, punishments);
                 } else new Message(cfg.getString("Messages.angel")).send(s);

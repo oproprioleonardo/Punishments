@@ -6,7 +6,7 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
+import me.centralworks.modules.punishments.models.punishs.supliers.Reason;
 import me.centralworks.modules.punishments.models.punishs.supliers.Service;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
@@ -47,7 +47,7 @@ public class CmdPunish extends Command {
                     new Message(cfg.getString("Messages.reason-not-found")).send(p);
                     return;
                 }
-                final PunishmentReason reason = reasons.getByReason(reasonText);
+                final Reason reason = reasons.getByReason(reasonText);
                 final Service punishment = new Service(reason.getPunishmentType());
                 final String target = lib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
                 if (reason.getWithIP()) {
@@ -68,7 +68,7 @@ public class CmdPunish extends Command {
                 punishment.setSecondaryIdentifier(args[0]);
                 punishment.setPunisher(p.getName());
                 punishment.setTarget(target);
-                punishment.setPunishmentReason(reason);
+                punishment.setReason(reason);
                 punishment.setPermanent(reason.isPermanent());
                 punishment.applyOtherInformation(p);
             } else new Message(PunishmentPlugin.getUsages().getString("Usages.punish")).send(s);

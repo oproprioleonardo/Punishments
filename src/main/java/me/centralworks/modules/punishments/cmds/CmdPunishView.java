@@ -6,6 +6,7 @@ import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
+import me.centralworks.modules.punishments.models.punishs.supliers.Request;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
@@ -33,8 +34,9 @@ public class CmdPunishView extends Command {
                 final int id = Integer.parseInt(args[0]);
                 final Punishment punishment = lib.easyInstance();
                 punishment.setId(id);
-                if (punishment.existsById()) {
-                    final Punishment p = punishment.requireById();
+                final Request request = new Request(punishment);
+                if (request.existsById()) {
+                    final Punishment p = request.requireById();
                     lib.sendPunishmentStatus(s, p);
                 }
             });

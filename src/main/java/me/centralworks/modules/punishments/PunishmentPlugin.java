@@ -19,7 +19,7 @@ import me.centralworks.modules.punishments.listeners.withoutAddressIP.MuteChatLi
 import me.centralworks.modules.punishments.listeners.withoutAddressIP.join.MuteListener;
 import me.centralworks.modules.punishments.listeners.withoutAddressIP.join.OfflineBanListener;
 import me.centralworks.modules.punishments.listeners.withoutAddressIP.join.OnlineBanListener;
-import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
+import me.centralworks.modules.punishments.models.punishs.supliers.Reason;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
 import me.centralworks.modules.punishments.models.warns.supliers.WarnLoader;
@@ -79,10 +79,10 @@ public class PunishmentPlugin {
     }
 
     protected void registerReasons() {
-        final List<PunishmentReason> list = Lists.newArrayList();
+        final List<Reason> list = Lists.newArrayList();
         getConfiguration().getSection("Reasons").getKeys().forEach(s -> {
             final String path = "Reasons." + s + ".";
-            final PunishmentReason pr = new PunishmentReason();
+            final Reason pr = new Reason();
             pr.setReason(getConfiguration().getString(path + "reason"));
             pr.setPermission(getConfiguration().getString(path + "permission"));
             pr.setWithIP(getConfiguration().getBoolean(path + "ip"));

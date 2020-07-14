@@ -4,6 +4,9 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.LongMessage;
 import me.centralworks.modules.punishments.models.punishs.OnlinePunishment;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
+import me.centralworks.modules.punishments.models.punishs.supliers.CheckUp;
+import me.centralworks.modules.punishments.models.punishs.supliers.Filter;
+import me.centralworks.modules.punishments.models.punishs.supliers.Request;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.LoginEvent;
@@ -20,11 +23,13 @@ public class OnlineBanIPListener implements Listener {
         final OnlinePunishment onlinePunishment = new OnlinePunishment();
         onlinePunishment.setPrimaryIdentifier(connection.getUniqueId().toString());
         onlinePunishment.setIp(connection.getAddress().getAddress().getHostAddress());
-        if (onlinePunishment.existsPrimaryIdentifier()) {
+        final Request request = new Request(onlinePunishment);
+        if (request.existsPrimaryIdentifier()) {
             final General generalLib = General.getGeneralLib();
-            final List<Punishment> instance = onlinePunishment.requireAllByAddress();
-            if (!generalLib.hasActivePunishment(instance) || !generalLib.hasPunishmentBan(instance)) return;
-            final Punishment p = generalLib.getAllBannedPActive(instance).get(0);
+            final List<Punishment> instance = request.requireAllByAddress();
+            final CheckUp checkUp = new CheckUp(instance);
+            if (!checkUp.hasActivePunishment() || !checkUp.hasPunishmentBan()) return;
+            final Punishment p = new Filter(instance).getAllBannedPActive().get(0);
             if (p.getPrimaryIdentifier().equals(onlinePunishment.getPrimaryIdentifier())) return;
             final LongMessage longMessage = new LongMessage("Runners.ban-kick");
             final List<String> collect = General.getGeneralLib().applyPlaceHolders(longMessage.getStringList(), p);

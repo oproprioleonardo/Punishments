@@ -93,5 +93,6 @@ public class Main extends Plugin {
     @Override
     public void onDisable() {
         PunishmentPlugin.getDisable().accept(PunishmentPlugin.getInstance());
+        ReportPlugin.getDisable().accept(ReportPlugin.getInstance());
     }
 }

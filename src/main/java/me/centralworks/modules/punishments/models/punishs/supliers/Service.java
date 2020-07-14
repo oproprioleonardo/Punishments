@@ -10,7 +10,6 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.PunishmentData;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -25,7 +24,7 @@ public class Service implements Context {
     private String target;
     private String punisher = "Sistema";
     private PunishmentType punishmentType;
-    private PunishmentReason punishmentReason;
+    private Reason reason;
     private List<String> evidences = Lists.newArrayList();
     private Consumer<Punishment> announcer;
     private Consumer<Punishment> functionIfOnline;
@@ -34,11 +33,11 @@ public class Service implements Context {
     private boolean permanent = false;
     private String secondaryIdentifier;
 
-    public Service(String target, String punisher, PunishmentType punishmentType, PunishmentReason punishmentReason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, Consumer<Punishment> functionIfAddress, String ip, boolean permanent, String secondaryIdentifier) {
+    public Service(String target, String punisher, PunishmentType punishmentType, Reason reason, List<String> evidences, Consumer<Punishment> announcer, Consumer<Punishment> functionIfOnline, Consumer<Punishment> functionIfAddress, String ip, boolean permanent, String secondaryIdentifier) {
         this.target = target;
         this.punisher = punisher;
         this.punishmentType = punishmentType;
-        this.punishmentReason = punishmentReason;
+        this.reason = reason;
         this.evidences = evidences;
         this.announcer = announcer;
         this.functionIfOnline = functionIfOnline;
@@ -113,7 +112,7 @@ public class Service implements Context {
         }
         final General generalLib = General.getGeneralLib();
         final Punishment punishment = generalLib.easyInstance(getTarget(), getTarget());
-        final PunishmentData pd = new PunishmentData();
+        final Elements pd = new Elements();
         final long now = System.currentTimeMillis();
         punishment.setIp(getIp());
         punishment.setSecondaryIdentifier(getSecondaryIdentifier());
@@ -121,12 +120,12 @@ public class Service implements Context {
         pd.setPunishmentType(getPunishmentType());
         pd.setPunishmentState(PunishmentState.ACTIVE);
         pd.setPunisher(getPunisher());
-        pd.setReason(getPunishmentReason().getReason());
+        pd.setReason(getReason().getReason());
         pd.setStartedAt(now);
-        pd.setFinishAt(isPermanent() ? now : now + getPunishmentReason().getDuration());
+        pd.setFinishAt(isPermanent() ? now : now + getReason().getDuration());
         pd.setPermanent(isPermanent());
         punishment.setData(pd);
-        punishment.save();
+        new Request(punishment).save();
         if (punishment.isOnline()) {
             getFunctionIfOnline().accept(punishment);
         }

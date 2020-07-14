@@ -3,14 +3,14 @@ package me.centralworks.modules.reports;
 import com.google.gson.Gson;
 import me.centralworks.Main;
 import me.centralworks.modules.reports.cmds.CmdReport;
-import me.centralworks.modules.reports.dao.RegisteredReportDAO;
-import me.centralworks.modules.reports.dao.ReportTargetDAO;
+import me.centralworks.modules.reports.dao.ReportDAO;
 import me.centralworks.modules.reports.listeners.ChatListener;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ReportPlugin {
 
@@ -20,6 +20,7 @@ public class ReportPlugin {
     protected static Configuration messages;
     protected static List<String> reasons;
     protected static Gson gson;
+    protected static Consumer<ReportPlugin> disable;
 
     public ReportPlugin() {
         instance = this;
@@ -30,8 +31,16 @@ public class ReportPlugin {
         reasons = getConfiguration().getStringList("Reasons");
         registerCommand(new CmdReport());
         registerListener(new ChatListener());
-        RegisteredReportDAO.getInstance().createTable();
-        ReportTargetDAO.getInstance().createTable();
+        ReportDAO.getInstance().createTable();
+        setDisable(reportPlugin -> ReportDAO.getInstance().clear());
+    }
+
+    public static Consumer<ReportPlugin> getDisable() {
+        return disable;
+    }
+
+    public static void setDisable(Consumer<ReportPlugin> disable) {
+        ReportPlugin.disable = disable;
     }
 
     protected void registerCommand(Command command) {

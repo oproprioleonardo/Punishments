@@ -10,6 +10,6 @@ import java.util.List;
 public class ReportedPlayer {
 
     private String user;
-    private List<Integer> data;
+    private List<Report> data;
 
 }

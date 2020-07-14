@@ -1,39 +1,40 @@
 package me.centralworks.modules.reports.dao;
 
-import com.google.common.collect.Lists;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import me.centralworks.database.ConnectionFactory;
+import me.centralworks.modules.reports.ReportPlugin;
+import me.centralworks.modules.reports.models.Report;
 import me.centralworks.modules.reports.models.ReportedPlayer;
 
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class RegisteredReportDAO {
+public class ReportDAO {
 
-    protected static RegisteredReportDAO instance;
+    protected static ReportDAO instance;
     private final Connection connection;
 
-    protected RegisteredReportDAO(Connection connection) {
+    protected ReportDAO(Connection connection) {
         this.connection = connection;
     }
 
     public static void newConnection() {
-        if (RegisteredReportDAO.getInstance() != null) {
+        if (ReportDAO.getInstance() != null) {
             try {
-                if (!RegisteredReportDAO.getInstance().getConnection().isClosed())
-                    RegisteredReportDAO.getInstance().getConnection().close();
+                if (!ReportDAO.getInstance().getConnection().isClosed())
+                    ReportDAO.getInstance().getConnection().close();
             } catch (SQLException ignored) {
             }
         }
-        instance = new RegisteredReportDAO(ConnectionFactory.make());
+        instance = new ReportDAO(ConnectionFactory.make());
     }
 
-    public static RegisteredReportDAO getInstance() {
-        if (instance == null) instance = new RegisteredReportDAO(ConnectionFactory.make());
+    public static ReportDAO getInstance() {
+        if (instance == null) instance = new ReportDAO(ConnectionFactory.make());
         return instance;
     }
 
@@ -43,7 +44,7 @@ public class RegisteredReportDAO {
 
     public void createTable() {
         try {
-            final PreparedStatement st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS arcanth_reports_users(user VARCHAR(16) PRIMARY KEY, data TEXT)");
+            final PreparedStatement st = connection.prepareStatement("CREATE TABLE IF NOT EXISTS arcanth_reports(user VARCHAR(16) PRIMARY KEY, data LONGTEXT)");
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,7 +53,7 @@ public class RegisteredReportDAO {
 
     public boolean exists(String user) {
         try {
-            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_reports_users WHERE user = ?");
+            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_reports WHERE user = ?");
             st.setString(1, user);
             final ResultSet rs = st.executeQuery();
             return rs.next();
@@ -64,11 +65,14 @@ public class RegisteredReportDAO {
 
     public void save(ReportedPlayer reportedPlayer) {
         try {
-            final PreparedStatement st = connection.prepareStatement("INSERT INTO arcanth_reports_users VALUES(?,?) ON DUPLICATE KEY UPDATE user = ?, data = ?");
+            final PreparedStatement st = connection.prepareStatement("INSERT INTO arcanth_reports VALUES(?,?) ON DUPLICATE KEY UPDATE user = ?, data = ?");
+            final Type type = new TypeToken<List<Report>>() {
+            }.getType();
+            final String json = ReportPlugin.getGson().toJson(reportedPlayer.getData(), type);
             st.setString(1, reportedPlayer.getUser());
-            st.setString(2, reportedPlayer.getData().toString());
+            st.setString(2, json);
             st.setString(3, reportedPlayer.getUser());
-            st.setString(4, reportedPlayer.getData().toString());
+            st.setString(4, json);
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,15 +81,15 @@ public class RegisteredReportDAO {
 
     public ReportedPlayer loadByUser(String user) {
         try {
-            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_reports_users WHERE user = ?");
+            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_reports WHERE user = ?");
             st.setString(1, user);
             final ResultSet rs = st.executeQuery();
             rs.next();
+            final Type type = new TypeToken<List<Report>>() {
+            }.getType();
             final ReportedPlayer rp = new ReportedPlayer();
             final String data = rs.getString("data");
-            final JsonArray jsonArray = new JsonParser().parse(data).getAsJsonArray();
-            final List<Integer> list = Lists.newArrayList();
-            jsonArray.forEach(jsonElement -> list.add(jsonElement.getAsInt()));
+            final List<Report> list = ReportPlugin.getGson().fromJson(data, type);
             rp.setUser(user);
             rp.setData(list);
             return rp;
@@ -97,9 +101,17 @@ public class RegisteredReportDAO {
 
     public void delete(String user) {
         try {
-            final PreparedStatement st = connection.prepareStatement("DELETE FROM arcanth_reports_users WHERE user = ?");
+            final PreparedStatement st = connection.prepareStatement("DELETE FROM arcanth_reports WHERE user = ?");
             st.setString(1, user);
             st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clear() {
+        try {
+            connection.prepareStatement("DELETE FROM arcanth_reports").executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

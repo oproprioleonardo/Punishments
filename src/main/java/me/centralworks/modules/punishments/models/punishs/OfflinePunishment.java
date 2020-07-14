@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import me.centralworks.Main;
-import me.centralworks.modules.punishments.dao.PunishmentDAO;
+import me.centralworks.modules.punishments.models.punishs.supliers.Elements;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 @Data
@@ -14,8 +14,8 @@ public class OfflinePunishment extends Punishment {
 
     private String primaryIdentifier;
 
-    public OfflinePunishment(PunishmentData punishmentData, String ip, Integer id) {
-        super(punishmentData, ip, id);
+    public OfflinePunishment(Elements elements, String ip, Integer id) {
+        super(elements, ip, id);
     }
 
     public OfflinePunishment(String nickName) {
@@ -33,11 +33,6 @@ public class OfflinePunishment extends Punishment {
     }
 
     @Override
-    public void save() {
-        PunishmentDAO.getInstance().save(this);
-    }
-
-    @Override
     public boolean isOnline() {
         return Main.getInstance().getProxy().getPlayer(getPrimaryIdentifier()) != null;
     }
@@ -47,12 +42,4 @@ public class OfflinePunishment extends Punishment {
         return Main.getInstance().getProxy().getPlayer(getPrimaryIdentifier());
     }
 
-
-    public OfflinePunishment requireByPrimaryIdentifier() {
-        return (OfflinePunishment) super.requireByPrimaryIdentifier().update();
-    }
-
-    public OfflinePunishment requireById() {
-        return (OfflinePunishment) super.requireById().update();
-    }
 }

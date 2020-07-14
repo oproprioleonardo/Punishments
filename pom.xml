@@ -3,10 +3,14 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>me.centralworks.moderation</groupId>
-    <artifactId>cwPunishments</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>cw.moderation</groupId>
+    <artifactId>Punishments</artifactId>
+    <version>1.0-EXPERIMENTAL</version>
+    <name>Punishments</name>
+    <organization>
+        <name>CentralWorks</name>
+        <url>https://discord.gg/E8y2R5w</url>
+    </organization>
     <developers>
         <developer>
             <name>Leonardo</name>
@@ -80,6 +84,5 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
 
 </project>

@@ -1,10 +1,12 @@
 package me.centralworks.modules.punishments.models.punishs;
 
+import me.centralworks.modules.punishments.models.punishs.supliers.Elements;
+
 public interface Information {
 
-    PunishmentData getData();
+    Elements getData();
 
-    void setData(PunishmentData punishmentData);
+    void setData(Elements elements);
 
     boolean dataIsLoaded();
 

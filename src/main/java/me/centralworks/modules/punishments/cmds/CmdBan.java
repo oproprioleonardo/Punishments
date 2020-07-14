@@ -6,7 +6,7 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
+import me.centralworks.modules.punishments.models.punishs.supliers.Reason;
 import me.centralworks.modules.punishments.models.punishs.supliers.Service;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
@@ -47,17 +47,17 @@ public class CmdBan extends Command {
             if (s instanceof ProxiedPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
                 final List<String> reason = Arrays.asList(args).subList(1, args.length);
-                final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
-                ban.setPunishmentReason(reasonObj);
+                final Reason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
+                ban.setReason(reasonObj);
                 ban.applyOtherInformation(p);
             } else {
                 if (!(args.length == 2)) {
                     final List<String> reason = Arrays.asList(args).subList(1, args.length);
-                    ban.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
+                    ban.setReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
                 } else {
                     List<String> evidences = Lists.newArrayList(Lists.newArrayList(args).subList(1, 2).get(0).split(","));
                     final List<String> reason = Arrays.asList(args).subList(2, args.length);
-                    ban.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
+                    ban.setReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
                     ban.setEvidences(evidences);
                 }
                 ban.run();

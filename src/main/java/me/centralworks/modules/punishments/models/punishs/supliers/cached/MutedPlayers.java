@@ -1,8 +1,11 @@
 package me.centralworks.modules.punishments.models.punishs.supliers.cached;
 
 import com.google.common.collect.Lists;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import me.centralworks.lib.General;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
+import me.centralworks.modules.punishments.models.punishs.supliers.Request;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
 
 import java.util.List;
@@ -69,9 +72,10 @@ public class MutedPlayers {
             if (!muteObject.isPermanent() && muteObject.getFinishAt() < System.currentTimeMillis()) {
                 final Punishment o = General.getGeneralLib().easyInstance(playerMuted, playerMuted);
                 o.setId(muteObject.getId());
-                final Punishment punishment = o.requireById();
+                final Request request = new Request(o);
+                final Punishment punishment = request.requireById();
                 punishment.getData().setPunishmentState(PunishmentState.FINISHED);
-                punishment.save();
+                request.save();
                 this.remove(muteObject);
             }
         }
@@ -83,14 +87,17 @@ public class MutedPlayers {
             if (!muteObject.isPermanent() && muteObject.getFinishAt() < System.currentTimeMillis()) {
                 final Punishment o = General.getGeneralLib().easyInstance(muteObject.getPlayerMuted(), muteObject.getPlayerMuted());
                 o.setId(muteObject.getId());
-                final Punishment punishment = o.requireById();
+                final Request request = new Request(o);
+                final Punishment punishment = request.requireById();
                 punishment.getData().setPunishmentState(PunishmentState.FINISHED);
-                punishment.save();
+                request.save();
                 this.remove(muteObject);
             }
         }
     }
 
+    @Data
+    @RequiredArgsConstructor
     public static class MuteObject {
         private String playerMuted;
         private Integer id;
@@ -110,71 +117,12 @@ public class MutedPlayers {
             if (!addressIP.equalsIgnoreCase("")) setIp(true);
         }
 
-        public MuteObject() {
-        }
-
-        public boolean isPermanent() {
-            return permanent;
-        }
-
-        public void setPermanent(boolean permanent) {
-            this.permanent = permanent;
-        }
-
         public void save() {
             MutedPlayers.getInstance().add(this);
         }
 
         public void erase() {
             MutedPlayers.getInstance().remove(this);
-        }
-
-        public String getPlayerMuted() {
-            return playerMuted;
-        }
-
-        public void setPlayerMuted(String playerMuted) {
-            this.playerMuted = playerMuted;
-        }
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
-        public Long getFinishAt() {
-            return finishAt;
-        }
-
-        public void setFinishAt(Long finishAt) {
-            this.finishAt = finishAt;
-        }
-
-        public Long getStartAt() {
-            return startAt;
-        }
-
-        public void setStartAt(Long startAt) {
-            this.startAt = startAt;
-        }
-
-        public String getAddressIP() {
-            return addressIP;
-        }
-
-        public void setAddressIP(String addressIP) {
-            this.addressIP = addressIP;
-        }
-
-        public boolean isIp() {
-            return ip;
-        }
-
-        public void setIp(boolean ip) {
-            this.ip = ip;
         }
     }
 

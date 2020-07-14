@@ -7,7 +7,7 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
+import me.centralworks.modules.punishments.models.punishs.supliers.Reason;
 import me.centralworks.modules.punishments.models.punishs.supliers.Service;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
@@ -56,21 +56,21 @@ public class CmdTempMuteIP extends Command {
             if (isPlayer) {
                 final ProxiedPlayer p = ((ProxiedPlayer) s);
                 final List<String> reason = Arrays.asList(args).subList(2, args.length);
-                final PunishmentReason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
+                final Reason reasonObj = Reasons.getInstance().getByReason(String.join(" ", reason));
                 reasonObj.setDuration(duration);
-                mute.setPunishmentReason(reasonObj);
+                mute.setReason(reasonObj);
                 mute.applyOtherInformation(p);
             } else {
                 if (!(args.length == 3)) {
                     final List<String> reason = Arrays.asList(args).subList(2, args.length);
-                    mute.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
+                    mute.setReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
                 } else {
                     List<String> evidences = Lists.newArrayList(Lists.newArrayList(args).subList(2, 3).get(0).split(","));
                     final List<String> reason = Arrays.asList(args).subList(3, args.length);
-                    mute.setPunishmentReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
+                    mute.setReason(Reasons.getInstance().getByReason(String.join(" ", reason)));
                     mute.setEvidences(evidences);
                 }
-                mute.getPunishmentReason().setDuration(duration);
+                mute.getReason().setDuration(duration);
                 mute.run();
             }
         } catch (Exception e) {

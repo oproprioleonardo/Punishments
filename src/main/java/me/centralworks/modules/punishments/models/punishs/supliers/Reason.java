@@ -2,7 +2,7 @@ package me.centralworks.modules.punishments.models.punishs.supliers;
 
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
 
-public class PunishmentReason {
+public class Reason {
 
     protected boolean none = false;
     private String reason = "Não especificado.";
@@ -12,7 +12,7 @@ public class PunishmentReason {
     private PunishmentType punishmentType;
     private Boolean permanent = false;
 
-    public PunishmentReason(String reason, Long duration, String permission, Boolean withIP, PunishmentType punishmentType, Boolean permanent) {
+    public Reason(String reason, Long duration, String permission, Boolean withIP, PunishmentType punishmentType, Boolean permanent) {
         this.reason = reason;
         this.duration = duration;
         this.permission = permission;
@@ -21,19 +21,19 @@ public class PunishmentReason {
         this.permanent = permanent;
     }
 
-    public PunishmentReason(String reason, Long duration, String permission, PunishmentType punishmentType) {
+    public Reason(String reason, Long duration, String permission, PunishmentType punishmentType) {
         this.reason = reason;
         this.duration = duration;
         this.permission = permission;
         this.punishmentType = punishmentType;
     }
 
-    public PunishmentReason(String reason) {
+    public Reason(String reason) {
         this.reason = reason;
         none = true;
     }
 
-    public PunishmentReason() {
+    public Reason() {
     }
 
     public Boolean isPermanent() {

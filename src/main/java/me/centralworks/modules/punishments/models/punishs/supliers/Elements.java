@@ -1,9 +1,8 @@
-package me.centralworks.modules.punishments.models.punishs;
+package me.centralworks.modules.punishments.models.punishs.supliers;
 
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import me.centralworks.modules.punishments.models.punishs.supliers.PunishmentReason;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
 import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @Data
 @RequiredArgsConstructor
-public class PunishmentData {
+public class Elements {
 
     private Long startedAt;
     private Long finishAt;
@@ -29,7 +28,7 @@ public class PunishmentData {
         return this.reason;
     }
 
-    public PunishmentReason getReason() {
+    public Reason getReason() {
         return Reasons.getInstance().getByReason(getReasonString());
     }
 

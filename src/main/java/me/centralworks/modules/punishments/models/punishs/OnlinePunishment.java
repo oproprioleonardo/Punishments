@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import me.centralworks.Main;
-import me.centralworks.modules.punishments.dao.PunishmentDAO;
+import me.centralworks.modules.punishments.models.punishs.supliers.Elements;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
@@ -16,8 +16,8 @@ public class OnlinePunishment extends Punishment {
 
     private UUID uuid;
 
-    public OnlinePunishment(PunishmentData punishmentData, String ip, Integer id) {
-        super(punishmentData, ip, id);
+    public OnlinePunishment(Elements elements, String ip, Integer id) {
+        super(elements, ip, id);
     }
 
     public OnlinePunishment(UUID uuid) {
@@ -52,11 +52,6 @@ public class OnlinePunishment extends Punishment {
     }
 
     @Override
-    public void save() {
-        PunishmentDAO.getInstance().save(this);
-    }
-
-    @Override
     public boolean isOnline() {
         return Main.getInstance().getProxy().getPlayer(getUuid()) != null;
     }
@@ -66,11 +61,4 @@ public class OnlinePunishment extends Punishment {
         return Main.getInstance().getProxy().getPlayer(getUuid());
     }
 
-    public OnlinePunishment requireByPrimaryIdentifier() {
-        return (OnlinePunishment) super.requireByPrimaryIdentifier().update();
-    }
-
-    public OnlinePunishment requireById() {
-        return (OnlinePunishment) super.requireById().update();
-    }
 }

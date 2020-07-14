@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 import me.centralworks.lib.General;
 import me.centralworks.lib.LongMessage;
 import me.centralworks.modules.punishments.models.punishs.Punishment;
+import me.centralworks.modules.punishments.models.punishs.supliers.CheckUp;
+import me.centralworks.modules.punishments.models.punishs.supliers.Filter;
+import me.centralworks.modules.punishments.models.punishs.supliers.Request;
 import me.centralworks.modules.punishments.models.punishs.supliers.cached.MutedPlayers;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -20,11 +23,13 @@ public class MuteIPListener implements Listener {
         final ProxiedPlayer connection = e.getPlayer();
         final Punishment punishment = General.getGeneralLib().easyInstance();
         punishment.setIp(connection.getAddress().getAddress().getHostAddress());
-        if (punishment.existsByAddress()) {
+        final Request request = new Request(punishment);
+        if (request.existsByAddress()) {
             final General generalLib = General.getGeneralLib();
-            final List<Punishment> instance = punishment.requireAllByAddress();
-            if (!generalLib.hasActivePunishment(instance) || !generalLib.hasPunishmentMute(instance)) return;
-            final Punishment p = generalLib.getAllMutedPActive(instance).get(0);
+            final List<Punishment> instance = request.requireAllByAddress();
+            final CheckUp checkUp = new CheckUp(instance);
+            if (!checkUp.hasActivePunishment() || !checkUp.hasPunishmentMute()) return;
+            final Punishment p = new Filter(instance).getAllMutedPActive().get(0);
             final List<String> collect = generalLib.applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), p);
             final ComponentBuilder componentBuilder = new ComponentBuilder("");
             collect.forEach(componentBuilder::append);
