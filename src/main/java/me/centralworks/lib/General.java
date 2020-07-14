@@ -102,6 +102,11 @@ public class General {
     public void kickPlayer(ProxiedPlayer p, String author, String reason) {
         final Configuration cfg = PunishmentPlugin.getMessages();
         final ComponentBuilder msg = new ComponentBuilder("");
+        if (!author.equalsIgnoreCase("Sistema") && Main.getUsersImmune().stream().anyMatch(s -> s.equalsIgnoreCase(author))) {
+            if (Main.getInstance().getProxy().getPlayer(author) != null)
+                new Message(PunishmentPlugin.getMessages().getString("Messages.immune")).send(Main.getInstance().getProxy().getPlayer(author));
+            return;
+        }
         for (String s1 : cfg.getStringList("Runners.kick")) {
             msg.append(s1
                     .replace("&", "§")
@@ -110,7 +115,7 @@ public class General {
             );
         }
         p.disconnect(msg.create());
-        cfg.getStringList("Announcements.kick").forEach(s -> Main.getInstance().getProxy().broadcast(new TextComponent(s.replace("{author}", author).replace("{reason}", reason.equals("") ? "Não informado" : reason))));
+        cfg.getStringList("Announcements.kick").forEach(s -> Main.getInstance().getProxy().broadcast(new TextComponent(s.replace("{author}", author).replace("&", "§").replace("{reason}", reason.equals("") ? "Não informado" : reason))));
     }
 
     public void sendHistory(CommandSender s, List<Punishment> punishments) {

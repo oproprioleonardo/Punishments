@@ -26,7 +26,7 @@ public class ChatListener implements Listener {
             final General generalLib = General.getGeneralLib();
             if (!contexts.exists(p.getName())) return;
             final Context context = contexts.get(p.getName());
-            if (context.getPlugin() == 1) {
+            if (context.getPlugin() == 0) {
                 final Service service = (Service) context;
                 e.setCancelled(true);
                 if (message.equalsIgnoreCase("pronto")) {
