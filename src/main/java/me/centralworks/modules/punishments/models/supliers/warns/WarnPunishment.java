@@ -1,4 +1,4 @@
-package me.centralworks.modules.punishments.models.warns.supliers;
+package me.centralworks.modules.punishments.models.supliers.warns;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

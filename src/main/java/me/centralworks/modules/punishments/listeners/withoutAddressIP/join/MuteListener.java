@@ -2,10 +2,10 @@ package me.centralworks.modules.punishments.listeners.withoutAddressIP.join;
 
 import me.centralworks.Main;
 import me.centralworks.lib.General;
-import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.supliers.CheckUp;
-import me.centralworks.modules.punishments.models.punishs.supliers.Filter;
-import me.centralworks.modules.punishments.models.punishs.supliers.Request;
+import me.centralworks.modules.punishments.models.Punishment;
+import me.centralworks.modules.punishments.models.supliers.CheckUp;
+import me.centralworks.modules.punishments.models.supliers.Filter;
+import me.centralworks.modules.punishments.models.supliers.Request;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;

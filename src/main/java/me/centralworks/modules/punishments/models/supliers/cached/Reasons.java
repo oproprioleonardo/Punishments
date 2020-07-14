@@ -1,7 +1,7 @@
-package me.centralworks.modules.punishments.models.punishs.supliers.cached;
+package me.centralworks.modules.punishments.models.supliers.cached;
 
 import com.google.common.collect.Lists;
-import me.centralworks.modules.punishments.models.punishs.supliers.Reason;
+import me.centralworks.modules.punishments.models.supliers.Reason;
 
 import java.util.List;
 

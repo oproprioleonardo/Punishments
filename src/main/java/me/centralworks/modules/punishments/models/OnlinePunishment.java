@@ -1,10 +1,10 @@
-package me.centralworks.modules.punishments.models.punishs;
+package me.centralworks.modules.punishments.models;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import me.centralworks.Main;
-import me.centralworks.modules.punishments.models.punishs.supliers.Elements;
+import me.centralworks.modules.punishments.models.supliers.Elements;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;

@@ -1,11 +1,16 @@
-package me.centralworks.modules.punishments.models.punishs.supliers.enums;
+package me.centralworks.modules.punishments.models.supliers.enums;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Arrays;
 
 public enum PunishmentState {
 
+    @SerializedName("FINISHED")
     FINISHED("Finalizada"),
+    @SerializedName("ACTIVE")
     ACTIVE("Ativa"),
+    @SerializedName("REVOKED")
     REVOKED("Revogada");
 
     private final String identifier;

@@ -1,17 +1,16 @@
-package me.centralworks.modules.punishments.models.punishs.supliers;
+package me.centralworks.modules.punishments.models.supliers;
 
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import me.centralworks.Main;
 import me.centralworks.lib.Context;
 import me.centralworks.lib.Contexts;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
-import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
+import me.centralworks.modules.punishments.models.Punishment;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentState;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
@@ -105,11 +104,7 @@ public class Service implements Context {
 
     @Override
     public void execute() {
-        if (!getTarget().equalsIgnoreCase("Sistema") && Main.getUsersImmune().stream().anyMatch(s -> s.equalsIgnoreCase(getTarget()))) {
-            if (Main.getInstance().getProxy().getPlayer(getTarget()) != null)
-                new Message(PunishmentPlugin.getMessages().getString("Messages.immune")).send(Main.getInstance().getProxy().getPlayer(getTarget()));
-            return;
-        }
+        if (!Immune.canGo(getPunisher(), target)) return;
         final General generalLib = General.getGeneralLib();
         final Punishment punishment = generalLib.easyInstance(getTarget(), getTarget());
         final Elements pd = new Elements();
@@ -126,12 +121,8 @@ public class Service implements Context {
         pd.setPermanent(isPermanent());
         punishment.setData(pd);
         new Request(punishment).save();
-        if (punishment.isOnline()) {
-            getFunctionIfOnline().accept(punishment);
-        }
-        if (punishment.ipIsValid()) {
-            getFunctionIfAddress().accept(punishment);
-        }
+        if (punishment.isOnline()) getFunctionIfOnline().accept(punishment);
+        if (punishment.ipIsValid()) getFunctionIfAddress().accept(punishment);
         getAnnouncer().accept(punishment);
     }
 

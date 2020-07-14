@@ -1,12 +1,12 @@
-package me.centralworks.modules.punishments.models.punishs;
+package me.centralworks.modules.punishments.models;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import me.centralworks.modules.punishments.models.punishs.supliers.Elements;
-import me.centralworks.modules.punishments.models.punishs.supliers.Request;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.MutedPlayers;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
+import me.centralworks.modules.punishments.models.supliers.Elements;
+import me.centralworks.modules.punishments.models.supliers.Request;
+import me.centralworks.modules.punishments.models.supliers.cached.MutedPlayers;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentState;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentType;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 @Data
@@ -45,16 +45,13 @@ public abstract class Punishment implements Information, Identifier {
         return null;
     }
 
-
     public boolean dataIsLoaded() {
         return data != null;
     }
 
-
     public boolean ipIsValid() {
         return ip != null && !ip.equalsIgnoreCase("");
     }
-
 
     public boolean idIsValid() {
         return id != null && id != 0;

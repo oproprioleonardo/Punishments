@@ -1,5 +1,7 @@
 package me.centralworks.modules.punishments.enums;
 
+import me.centralworks.lib.Message;
+import me.centralworks.modules.punishments.PunishmentPlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -33,11 +35,16 @@ public enum Permission {
     }
 
     public static boolean hasPermission(ProxiedPlayer proxiedPlayer, Permission permission) {
-        return permission.hasPermission(proxiedPlayer) || proxiedPlayer.hasPermission(Permission.ADMIN.getPermission());
+        if (permission.hasPermission(proxiedPlayer) || proxiedPlayer.hasPermission(Permission.ADMIN.getPermission()))
+            return true;
+        new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(proxiedPlayer);
+        return false;
     }
 
     public static boolean hasPermission(CommandSender cs, Permission permission) {
-        return permission.hasPermission(cs) || cs.hasPermission(Permission.ADMIN.getPermission());
+        if (permission.hasPermission(cs) || cs.hasPermission(Permission.ADMIN.getPermission())) return true;
+        new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(cs);
+        return false;
     }
 
     public String getPermission() {

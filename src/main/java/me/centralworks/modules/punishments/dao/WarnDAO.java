@@ -2,7 +2,7 @@ package me.centralworks.modules.punishments.dao;
 
 import com.google.common.collect.Lists;
 import me.centralworks.database.ConnectionFactory;
-import me.centralworks.modules.punishments.models.warns.Warn;
+import me.centralworks.modules.punishments.models.Warn;
 
 import java.sql.*;
 import java.util.List;

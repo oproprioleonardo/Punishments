@@ -2,7 +2,7 @@ package me.centralworks.modules.punishments.listeners;
 
 import me.centralworks.Main;
 import me.centralworks.lib.General;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
+import me.centralworks.modules.punishments.models.supliers.cached.AddressIP;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;

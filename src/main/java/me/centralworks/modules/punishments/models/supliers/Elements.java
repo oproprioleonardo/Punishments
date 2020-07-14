@@ -1,11 +1,11 @@
-package me.centralworks.modules.punishments.models.punishs.supliers;
+package me.centralworks.modules.punishments.models.supliers;
 
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
+import me.centralworks.modules.punishments.models.supliers.cached.Reasons;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentState;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentType;
 
 import java.sql.Timestamp;
 import java.util.Date;

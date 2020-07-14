@@ -1,6 +1,6 @@
-package me.centralworks.modules.punishments.models.punishs.supliers;
+package me.centralworks.modules.punishments.models.supliers;
 
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentType;
 
 public class Reason {
 

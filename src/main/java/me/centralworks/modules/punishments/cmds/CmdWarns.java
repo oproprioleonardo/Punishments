@@ -18,10 +18,7 @@ public class CmdWarns extends Command {
 
     @Override
     public void execute(CommandSender s, String[] args) {
-        if (!Permission.hasPermission(s, Permission.WARNS)) {
-            new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
-            return;
-        }
+        if (!Permission.hasPermission(s, Permission.WARNS)) return;
         final Configuration cfg = PunishmentPlugin.getMessages();
         try {
             final String target = args[0];

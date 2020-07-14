@@ -7,10 +7,8 @@ import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
-import net.md_5.bungee.config.Configuration;
 
 public class CmdKick extends Command {
 
@@ -21,13 +19,8 @@ public class CmdKick extends Command {
     @Override
     public void execute(CommandSender s, String[] args) {
         try {
-            if (!Permission.hasPermission(s, Permission.KICK)) {
-                new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
-                return;
-            }
-            final ProxyServer proxy = Main.getInstance().getProxy();
+            if (!Permission.hasPermission(s, Permission.KICK)) return;
             final General lib = General.getGeneralLib();
-            final Configuration cfg = PunishmentPlugin.getMessages();
             final ProxiedPlayer p = Main.getInstance().getProxy().getPlayer(args[0]);
             if (args.length == 1) {
                 lib.kickPlayer(p, s instanceof ProxiedPlayer ? s.getName() : "Sistema", "");

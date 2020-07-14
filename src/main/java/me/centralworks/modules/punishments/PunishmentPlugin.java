@@ -19,10 +19,11 @@ import me.centralworks.modules.punishments.listeners.withoutAddressIP.MuteChatLi
 import me.centralworks.modules.punishments.listeners.withoutAddressIP.join.MuteListener;
 import me.centralworks.modules.punishments.listeners.withoutAddressIP.join.OfflineBanListener;
 import me.centralworks.modules.punishments.listeners.withoutAddressIP.join.OnlineBanListener;
-import me.centralworks.modules.punishments.models.punishs.supliers.Reason;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
-import me.centralworks.modules.punishments.models.warns.supliers.WarnLoader;
+import me.centralworks.modules.punishments.models.supliers.Immune;
+import me.centralworks.modules.punishments.models.supliers.Reason;
+import me.centralworks.modules.punishments.models.supliers.cached.Reasons;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentType;
+import me.centralworks.modules.punishments.models.supliers.warns.WarnLoader;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
@@ -36,6 +37,7 @@ public class PunishmentPlugin {
     protected static Configuration configuration;
     protected static Configuration messages;
     protected static Configuration usages;
+    protected static Configuration immune;
     protected static Gson gson;
     protected static Consumer<PunishmentPlugin> disable;
 
@@ -46,8 +48,16 @@ public class PunishmentPlugin {
         registerListeners();
         registerReasons();
         registerData();
-        final WarnLoader warnLoader = new WarnLoader();
-        warnLoader.init(getConfiguration());
+        new WarnLoader().init(getConfiguration());
+        new Immune(getImmune().getStringList("Users"));
+    }
+
+    public static Configuration getImmune() {
+        return immune;
+    }
+
+    public static void setImmune(Configuration immune) {
+        PunishmentPlugin.immune = immune;
     }
 
     public static Consumer<PunishmentPlugin> getDisable() {
@@ -108,6 +118,7 @@ public class PunishmentPlugin {
         configuration = Main.getConfiguration("config.yml", "punishments", "/punishments/");
         messages = Main.getConfiguration("messages.yml", "punishments", "/punishments/");
         usages = Main.getConfiguration("usages.yml", "punishments", "/punishments/");
+        immune = Main.getConfiguration("immune.yml", "punishments", "/punishments/");
         gson = new Gson();
     }
 

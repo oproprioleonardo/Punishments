@@ -1,10 +1,10 @@
-package me.centralworks.modules.punishments.models.warns.supliers;
+package me.centralworks.modules.punishments.models.supliers.warns;
 
 import com.google.common.collect.Lists;
 import me.centralworks.Main;
 import me.centralworks.lib.General;
 import me.centralworks.modules.punishments.dao.WarnDAO;
-import me.centralworks.modules.punishments.models.warns.Warn;
+import me.centralworks.modules.punishments.models.Warn;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,7 +41,7 @@ public class Warns {
             final Warn warn = warns.get(0);
             General.getGeneralLib().getFunctionAnnouncerWarn().accept(warn);
             General.getGeneralLib().getFunctionWarnIfOn().accept(warn);
-            WarnDAO.getInstance().save(warn);
+            warn.saveSync();
             final List<Warn> w = Lists.newArrayList(warns);
             w.remove(warn);
             setWarns(w);
@@ -51,7 +51,7 @@ public class Warns {
     }
 
     private void goSaveNow(Warn warn) {
-        WarnDAO.getInstance().save(warn);
+        warn.saveSync();
         final List<Warn> w = Lists.newArrayList(warns);
         w.remove(warn);
         setWarns(w);

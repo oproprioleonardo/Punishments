@@ -1,4 +1,4 @@
-package me.centralworks.modules.punishments.models.punishs.supliers.cached;
+package me.centralworks.modules.punishments.models.supliers.cached;
 
 import com.google.common.collect.Lists;
 

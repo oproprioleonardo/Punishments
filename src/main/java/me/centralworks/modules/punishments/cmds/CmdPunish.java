@@ -6,10 +6,10 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.supliers.Reason;
-import me.centralworks.modules.punishments.models.punishs.supliers.Service;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
+import me.centralworks.modules.punishments.models.supliers.Reason;
+import me.centralworks.modules.punishments.models.supliers.Service;
+import me.centralworks.modules.punishments.models.supliers.cached.AddressIP;
+import me.centralworks.modules.punishments.models.supliers.cached.Reasons;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -29,10 +29,7 @@ public class CmdPunish extends Command {
                 new Message(PunishmentPlugin.getMessages().getString("Messages.only-player")).send(s);
                 return;
             }
-            if (!Permission.hasPermission(s, Permission.STAFF)) {
-                new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
-                return;
-            }
+            if (!Permission.hasPermission(s, Permission.STAFF)) return;
             final ProxyServer proxy = Main.getInstance().getProxy();
             final General lib = General.getGeneralLib();
             final Configuration cfg = PunishmentPlugin.getMessages();

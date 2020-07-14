@@ -6,7 +6,8 @@ import me.centralworks.lib.Date;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.warns.Warn;
+import me.centralworks.modules.punishments.models.Warn;
+import me.centralworks.modules.punishments.models.supliers.Immune;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -21,10 +22,7 @@ public class CmdTempWarn extends Command {
 
     @Override
     public void execute(CommandSender s, String[] args) {
-        if (!Permission.hasPermission(s, Permission.TEMPWARN)) {
-            new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
-            return;
-        }
+        if (!Permission.hasPermission(s, Permission.TEMPWARN)) return;
         final ProxyServer proxy = Main.getInstance().getProxy();
         final Configuration cfg = PunishmentPlugin.getMessages();
         final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
@@ -34,11 +32,7 @@ public class CmdTempWarn extends Command {
                 new Message(cfg.getString("Messages.only-player")).send(s);
                 return;
             }
-            if (!target.equalsIgnoreCase("Sistema") && Main.getUsersImmune().stream().anyMatch(s1 -> s1.equalsIgnoreCase(target))) {
-                if (Main.getInstance().getProxy().getPlayer(target) != null)
-                    new Message(PunishmentPlugin.getMessages().getString("Messages.immune")).send(Main.getInstance().getProxy().getPlayer(target));
-                return;
-            }
+            if (!Immune.canGo(punisher, target)) return;
             final ProxiedPlayer t = proxy.getPlayer(target);
             final Warn warn = new Warn();
             warn.setTarget(t.getName());

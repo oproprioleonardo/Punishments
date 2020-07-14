@@ -5,7 +5,7 @@ import me.centralworks.lib.Contexts;
 import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
-import me.centralworks.modules.punishments.models.punishs.supliers.Service;
+import me.centralworks.modules.punishments.models.supliers.Service;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;

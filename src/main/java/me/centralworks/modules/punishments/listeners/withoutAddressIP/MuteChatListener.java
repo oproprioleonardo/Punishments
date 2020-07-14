@@ -3,7 +3,7 @@ package me.centralworks.modules.punishments.listeners.withoutAddressIP;
 import me.centralworks.Main;
 import me.centralworks.lib.LongMessage;
 import me.centralworks.modules.punishments.PunishmentPlugin;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.MutedPlayers;
+import me.centralworks.modules.punishments.models.supliers.cached.MutedPlayers;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.Connection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

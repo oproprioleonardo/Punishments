@@ -1,4 +1,4 @@
-package me.centralworks.modules.punishments.models.warns.supliers;
+package me.centralworks.modules.punishments.models.supliers.warns;
 
 import com.google.common.collect.Lists;
 import net.md_5.bungee.config.Configuration;

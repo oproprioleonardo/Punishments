@@ -1,12 +1,12 @@
 package me.centralworks.modules.punishments.listeners.withAddressIP.join;
 
-import me.centralworks.lib.General;
 import me.centralworks.lib.LongMessage;
-import me.centralworks.modules.punishments.models.punishs.OfflinePunishment;
-import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.supliers.CheckUp;
-import me.centralworks.modules.punishments.models.punishs.supliers.Filter;
-import me.centralworks.modules.punishments.models.punishs.supliers.Request;
+import me.centralworks.modules.punishments.models.OfflinePunishment;
+import me.centralworks.modules.punishments.models.Punishment;
+import me.centralworks.modules.punishments.models.supliers.CheckUp;
+import me.centralworks.modules.punishments.models.supliers.Filter;
+import me.centralworks.modules.punishments.models.supliers.PlaceHolder;
+import me.centralworks.modules.punishments.models.supliers.Request;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.PreLoginEvent;
@@ -31,7 +31,7 @@ public class OfflineBanIPListener implements Listener {
             final Punishment p = new Filter(instance).getAllBannedPActive().get(0);
             if (p.getPrimaryIdentifier().equals(offlinePunishment.getPrimaryIdentifier())) return;
             final LongMessage longMessage = new LongMessage("Runners.ban-kick");
-            final List<String> collect = General.getGeneralLib().applyPlaceHolders(longMessage.getStringList(), p);
+            final List<String> collect = new PlaceHolder(longMessage.getStringList(), p).applyPlaceHolders();
             longMessage.setStringList(collect);
             final ComponentBuilder baseComponents = new ComponentBuilder("");
             longMessage.getColorfulList().forEach(baseComponents::append);

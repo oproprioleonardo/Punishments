@@ -17,11 +17,7 @@ public class CmdUnwarn extends Command {
 
     @Override
     public void execute(CommandSender s, String[] args) {
-
-        if (!Permission.hasPermission(s, Permission.UNWARN)) {
-            new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
-            return;
-        }
+        if (!Permission.hasPermission(s, Permission.UNWARN)) return;
         final Configuration cfg = PunishmentPlugin.getMessages();
         try {
             final Integer id = Integer.valueOf(args[0]);

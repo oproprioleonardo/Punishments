@@ -5,10 +5,10 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.supliers.CheckUp;
-import me.centralworks.modules.punishments.models.punishs.supliers.Filter;
-import me.centralworks.modules.punishments.models.punishs.supliers.Request;
+import me.centralworks.modules.punishments.models.Punishment;
+import me.centralworks.modules.punishments.models.supliers.CheckUp;
+import me.centralworks.modules.punishments.models.supliers.Filter;
+import me.centralworks.modules.punishments.models.supliers.Request;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.config.Configuration;
@@ -25,10 +25,7 @@ public class CmdUnmute extends Command {
     public void execute(CommandSender s, String[] args) {
         final Configuration cfg = PunishmentPlugin.getMessages();
         final General gnrlLib = General.getGeneralLib();
-        if (!Permission.hasPermission(s, Permission.UNMUTE)) {
-            new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
-            return;
-        }
+        if (!Permission.hasPermission(s, Permission.UNMUTE)) return;
         new Message(PunishmentPlugin.getMessages().getString("Messages.wait")).send(s);
         Main.getInstance().getProxy().getScheduler().runAsync(Main.getInstance(), () -> {
             try {

@@ -7,11 +7,11 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.supliers.Reason;
-import me.centralworks.modules.punishments.models.punishs.supliers.Service;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
+import me.centralworks.modules.punishments.models.supliers.Reason;
+import me.centralworks.modules.punishments.models.supliers.Service;
+import me.centralworks.modules.punishments.models.supliers.cached.AddressIP;
+import me.centralworks.modules.punishments.models.supliers.cached.Reasons;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentType;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -30,10 +30,7 @@ public class CmdTempBanIP extends Command {
     public void execute(CommandSender s, String[] args) {
         try {
             final ProxyServer proxy = Main.getInstance().getProxy();
-            if (!Permission.hasPermission(s, Permission.TEMPBANIP)) {
-                new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
-                return;
-            }
+            if (!Permission.hasPermission(s, Permission.TEMPBANIP)) return;
             if (Main.isOnlineMode() && proxy.getPlayer(args[0]) == null) {
                 new Message(PunishmentPlugin.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
                 return;

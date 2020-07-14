@@ -1,13 +1,20 @@
-package me.centralworks.modules.punishments.models.punishs.supliers.enums;
+package me.centralworks.modules.punishments.models.supliers.enums;
+
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Arrays;
 
 public enum PunishmentType {
 
+    @SerializedName("BAN")
     BAN("Banimento", false),
+    @SerializedName("TEMPBAN")
     TEMPBAN("Banimento temporário", true),
+    @SerializedName("MUTE")
     MUTE("Silenciamento", false),
+    @SerializedName("TEMPMUTE")
     TEMPMUTE("Silenciamento temporário", true),
+    @SerializedName("KICK")
     KICK("Suspensão", false);
 
     private final String identifier;

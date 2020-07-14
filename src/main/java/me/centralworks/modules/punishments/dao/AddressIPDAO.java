@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import me.centralworks.Main;
 import me.centralworks.database.ConnectionFactory;
 import me.centralworks.lib.Date;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
+import me.centralworks.modules.punishments.models.supliers.cached.AddressIP;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

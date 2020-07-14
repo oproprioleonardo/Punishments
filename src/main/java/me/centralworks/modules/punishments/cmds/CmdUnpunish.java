@@ -5,9 +5,9 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.supliers.Request;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
+import me.centralworks.modules.punishments.models.Punishment;
+import me.centralworks.modules.punishments.models.supliers.Request;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentState;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.config.Configuration;
@@ -22,10 +22,7 @@ public class CmdUnpunish extends Command {
     public void execute(CommandSender s, String[] args) {
         final Configuration cfg = PunishmentPlugin.getMessages();
         final General gnrlLib = General.getGeneralLib();
-        if (!Permission.hasPermission(s, Permission.UNPUNISH)) {
-            new Message(PunishmentPlugin.getMessages().getString("Messages.permission-error")).send(s);
-            return;
-        }
+        if (!Permission.hasPermission(s, Permission.UNPUNISH)) return;
         new Message(PunishmentPlugin.getMessages().getString("Messages.wait")).send(s);
         Main.getInstance().getProxy().getScheduler().runAsync(Main.getInstance(), () -> {
             try {

@@ -1,9 +1,9 @@
-package me.centralworks.modules.punishments.models.warns;
+package me.centralworks.modules.punishments.models;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import me.centralworks.modules.punishments.dao.WarnDAO;
-import me.centralworks.modules.punishments.models.warns.supliers.Warns;
+import me.centralworks.modules.punishments.models.supliers.warns.Warns;
 
 @Data
 @RequiredArgsConstructor

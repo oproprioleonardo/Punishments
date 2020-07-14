@@ -1,4 +1,4 @@
-package me.centralworks.modules.punishments.models.punishs;
+package me.centralworks.modules.punishments.models;
 
 public interface Identifier {
 

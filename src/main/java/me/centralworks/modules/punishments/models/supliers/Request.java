@@ -1,10 +1,10 @@
-package me.centralworks.modules.punishments.models.punishs.supliers;
+package me.centralworks.modules.punishments.models.supliers;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import me.centralworks.modules.punishments.dao.PunishmentDAO;
-import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
+import me.centralworks.modules.punishments.models.Punishment;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentState;
 
 import java.util.List;
 import java.util.stream.Collectors;

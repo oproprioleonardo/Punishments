@@ -1,12 +1,12 @@
 package me.centralworks.modules.punishments.listeners.withoutAddressIP.join;
 
-import me.centralworks.lib.General;
 import me.centralworks.lib.LongMessage;
-import me.centralworks.modules.punishments.models.punishs.OfflinePunishment;
-import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.supliers.CheckUp;
-import me.centralworks.modules.punishments.models.punishs.supliers.Filter;
-import me.centralworks.modules.punishments.models.punishs.supliers.Request;
+import me.centralworks.modules.punishments.models.OfflinePunishment;
+import me.centralworks.modules.punishments.models.Punishment;
+import me.centralworks.modules.punishments.models.supliers.CheckUp;
+import me.centralworks.modules.punishments.models.supliers.Filter;
+import me.centralworks.modules.punishments.models.supliers.PlaceHolder;
+import me.centralworks.modules.punishments.models.supliers.Request;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.PreLoginEvent;
@@ -24,13 +24,12 @@ public class OfflineBanListener implements Listener {
         offlinePunishment.setPrimaryIdentifier(connection.getName());
         final Request request = new Request(offlinePunishment);
         if (request.existsPrimaryIdentifier()) {
-            final General generalLib = General.getGeneralLib();
             final List<Punishment> instance = request.requireAllByPrimaryIdentifier();
             final CheckUp checkUp = new CheckUp(instance);
             if (!checkUp.hasActivePunishment() || !checkUp.hasPunishmentBan()) return;
             final Punishment p = new Filter(instance).getAllBannedPActive().get(0);
             final LongMessage longMessage = new LongMessage("Runners.ban-kick");
-            final List<String> collect = General.getGeneralLib().applyPlaceHolders(longMessage.getStringList(), p);
+            final List<String> collect = new PlaceHolder(longMessage.getStringList(), p).applyPlaceHolders();
             longMessage.setStringList(collect);
             final ComponentBuilder baseComponents = new ComponentBuilder("");
             longMessage.getColorfulList().forEach(baseComponents::append);

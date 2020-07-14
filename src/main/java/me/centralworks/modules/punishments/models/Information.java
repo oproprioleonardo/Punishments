@@ -1,6 +1,6 @@
-package me.centralworks.modules.punishments.models.punishs;
+package me.centralworks.modules.punishments.models;
 
-import me.centralworks.modules.punishments.models.punishs.supliers.Elements;
+import me.centralworks.modules.punishments.models.supliers.Elements;
 
 public interface Information {
 

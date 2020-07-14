@@ -1,11 +1,11 @@
-package me.centralworks.modules.punishments.models.punishs.supliers;
+package me.centralworks.modules.punishments.models.supliers;
 
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentState;
-import me.centralworks.modules.punishments.models.punishs.supliers.enums.PunishmentType;
+import me.centralworks.modules.punishments.models.Punishment;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentState;
+import me.centralworks.modules.punishments.models.supliers.enums.PunishmentType;
 
 import java.util.ArrayList;
 import java.util.List;

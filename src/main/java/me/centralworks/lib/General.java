@@ -5,15 +5,17 @@ import me.centralworks.Main;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.dao.WarnDAO;
 import me.centralworks.modules.punishments.enums.Permission;
-import me.centralworks.modules.punishments.models.punishs.OfflinePunishment;
-import me.centralworks.modules.punishments.models.punishs.OnlinePunishment;
-import me.centralworks.modules.punishments.models.punishs.Punishment;
-import me.centralworks.modules.punishments.models.punishs.supliers.Elements;
-import me.centralworks.modules.punishments.models.punishs.supliers.Request;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.AddressIP;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.MutedPlayers;
-import me.centralworks.modules.punishments.models.punishs.supliers.cached.Reasons;
-import me.centralworks.modules.punishments.models.warns.Warn;
+import me.centralworks.modules.punishments.models.OfflinePunishment;
+import me.centralworks.modules.punishments.models.OnlinePunishment;
+import me.centralworks.modules.punishments.models.Punishment;
+import me.centralworks.modules.punishments.models.Warn;
+import me.centralworks.modules.punishments.models.supliers.Elements;
+import me.centralworks.modules.punishments.models.supliers.Immune;
+import me.centralworks.modules.punishments.models.supliers.PlaceHolder;
+import me.centralworks.modules.punishments.models.supliers.Request;
+import me.centralworks.modules.punishments.models.supliers.cached.AddressIP;
+import me.centralworks.modules.punishments.models.supliers.cached.MutedPlayers;
+import me.centralworks.modules.punishments.models.supliers.cached.Reasons;
 import me.centralworks.modules.reports.ReportPlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -102,17 +104,12 @@ public class General {
     public void kickPlayer(ProxiedPlayer p, String author, String reason) {
         final Configuration cfg = PunishmentPlugin.getMessages();
         final ComponentBuilder msg = new ComponentBuilder("");
-        if (!author.equalsIgnoreCase("Sistema") && Main.getUsersImmune().stream().anyMatch(s -> s.equalsIgnoreCase(author))) {
-            if (Main.getInstance().getProxy().getPlayer(author) != null)
-                new Message(PunishmentPlugin.getMessages().getString("Messages.immune")).send(Main.getInstance().getProxy().getPlayer(author));
-            return;
-        }
+        if (!Immune.canGo(author, p.getName())) return;
         for (String s1 : cfg.getStringList("Runners.kick")) {
             msg.append(s1
                     .replace("&", "§")
                     .replace("{author}", author)
-                    .replace("{reason}", reason.equals("") ? "Não informado" : reason)
-            );
+                    .replace("{reason}", reason.equals("") ? "Não informado" : reason));
         }
         p.disconnect(msg.create());
         cfg.getStringList("Announcements.kick").forEach(s -> Main.getInstance().getProxy().broadcast(new TextComponent(s.replace("{author}", author).replace("&", "§").replace("{reason}", reason.equals("") ? "Não informado" : reason))));
@@ -159,7 +156,7 @@ public class General {
         return punishment1 -> {
             final ProxiedPlayer punishmentPlayer = punishment1.getPlayer();
             final LongMessage longMessage = new LongMessage("Runners.ban-kick");
-            final List<String> collect = applyPlaceHolders(Lists.newArrayList(longMessage.getStringList()), punishment1);
+            final List<String> collect = new PlaceHolder(Lists.newArrayList(longMessage.getStringList()), punishment1).applyPlaceHolders();
             longMessage.setStringList(collect);
             final ComponentBuilder componentBuilder = new ComponentBuilder("");
             collect.forEach(componentBuilder::append);
@@ -171,7 +168,7 @@ public class General {
         return punishment1 -> {
             final Punishment newInstance = new Request(punishment1).requireByInstance();
             final ProxiedPlayer punishmentPlayer = newInstance.getPlayer();
-            final List<String> collect = applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance);
+            final List<String> collect = new PlaceHolder(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance).applyPlaceHolders();
             final ComponentBuilder componentBuilder = new ComponentBuilder("");
             collect.forEach(componentBuilder::append);
             punishmentPlayer.sendMessage(componentBuilder.create());
@@ -187,7 +184,7 @@ public class General {
                 if (Main.getInstance().getProxy().getPlayer(s) != null) {
                     final ProxiedPlayer punishmentPlayer = Main.getInstance().getProxy().getPlayer(s);
                     final LongMessage longMessage = new LongMessage("Runners.ban-kick");
-                    final List<String> collect = applyPlaceHolders(Lists.newArrayList(longMessage.getStringList()), punishment1);
+                    final List<String> collect = new PlaceHolder(Lists.newArrayList(longMessage.getStringList()), punishment1).applyPlaceHolders();
                     longMessage.setStringList(collect);
                     final ComponentBuilder componentBuilder = new ComponentBuilder("");
                     collect.forEach(componentBuilder::append);
@@ -208,7 +205,7 @@ public class General {
                     new MutedPlayers.MuteObject(punishment1.getPrimaryIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent(), newInstance.getIp()).save();
                 onlines.forEach(p -> {
                     if (!p.getName().equalsIgnoreCase(punishment1.getPrimaryIdentifier())) {
-                        final List<String> collect = applyPlaceHolders(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance);
+                        final List<String> collect = new PlaceHolder(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance).applyPlaceHolders();
                         final ComponentBuilder componentBuilder = new ComponentBuilder("");
                         collect.forEach(componentBuilder::append);
                         p.sendMessage(componentBuilder.create());
@@ -221,7 +218,7 @@ public class General {
     public Consumer<Punishment> getFunctionAnnouncerBan() {
         return punishment1 -> {
             final LongMessage longMessage = new LongMessage("Announcements.ban");
-            final List<String> collect = applyPlaceHolders(longMessage.getStringList(), punishment1);
+            final List<String> collect = new PlaceHolder(longMessage.getStringList(), punishment1).applyPlaceHolders();
             longMessage.setStringList(collect);
             longMessage.getColorfulMessage().forEach(baseComponents -> Main.getInstance().getProxy().broadcast(baseComponents));
         };
@@ -238,7 +235,7 @@ public class General {
     public Consumer<Punishment> getFunctionAnnouncerMute() {
         return punishment1 -> {
             final LongMessage longMessage = new LongMessage("Announcements.mute");
-            final List<String> collect = applyPlaceHolders(longMessage.getStringList(), punishment1);
+            final List<String> collect = new PlaceHolder(longMessage.getStringList(), punishment1).applyPlaceHolders();
             longMessage.setStringList(collect);
             longMessage.getColorfulMessage().forEach(baseComponents -> Main.getInstance().getProxy().broadcast(baseComponents));
         };
@@ -262,26 +259,6 @@ public class General {
      */
     public boolean isLink(String text) {
         return Stream.of(".com", ".br", "www.", "http", "https").anyMatch(text::contains);
-    }
-
-    /**
-     * @param list       Message to apply placeholders
-     * @param punishment Service punishments
-     * @return new list with placeholders applied;
-     */
-    public List<String> applyPlaceHolders(List<String> list, Punishment punishment) {
-        return list.stream().map(s -> s
-                .replace("&", "§")
-                .replace("{finishAt}", punishment.getData().isPermanent() ? "§cPermanente." : new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(punishment.getData().getFinishDate())
-                        .replace("-", " às "))
-                .replace("{author}", punishment.getData().getPunisher())
-                .replace("{id}", punishment.getId().toString())
-                .replace("{evidence}", punishment.getData().getEvidencesFinally())
-                .replace("{nickname}", punishment.getSecondaryIdentifier())
-                .replace("{startedAt}", new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(punishment.getData().getStartDate())
-                        .replace("-", " às "))
-                .replace("{reason}", punishment.getData().getReason().getReason()))
-                .collect(Collectors.toList());
     }
 
     public List<String> applyPlaceHoldersWarn(List<String> list, Warn warn) {
