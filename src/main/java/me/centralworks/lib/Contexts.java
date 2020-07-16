@@ -1,10 +1,13 @@
 package me.centralworks.lib;
 
 import com.google.common.collect.Lists;
+import net.md_5.bungee.api.event.PlayerDisconnectEvent;
+import net.md_5.bungee.api.plugin.Listener;
+import net.md_5.bungee.event.EventHandler;
 
 import java.util.List;
 
-public class Contexts {
+public class Contexts implements Listener {
 
     protected static Contexts instance;
     protected List<Context> list = Lists.newArrayList();
@@ -19,7 +22,7 @@ public class Contexts {
     }
 
     public void remove(String proxy) {
-        list.remove(get(proxy));
+        if (exists(proxy)) list.remove(get(proxy));
     }
 
     public boolean exists(String proxy) {
@@ -32,5 +35,10 @@ public class Contexts {
 
     public void clear() {
         list.clear();
+    }
+
+    @EventHandler
+    public void exit(PlayerDisconnectEvent e) {
+        remove(e.getPlayer().getName());
     }
 }

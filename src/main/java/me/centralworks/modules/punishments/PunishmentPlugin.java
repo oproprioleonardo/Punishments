@@ -3,6 +3,7 @@ package me.centralworks.modules.punishments;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import me.centralworks.Main;
+import me.centralworks.lib.Contexts;
 import me.centralworks.lib.Date;
 import me.centralworks.modules.punishments.cmds.*;
 import me.centralworks.modules.punishments.dao.AddressIPDAO;
@@ -152,6 +153,7 @@ public class PunishmentPlugin {
         registerListener(new MuteIPChatListener());
         registerListener(new RegisterAddressListener());
         registerListener(new MuteQuitListener());
+        registerListener(Contexts.getInstance());
         if (Main.isOnlineMode()) {
             registerListener(new OnlineBanListener());
             registerListener(new OnlineBanIPListener());

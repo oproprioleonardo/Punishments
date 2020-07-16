@@ -7,7 +7,9 @@ import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.reports.ReportPlugin;
+import me.centralworks.modules.reports.dao.ReportDAO;
 import me.centralworks.modules.reports.enums.Permission;
+import me.centralworks.modules.reports.models.supliers.Delay;
 import me.centralworks.modules.reports.models.supliers.Service;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -25,10 +27,7 @@ public class CmdReport extends Command {
         try {
             final ProxyServer proxy = Main.getInstance().getProxy();
             final General lib = General.getGeneralLib();
-            if (!Permission.hasPermission(s, Permission.REPORT)) {
-                new Message(ReportPlugin.getMessages().getString("Messages.permission-error")).send(s);
-                return;
-            }
+            if (!Permission.hasPermission(s, Permission.REPORT)) return;
             if (!(s instanceof ProxiedPlayer)) {
                 new Message(PunishmentPlugin.getMessages().getString("Messages.only-player")).send(s);
                 return;
@@ -37,16 +36,24 @@ public class CmdReport extends Command {
                 new Message(ReportPlugin.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
                 return;
             }
+            if (Delay.getInstance().exists(s.getName())) {
+                new Message(ReportPlugin.getMessages().getString("Messages.delay")).send(s);
+                return;
+            }
             final ProxiedPlayer p = (ProxiedPlayer) s;
             final String target = args[0];
             if (args.length == 1) lib.sendReportList(p, target);
             else {
                 final Contexts contexts = Contexts.getInstance();
                 if (contexts.exists(p.getName())) {
-                    new Message("§cUma denúncia de cada vez, amigo.").send(p);
+                    new Message("§cUma coisa de cada vez, amigo.").send(p);
                     return;
                 }
-                final String reason = String.join(" ", Lists.newArrayList(args).subList(2, args.length));
+                if (ReportDAO.getInstance().exists(target, p.getName())) {
+                    new Message(ReportPlugin.getMessages().getString("Messages.again")).send(p);
+                    return;
+                }
+                final String reason = String.join(" ", Lists.newArrayList(args).subList(1, args.length));
                 final Service service = new Service();
                 service.setTarget(target);
                 service.setVictim(p.getName());

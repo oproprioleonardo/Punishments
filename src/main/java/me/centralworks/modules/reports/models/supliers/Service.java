@@ -3,13 +3,18 @@ package me.centralworks.modules.reports.models.supliers;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import me.centralworks.Main;
 import me.centralworks.lib.Context;
 import me.centralworks.lib.Contexts;
+import me.centralworks.lib.General;
 import me.centralworks.lib.Message;
 import me.centralworks.modules.reports.ReportPlugin;
+import me.centralworks.modules.reports.models.Report;
+import me.centralworks.modules.reports.models.ReportedPlayer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Data
 @RequiredArgsConstructor
@@ -58,12 +63,26 @@ public class Service implements Context {
 
     @Override
     public void run() {
-
+        execute();
     }
 
     @Override
     public void execute() {
-
+        final Request request = new Request(new ReportedPlayer(getTarget()));
+        final ReportedPlayer rp;
+        if (request.exists()) rp = request.request();
+        else rp = request.get();
+        final Report report = new Report();
+        report.setDate(getDate());
+        report.setReason(getReason());
+        report.setEvidences(getEvidences());
+        report.setVictim(getVictim());
+        report.setId(ThreadLocalRandom.current().nextInt(0, 100000));
+        rp.attachReport(report);
+        new Request(rp).save();
+        General.getGeneralLib().sendReport(rp, report.getId());
+        new Message(ReportPlugin.getMessages().getString("Messages.reported").replace("{player}", getTarget())).send(Main.getInstance().getProxy().getPlayer(getVictim()));
+        Delay.getInstance().add(getVictim());
     }
 
 }

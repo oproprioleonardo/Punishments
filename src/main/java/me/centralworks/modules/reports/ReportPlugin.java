@@ -3,8 +3,10 @@ package me.centralworks.modules.reports;
 import com.google.gson.Gson;
 import me.centralworks.Main;
 import me.centralworks.modules.reports.cmds.CmdReport;
+import me.centralworks.modules.reports.cmds.CmdReports;
 import me.centralworks.modules.reports.dao.ReportDAO;
 import me.centralworks.modules.reports.listeners.ChatListener;
+import me.centralworks.modules.reports.models.supliers.ToggleAnnouncement;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
@@ -30,7 +32,9 @@ public class ReportPlugin {
         gson = new Gson();
         reasons = getConfiguration().getStringList("Reasons");
         registerCommand(new CmdReport());
+        registerCommand(new CmdReports());
         registerListener(new ChatListener());
+        registerListener(ToggleAnnouncement.getInstance());
         ReportDAO.getInstance().createTable();
         setDisable(reportPlugin -> ReportDAO.getInstance().clear());
     }

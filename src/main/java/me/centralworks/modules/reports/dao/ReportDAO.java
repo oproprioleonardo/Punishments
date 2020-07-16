@@ -1,5 +1,6 @@
 package me.centralworks.modules.reports.dao;
 
+import com.google.common.collect.Lists;
 import com.google.gson.reflect.TypeToken;
 import me.centralworks.database.ConnectionFactory;
 import me.centralworks.modules.reports.ReportPlugin;
@@ -51,12 +52,48 @@ public class ReportDAO {
         }
     }
 
+    public List<ReportedPlayer> get() {
+        final List<ReportedPlayer> list = Lists.newArrayList();
+        try {
+            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_reports LIMIT 0,100");
+            final ResultSet rs = st.executeQuery();
+            final Type type = new TypeToken<List<Report>>() {
+            }.getType();
+            while (rs.next()) {
+                final ReportedPlayer rp = new ReportedPlayer();
+                final String data = rs.getString("data");
+                final List<Report> listr = ReportPlugin.getGson().fromJson(data, type);
+                rp.setUser(rs.getString("user"));
+                rp.setData(listr);
+                list.add(rp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public boolean exists(String user) {
         try {
             final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_reports WHERE user = ?");
             st.setString(1, user);
             final ResultSet rs = st.executeQuery();
             return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean exists(String user, String victim) {
+        try {
+            final PreparedStatement st = connection.prepareStatement("SELECT * FROM arcanth_reports WHERE user = ?");
+            st.setString(1, user);
+            final ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                final ReportedPlayer rp = loadByUser(user);
+                return rp.getData().stream().anyMatch(report -> report.getVictim().equalsIgnoreCase(victim));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

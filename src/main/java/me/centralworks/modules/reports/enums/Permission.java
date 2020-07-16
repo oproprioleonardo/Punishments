@@ -1,5 +1,7 @@
 package me.centralworks.modules.reports.enums;
 
+import me.centralworks.lib.Message;
+import me.centralworks.modules.reports.ReportPlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -16,12 +18,11 @@ public enum Permission {
         this.permission = permission;
     }
 
-    public static boolean hasPermission(ProxiedPlayer proxiedPlayer, Permission permission) {
-        return permission.hasPermission(proxiedPlayer) || proxiedPlayer.hasPermission(Permission.ADMIN.getPermission());
-    }
 
     public static boolean hasPermission(CommandSender cs, Permission permission) {
-        return permission.hasPermission(cs) || cs.hasPermission(Permission.ADMIN.getPermission());
+        if (permission.hasPermission(cs) || cs.hasPermission(Permission.ADMIN.getPermission())) return true;
+        new Message(ReportPlugin.getMessages().getString("Messages.permission-error")).send(cs);
+        return false;
     }
 
     public String getPermission() {

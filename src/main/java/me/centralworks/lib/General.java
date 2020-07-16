@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import me.centralworks.Main;
 import me.centralworks.modules.punishments.PunishmentPlugin;
 import me.centralworks.modules.punishments.dao.WarnDAO;
-import me.centralworks.modules.punishments.enums.Permission;
 import me.centralworks.modules.punishments.models.OfflinePunishment;
 import me.centralworks.modules.punishments.models.OnlinePunishment;
 import me.centralworks.modules.punishments.models.Punishment;
@@ -12,13 +11,16 @@ import me.centralworks.modules.punishments.models.Warn;
 import me.centralworks.modules.punishments.models.supliers.Elements;
 import me.centralworks.modules.punishments.models.supliers.Immune;
 import me.centralworks.modules.punishments.models.supliers.PlaceHolder;
-import me.centralworks.modules.punishments.models.supliers.Request;
 import me.centralworks.modules.punishments.models.supliers.cached.AddressIP;
 import me.centralworks.modules.punishments.models.supliers.cached.MutedPlayers;
 import me.centralworks.modules.punishments.models.supliers.cached.Reasons;
 import me.centralworks.modules.reports.ReportPlugin;
+import me.centralworks.modules.reports.models.Report;
+import me.centralworks.modules.reports.models.ReportedPlayer;
+import me.centralworks.modules.reports.models.supliers.ToggleAnnouncement;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -57,8 +59,6 @@ public class General {
                             .replace("{duration}", reason.isPermanent() ? "Permanente" : new FormatTime(reason.getDuration()).format())
                             .replace("{permission}", reason.getPermission()).replace("&", "§")
             );
-            if (!p.hasPermission(reason.getPermission()) && !Permission.hasPermission(p, Permission.ADMIN))
-                list.add(msg.getString("Messages.punish.line.hoverWithoutPermission").replace("&", "§"));
             new Message(msg.getString("Messages.punish.line.message").replace("&", "§").replace("{reason}", reason.getReason())).sendJson("/punir " + target + " " + reason.getReason(), String.join("", list), p);
         });
         p.sendMessage(reasons.create());
@@ -71,7 +71,7 @@ public class General {
         final ComponentBuilder title = new ComponentBuilder(msg.getStringList("Messages.report.title").stream().map(s -> s.replace("&", "§")).collect(Collectors.joining()));
         p.sendMessage(title.create());
         ReportPlugin.getReasons().forEach(s -> {
-            final Message message = new Message(msg.getString("Messages.report.line.message").replace("{reason}", s));
+            final Message message = new Message(msg.getString("Messages.report.line.message").replace("&", "§").replace("{reason}", s));
             message.sendJson("/reportar " + target + " " + s, msg.getString("Messages.report.line.hoverMessage").replace("&", "§").replace("{user}", target).replace("{reason}", s), p);
         });
         final ComponentBuilder footer = new ComponentBuilder(msg.getStringList("Messages.report.footer").stream().map(s -> s.replace("&", "§")).collect(Collectors.joining()));
@@ -89,7 +89,7 @@ public class General {
                             .replace("-", " às "))
                     .replace("{author}", data.getPunisher())
                     .replace("{id}", p.getId().toString())
-                    .replace("{evidence}", p.getData().getEvidences().size() == 0 ? "§f§l• Nenhuma anexada" : formatEvidences(p))
+                    .replace("{evidence}", p.getData().getEvidences().size() == 0 ? "§f§l• Nenhuma anexada" : formatEvidences(p.getData().getEvidences()))
                     .replace("{nickname}", p.getSecondaryIdentifier())
                     .replace("{startedAt}", new SimpleDateFormat("dd/MM/yyyy-HH:mm").format(data.getStartDate())
                             .replace("-", " às "))
@@ -129,8 +129,33 @@ public class General {
         new Message(cfg.getString("Messages.warns").replace("{nickname}", warns.get(0).getTarget()).replace("{ids}", builder.toString())).send(s);
     }
 
-    public String formatEvidences(Punishment p) {
-        final List<String> evidences = p.getData().getEvidences();
+    public void sendReport(ReportedPlayer rp, int id) {
+        final Configuration cfg = ReportPlugin.getMessages();
+        final Report r = rp.getById(id);
+        final TextComponent[] text;
+        final String originalText = cfg.getStringList("Runners.alert").stream().map(s -> s
+                .replace("&", "§")
+                .replace("{player}", rp.getUser())
+                .replace("{reason}", r.getReason())
+                .replace("{victim}", r.getVictim())
+                .replace("{evidences}", formatEvidences(r.getEvidences()))
+                .replace("{id}", "" + id)).collect(Collectors.joining());
+        if (originalText.contains("{aqui}")) {
+            final String[] split = originalText.split(Pattern.quote("{aqui}"));
+            final TextComponent a = new TextComponent(split[0]);
+            final TextComponent c = new TextComponent(split[1]);
+            final TextComponent b = new TextComponent(cfg.getString("Messages.aqui").replace("&", "§"));
+            b.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/reportes " + rp.getUser()));
+            text = new TextComponent[]{a, b, c};
+        } else text = new TextComponent[]{new TextComponent(originalText)};
+        ToggleAnnouncement.getInstance().getMap().forEach((key, value) -> {
+            final ProxiedPlayer p = Main.getInstance().getProxy().getPlayer(key);
+            if (value && (p.hasPermission(me.centralworks.modules.reports.enums.Permission.REPORTS.getPermission()) || p.hasPermission(me.centralworks.modules.reports.enums.Permission.ADMIN.getPermission())))
+                p.sendMessage(text);
+        });
+    }
+
+    public String formatEvidences(List<String> evidences) {
         final List<List<String>> pares = Lists.newArrayList();
         List<String> par = Lists.newArrayList();
         for (int i = 0; i < evidences.size(); i++) {
@@ -145,8 +170,8 @@ public class General {
             }
         }
         return pares.stream().map(strings -> {
-            final StringBuilder string = new StringBuilder("§f§l• §2" + strings.get(0));
-            if (strings.size() == 2) string.append("§7, §2").append(strings.get(1));
+            final StringBuilder string = new StringBuilder("§f§l• §a" + strings.get(0));
+            if (strings.size() == 2) string.append("§7, §a").append(strings.get(1));
             string.append("§7.");
             return string.toString();
         }).collect(Collectors.joining("\n"));
@@ -165,15 +190,14 @@ public class General {
     }
 
     public Consumer<Punishment> getFunctionMuteIfOn() {
-        return punishment1 -> {
-            final Punishment newInstance = new Request(punishment1).requireByInstance();
-            final ProxiedPlayer punishmentPlayer = newInstance.getPlayer();
-            final List<String> collect = new PlaceHolder(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance).applyPlaceHolders();
+        return punishment -> {
+            final ProxiedPlayer punishmentPlayer = punishment.getPlayer();
+            final List<String> collect = new PlaceHolder(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), punishment).applyPlaceHolders();
             final ComponentBuilder componentBuilder = new ComponentBuilder("");
             collect.forEach(componentBuilder::append);
             punishmentPlayer.sendMessage(componentBuilder.create());
-            if (!MutedPlayers.getInstance().exists(punishment1.getPrimaryIdentifier()))
-                new MutedPlayers.MuteObject(punishment1.getPrimaryIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent(), newInstance.getIp()).save();
+            if (!MutedPlayers.getInstance().exists(punishment.getPrimaryIdentifier()))
+                new MutedPlayers.MuteObject(punishment.getPrimaryIdentifier(), punishment.getId(), punishment.getData().getStartedAt(), punishment.getData().getFinishAt(), punishment.getData().isPermanent(), punishment.getIp()).save();
         };
     }
 
@@ -195,17 +219,16 @@ public class General {
     }
 
     public Consumer<Punishment> getFunctionMuteIfAddress() {
-        return punishment1 -> {
+        return punishment -> {
             final ProxyServer proxy = Main.getInstance().getProxy();
-            final AddressIP.AddressIPObject byAddress = AddressIP.getInstance().getByAddress(punishment1.getIp());
-            final Punishment newInstance = new Request(punishment1).requireByInstance();
+            final AddressIP.AddressIPObject byAddress = AddressIP.getInstance().getByAddress(punishment.getIp());
             final List<ProxiedPlayer> onlines = byAddress.getAccounts().stream().filter(s -> proxy.getPlayer(s) != null).map(proxy::getPlayer).collect(Collectors.toList());
             if (onlines.size() > 0) {
-                if (!MutedPlayers.getInstance().exists(punishment1.getPrimaryIdentifier()))
-                    new MutedPlayers.MuteObject(punishment1.getPrimaryIdentifier(), newInstance.getId(), newInstance.getData().getStartedAt(), newInstance.getData().getFinishAt(), newInstance.getData().isPermanent(), newInstance.getIp()).save();
+                if (!MutedPlayers.getInstance().exists(punishment.getPrimaryIdentifier()))
+                    new MutedPlayers.MuteObject(punishment.getPrimaryIdentifier(), punishment.getId(), punishment.getData().getStartedAt(), punishment.getData().getFinishAt(), punishment.getData().isPermanent(), punishment.getIp()).save();
                 onlines.forEach(p -> {
-                    if (!p.getName().equalsIgnoreCase(punishment1.getPrimaryIdentifier())) {
-                        final List<String> collect = new PlaceHolder(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), newInstance).applyPlaceHolders();
+                    if (!p.getName().equalsIgnoreCase(punishment.getPrimaryIdentifier())) {
+                        final List<String> collect = new PlaceHolder(Lists.newArrayList(new LongMessage("Runners.mute-alert").getStringList()), punishment).applyPlaceHolders();
                         final ComponentBuilder componentBuilder = new ComponentBuilder("");
                         collect.forEach(componentBuilder::append);
                         p.sendMessage(componentBuilder.create());

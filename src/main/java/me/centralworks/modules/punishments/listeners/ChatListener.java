@@ -1,5 +1,6 @@
 package me.centralworks.modules.punishments.listeners;
 
+import com.google.common.collect.Lists;
 import me.centralworks.lib.Context;
 import me.centralworks.lib.Contexts;
 import me.centralworks.lib.General;
@@ -11,6 +12,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+
+import java.util.List;
 
 public class ChatListener implements Listener {
 
@@ -39,12 +42,13 @@ public class ChatListener implements Listener {
                     new Message(PunishmentPlugin.getMessages().getString("Messages.operation-cancel")).send(p);
                     return;
                 }
-                if (!generalLib.isLink(message)) {
+                final List<String> evidences = Lists.newArrayList(message.split(" "));
+                if (evidences.stream().anyMatch(s -> !generalLib.isLink(s))) {
                     new Message(PunishmentPlugin.getMessages().getString("Messages.invalid-link")).send(p);
                     return;
                 }
                 new Message(PunishmentPlugin.getMessages().getString("Messages.next-link")).send(p);
-                service.attachEvidence(message);
+                evidences.forEach(service::attachEvidence);
             }
         }
     }

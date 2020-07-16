@@ -2,3 +2,4 @@ Usages:
   #[] optional arguments
   #() binding arguments
   report: "&cComando incorreto. Utilize: /reportar (jogador) [motivo]."
+  reports: "&cComando incorreto. Utilize: /reportes."
