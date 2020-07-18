@@ -19,6 +19,13 @@
         </developer>
     </developers>
 
+    <distributionManagement>
+        <repository>
+            <id>arcanthmvn</id>
+            <url>https://maven.jetbrains.space/centralworks/p/ac/arcanthmvn</url>
+        </repository>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <id>bungeecord-repo</id>
