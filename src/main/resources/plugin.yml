@@ -1,0 +1,6 @@
+name: Punishments
+version: 1.0.0
+main: me.centralworks.bungee.Main
+author: <Leonardo/>
+softdepends: [protocolize-plugin]
+description: A plugin developed by the CentralWorks team for the Archant server.

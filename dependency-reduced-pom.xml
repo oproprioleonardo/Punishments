@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>cw.moderation</groupId>
     <artifactId>Punishments</artifactId>
-    <version>1.0.2</version>
     <name>Punishments</name>
-
-    <organization>
-        <name>CentralWorks</name>
-        <url>https://discord.gg/E8y2R5w</url>
-    </organization>
+    <version>1.0.2</version>
     <developers>
         <developer>
             <name>Leonardo</name>
@@ -19,38 +13,14 @@
             <organization>CentralWorks</organization>
         </developer>
     </developers>
-
-    <distributionManagement>
-        <repository>
-            <id>arcanthmvn</id>
-            <url>https://maven.jetbrains.space/centralworks/p/ac/arcanthmvn</url>
-        </repository>
-    </distributionManagement>
-
-    <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>bungeecord-repo</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-        <repository>
-            <id>exceptionflug</id>
-            <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
-        </repository>
-        <repository>
-            <id>codemc-repo</id>
-            <url>https://repo.codemc.org/repository/maven-public/</url>
-        </repository>
-    </repositories>
-
+    <organization>
+        <name>CentralWorks</name>
+        <url>https://discord.gg/E8y2R5w</url>
+    </organization>
     <build>
         <finalName>Punishments_V${version}</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.6.1</version>
                 <configuration>
@@ -59,7 +29,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
                 <executions>
@@ -81,13 +50,29 @@
             </plugin>
         </plugins>
     </build>
-
+    <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>bungeecord-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>exceptionflug</id>
+            <url>https://mvn.exceptionflug.de/repository/exceptionflug-public/</url>
+        </repository>
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
             <version>1.16-R0.2-SNAPSHOT</version>
-            <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -122,11 +107,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.github.leonardosnt</groupId>
-            <artifactId>bungeechannelapi</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
@@ -140,5 +120,10 @@
             <systemPath>${project.basedir}/../../Discord_Bot_API_-_V3.0.jar</systemPath>
         </dependency>
     </dependencies>
-
+    <distributionManagement>
+        <repository>
+            <id>arcanthmvn</id>
+            <url>https://maven.jetbrains.space/centralworks/p/ac/arcanthmvn</url>
+        </repository>
+    </distributionManagement>
 </project>
