@@ -75,6 +75,7 @@ public class Main extends Plugin {
         dataConfiguration = Main.getConfiguration("data.yml", "/");
         new PunishmentPlugin();
         new ReportPlugin();
+        ModerationBot.get();
     }
 
     @Override

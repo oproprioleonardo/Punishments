@@ -4,3 +4,7 @@ MySQL:
   Host: 'localhost'
   Port: '3306'
   Database: 'arcanth_db'
+Discord:
+  toggle: true
+  token: "NzM4MzY4MjAwNzMwNzM4NzE5.XyK4-Q.0UcXu65awIpT0psukz7A_Jw5DCo"
+  channel-announcement: "anunciar"

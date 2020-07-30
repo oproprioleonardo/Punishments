@@ -29,6 +29,11 @@
 
     <repositories>
         <repository>
+            <id>jcenter</id>
+            <name>jcenter-bintray</name>
+            <url>https://jcenter.bintray.com</url>
+        </repository>
+        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
@@ -133,11 +138,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.spigot</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.8.8</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../../Discord_Bot_API_-_V3.0.jar</systemPath>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 
