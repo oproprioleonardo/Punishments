@@ -7,8 +7,8 @@ import de.exceptionflug.protocolize.items.ItemStack;
 import de.exceptionflug.protocolize.items.ItemType;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import me.centralworks.bungee.lib.General;
 import me.centralworks.bungee.lib.InventoryBuilder;
+import me.centralworks.bungee.modules.punishments.models.supliers.SenderOptions;
 import me.centralworks.bungee.modules.reports.enums.Permission;
 import me.centralworks.bungee.modules.reports.models.ReportedPlayer;
 import me.centralworks.bungee.modules.reports.models.supliers.Request;
@@ -50,7 +50,7 @@ public class ReportInfo {
                 if (rp.exists() || Permission.hasPermission(p, Permission.REPORTS)) {
                     inv.close(p);
                     if (item.equals(punish)) {
-                        General.getGeneralLib().sendPunishments(p, rp.getUser());
+                        new SenderOptions(p, rp.getUser()).sendPunishmentList();
                         new Request(rp).delete();
                     } else if (item.equals(delete)) {
                         new Request(rp).delete();

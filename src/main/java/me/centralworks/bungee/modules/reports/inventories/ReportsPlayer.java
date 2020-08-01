@@ -57,7 +57,7 @@ public class ReportsPlayer {
                         "§fVítima: §7" + r.getVictim(),
                         "§fMotivo: §7" + r.getReason(),
                         "§fProvas: ",
-                        General.getGeneralLib().formatEvidences(r.getEvidences())
+                        General.get().formatEvidences(r.getEvidences())
                 ));
                 i.setItem(slot, book);
             }

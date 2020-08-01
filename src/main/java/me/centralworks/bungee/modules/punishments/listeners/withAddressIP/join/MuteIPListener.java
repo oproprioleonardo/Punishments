@@ -22,7 +22,7 @@ public class MuteIPListener implements Listener {
     @EventHandler
     public void js(PostLoginEvent e) {
         final ProxiedPlayer connection = e.getPlayer();
-        final Punishment punishment = General.getGeneralLib().easyInstance();
+        final Punishment punishment = General.get().easyInstance();
         punishment.setIp(connection.getAddress().getAddress().getHostAddress());
         final Request request = new Request(punishment);
         if (request.existsByAddress()) {

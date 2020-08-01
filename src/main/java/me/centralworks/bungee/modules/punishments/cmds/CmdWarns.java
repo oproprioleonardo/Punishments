@@ -25,7 +25,7 @@ public class CmdWarns extends Command {
             new Message(cfg.getString("Messages.wait")).send(s);
             Main.getInstance().getProxy().getScheduler().runAsync(Main.getInstance(), () -> {
                 if (WarnDAO.getInstance().existsNickname(target)) {
-                    final General lib = General.getGeneralLib();
+                    final General lib = General.get();
                     lib.sendHistoryWarn(s, lib.updateAllWarns(WarnDAO.getInstance().loadAllWarns(target)));
                 } else new Message("Messages.warn-not-found").send(s);
             });

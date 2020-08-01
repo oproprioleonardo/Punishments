@@ -26,7 +26,8 @@ public enum Permission {
     WARN("punishments.warn"),
     TEMPWARN("punishments.tempwarn"),
     UNWARN("punishments.unwarn"),
-    WARNS("punishments.warns");
+    WARNS("punishments.warns"),
+    CHECK("punishments.check");
 
     private final String permission;
 

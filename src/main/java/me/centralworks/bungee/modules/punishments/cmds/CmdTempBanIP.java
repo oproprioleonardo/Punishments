@@ -1,10 +1,10 @@
 package me.centralworks.bungee.modules.punishments.cmds;
 
 import com.google.common.collect.Lists;
-import me.centralworks.bungee.Main;
 import me.centralworks.bungee.lib.Date;
 import me.centralworks.bungee.lib.General;
 import me.centralworks.bungee.lib.Message;
+import me.centralworks.bungee.lib.UUIDManager;
 import me.centralworks.bungee.modules.punishments.PunishmentPlugin;
 import me.centralworks.bungee.modules.punishments.enums.Permission;
 import me.centralworks.bungee.modules.punishments.models.supliers.Reason;
@@ -13,7 +13,6 @@ import me.centralworks.bungee.modules.punishments.models.supliers.cached.Address
 import me.centralworks.bungee.modules.punishments.models.supliers.cached.Reasons;
 import me.centralworks.bungee.modules.punishments.models.supliers.enums.PunishmentType;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
@@ -29,16 +28,16 @@ public class CmdTempBanIP extends Command {
     @Override
     public void execute(CommandSender s, String[] args) {
         try {
-            final ProxyServer proxy = Main.getInstance().getProxy();
+            final UUIDManager uuid = UUIDManager.get();
             if (!Permission.hasPermission(s, Permission.TEMPBANIP)) return;
-            if (Main.isOnlineMode() && proxy.getPlayer(args[0]) == null) {
+            if (uuid.getOriginalUUID(args[0]).equals("")) {
                 new Message(PunishmentPlugin.getMessages().getString("Messages.onlinemode-offline-player")).send(s);
                 return;
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
             final Service ban = new Service(PunishmentType.TEMPBAN);
-            final General generalLib = General.getGeneralLib();
-            final String target = generalLib.identifierCompare(args[0], proxy.getPlayer(args[0]) == null ? "" : proxy.getPlayer(args[0]).getUniqueId().toString());
+            final General generalLib = General.get();
+            final String target = generalLib.identifierCompare(args[0], uuid.getOriginalUUID(args[0]));
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
             final AddressIP adr = AddressIP.getInstance();
             if (!adr.existsPlayer(target)) {

@@ -10,11 +10,9 @@ import me.centralworks.bungee.modules.punishments.models.supliers.warns.Warns;
 public class Warn {
 
     private Integer id = 0;
-    private String target;
-    private String punisher;
+    private String target, punisher;
     private String reason = "";
-    private Long startedAt = System.currentTimeMillis();
-    private Long finishAt = System.currentTimeMillis();
+    private Long startedAt, finishAt = System.currentTimeMillis();
     private boolean permanent = false;
 
     public boolean idIsValid() {

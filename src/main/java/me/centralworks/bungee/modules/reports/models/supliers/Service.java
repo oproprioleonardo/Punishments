@@ -80,7 +80,7 @@ public class Service implements Context {
         report.setId(ThreadLocalRandom.current().nextInt(0, 100000));
         rp.attachReport(report);
         new Request(rp).save();
-        General.getGeneralLib().sendReport(rp, report.getId());
+        General.get().sendReport(rp, report.getId());
         new Message(ReportPlugin.getMessages().getString("Messages.reported").replace("{player}", getTarget())).send(Main.getInstance().getProxy().getPlayer(getVictim()));
         Delay.getInstance().add(getVictim());
     }

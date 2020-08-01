@@ -24,7 +24,7 @@ public class CmdUnmute extends Command {
     @Override
     public void execute(CommandSender s, String[] args) {
         final Configuration cfg = PunishmentPlugin.getMessages();
-        final General gnrlLib = General.getGeneralLib();
+        final General gnrlLib = General.get();
         if (!Permission.hasPermission(s, Permission.UNMUTE)) return;
         new Message(cfg.getString("Messages.wait")).send(s);
         try {

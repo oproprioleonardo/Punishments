@@ -63,17 +63,17 @@ public class Service implements Context {
     }
 
     public void setMuteFunctions(boolean ip) {
-        final General generalLib = General.getGeneralLib();
-        setFunctionIfOnline(generalLib.getFunctionMuteIfOn());
-        setAnnouncer(generalLib.getFunctionAnnouncerMute());
-        if (ip) setFunctionIfAddress(generalLib.getFunctionMuteIfAddress());
+        final PFunctions functions = PFunctions.get();
+        setFunctionIfOnline(functions.getFunctionMuteIfOn());
+        setAnnouncer(functions.getFunctionAnnouncerMute());
+        if (ip) setFunctionIfAddress(functions.getFunctionMuteIfAddress());
     }
 
     public void setBanFunctions(boolean ip) {
-        final General generalLib = General.getGeneralLib();
-        setFunctionIfOnline(generalLib.getFunctionBanIfOn());
-        setAnnouncer(generalLib.getFunctionAnnouncerBan());
-        if (ip) setFunctionIfAddress(generalLib.getFunctionBanIfAddress());
+        final PFunctions functions = PFunctions.get();
+        setFunctionIfOnline(functions.getFunctionBanIfOn());
+        setAnnouncer(functions.getFunctionAnnouncerBan());
+        if (ip) setFunctionIfAddress(functions.getFunctionBanIfAddress());
     }
 
     @Override
@@ -105,7 +105,7 @@ public class Service implements Context {
     @Override
     public void execute() {
         if (!Immune.canGo(getPunisher(), target)) return;
-        final General generalLib = General.getGeneralLib();
+        final General generalLib = General.get();
         final Punishment punishment = generalLib.easyInstance(getTarget(), getTarget());
         final Elements pd = new Elements();
         final long now = System.currentTimeMillis();

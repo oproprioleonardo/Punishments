@@ -27,7 +27,7 @@ public class CmdPunishView extends Command {
             return;
         }
         if (!Permission.hasPermission(s, Permission.PUNISHVIEW)) return;
-        final General lib = General.getGeneralLib();
+        final General lib = General.get();
         new Message(msg.getString("Messages.wait")).send(s);
         try {
             final Punishment punishment = lib.easyInstance();

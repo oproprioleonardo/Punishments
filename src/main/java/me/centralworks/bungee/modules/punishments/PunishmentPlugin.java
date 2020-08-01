@@ -142,6 +142,7 @@ public class PunishmentPlugin {
         registerCommand(new CmdWarn());
         registerCommand(new CmdUnwarn());
         registerCommand(new CmdWarns());
+        registerCommand(new CmdCheck());
     }
 
     protected void registerListeners() {

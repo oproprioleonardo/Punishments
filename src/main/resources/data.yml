@@ -4,7 +4,25 @@ MySQL:
   Host: 'localhost'
   Port: '3306'
   Database: 'arcanth_db'
-Discord:
-  toggle: true
-  token: "NzM4MzY4MjAwNzMwNzM4NzE5.XyK4-Q.0UcXu65awIpT0psukz7A_Jw5DCo"
+Discord: #Beta system
+  toggle: false
+  token: "token"
+  guild-id: "guild";
   channel-announcement: "anunciar"
+  author-name: "ModerationBot"
+  author-img: "https://4.bp.blogspot.com/-3RCyij9dTZE/VgyMKaQJtQI/AAAAAAAACjc/n1_7s_pka84/s1600/tag%2Bbrincadeira%2Bstop.png"
+  embed-color: "#FF4500"
+  title: "Punição - Arcanth Server"
+  description: "Um jogador foi punido."
+  footer: "Trabalhando 24 horas por um servidor melhor."
+  fields:
+    - "ID da punição: {id}::::false"
+    - "Usuário: {identifier}::::false" #Em servidores onlinemode, irá mostrar o UUID.
+    - "Endereço IP: {andressIP}::::false"
+    - "Jogador: {nickname}::::false"
+    - "Motivo: {reason}::::false"
+    - "Início: {startedAt}::::false"
+    - "Término: {finishAt}::::false"
+    - "Autor: {author}::::false"
+    - "Estado: {state}::::false"
+    - "Provas: ::{evidence}::false"

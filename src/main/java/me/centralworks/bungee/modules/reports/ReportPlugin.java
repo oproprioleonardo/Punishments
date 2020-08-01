@@ -46,14 +46,6 @@ public class ReportPlugin {
         ReportPlugin.disable = disable;
     }
 
-    protected void registerCommand(Command command) {
-        Main.getInstance().getProxy().getPluginManager().registerCommand(Main.getInstance(), command);
-    }
-
-    protected void registerListener(Listener listener) {
-        Main.getInstance().getProxy().getPluginManager().registerListener(Main.getInstance(), listener);
-    }
-
     public static List<String> getReasons() {
         return reasons;
     }
@@ -76,6 +68,14 @@ public class ReportPlugin {
 
     public static Gson getGson() {
         return Main.getGson();
+    }
+
+    protected void registerCommand(Command command) {
+        Main.getInstance().getProxy().getPluginManager().registerCommand(Main.getInstance(), command);
+    }
+
+    protected void registerListener(Listener listener) {
+        Main.getInstance().getProxy().getPluginManager().registerListener(Main.getInstance(), listener);
     }
 
     public ProxyServer getProxy() {

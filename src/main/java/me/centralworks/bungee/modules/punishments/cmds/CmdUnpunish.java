@@ -22,7 +22,7 @@ public class CmdUnpunish extends Command {
     @Override
     public void execute(CommandSender s, String[] args) {
         final Configuration cfg = PunishmentPlugin.getMessages();
-        final General gnrlLib = General.getGeneralLib();
+        final General gnrlLib = General.get();
         if (!Permission.hasPermission(s, Permission.UNPUNISH)) return;
         new Message(PunishmentPlugin.getMessages().getString("Messages.wait")).send(s);
         try {

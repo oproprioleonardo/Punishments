@@ -70,7 +70,7 @@ public class MutedPlayers {
         if (exists(playerMuted)) {
             final MuteObject muteObject = get(playerMuted);
             if (!muteObject.isPermanent() && muteObject.getFinishAt() < System.currentTimeMillis()) {
-                final Punishment o = General.getGeneralLib().easyInstance(playerMuted, playerMuted);
+                final Punishment o = General.get().easyInstance(playerMuted, playerMuted);
                 o.setId(muteObject.getId());
                 final Request request = new Request(o);
                 final Punishment punishment = request.requireById();
@@ -85,7 +85,7 @@ public class MutedPlayers {
         if (existsByAddress(address)) {
             final MuteObject muteObject = getByAddress(address);
             if (!muteObject.isPermanent() && muteObject.getFinishAt() < System.currentTimeMillis()) {
-                final Punishment o = General.getGeneralLib().easyInstance(muteObject.getPlayerMuted(), muteObject.getPlayerMuted());
+                final Punishment o = General.get().easyInstance(muteObject.getPlayerMuted(), muteObject.getPlayerMuted());
                 o.setId(muteObject.getId());
                 final Request request = new Request(o);
                 final Punishment punishment = request.requireById();

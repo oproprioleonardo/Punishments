@@ -20,7 +20,7 @@ public class CmdKick extends Command {
     public void execute(CommandSender s, String[] args) {
         try {
             if (!Permission.hasPermission(s, Permission.KICK)) return;
-            final General lib = General.getGeneralLib();
+            final General lib = General.get();
             final ProxiedPlayer p = Main.getInstance().getProxy().getPlayer(args[0]);
             if (args.length == 1) {
                 lib.kickPlayer(p, s instanceof ProxiedPlayer ? s.getName() : "Sistema", "");

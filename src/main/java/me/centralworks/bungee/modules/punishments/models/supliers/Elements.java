@@ -15,10 +15,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Elements {
 
-    private Long startedAt;
-    private Long finishAt;
-    private String reason;
-    private String punisher;
+    private Long startedAt, finishAt;
+    private String reason, punisher;
     private PunishmentState punishmentState;
     private List<String> evidences = Lists.newArrayList();
     private PunishmentType punishmentType;

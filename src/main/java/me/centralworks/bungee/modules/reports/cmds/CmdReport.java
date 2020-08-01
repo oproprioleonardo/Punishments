@@ -6,6 +6,7 @@ import me.centralworks.bungee.lib.Contexts;
 import me.centralworks.bungee.lib.General;
 import me.centralworks.bungee.lib.Message;
 import me.centralworks.bungee.modules.punishments.PunishmentPlugin;
+import me.centralworks.bungee.modules.punishments.models.supliers.SenderOptions;
 import me.centralworks.bungee.modules.reports.ReportPlugin;
 import me.centralworks.bungee.modules.reports.dao.ReportDAO;
 import me.centralworks.bungee.modules.reports.enums.Permission;
@@ -26,7 +27,7 @@ public class CmdReport extends Command {
     public void execute(CommandSender s, String[] args) {
         try {
             final ProxyServer proxy = Main.getInstance().getProxy();
-            final General lib = General.getGeneralLib();
+            final General lib = General.get();
             if (!Permission.hasPermission(s, Permission.REPORT)) return;
             if (!(s instanceof ProxiedPlayer)) {
                 new Message(PunishmentPlugin.getMessages().getString("Messages.only-player")).send(s);
@@ -42,7 +43,7 @@ public class CmdReport extends Command {
             }
             final ProxiedPlayer p = (ProxiedPlayer) s;
             final String target = args[0];
-            if (args.length == 1) lib.sendReportList(p, target);
+            if (args.length == 1) new SenderOptions(p, target).sendReportList();
             else {
                 final Contexts contexts = Contexts.getInstance();
                 if (contexts.exists(p.getName())) {

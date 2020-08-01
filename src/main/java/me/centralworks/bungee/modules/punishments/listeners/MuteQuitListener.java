@@ -14,7 +14,7 @@ public class MuteQuitListener implements Listener {
     @EventHandler
     public void quit(PlayerDisconnectEvent e) {
         final ProxiedPlayer p = e.getPlayer();
-        final String identifier = General.getGeneralLib().identifierCompare(p.getName(), p.getUniqueId().toString());
+        final String identifier = General.get().identifierCompare(p.getName(), p.getUniqueId().toString());
         final MutedPlayers mp = MutedPlayers.getInstance();
         final String adr = p.getAddress().getAddress().getHostAddress();
         if (mp.exists(identifier)) mp.remove(identifier);

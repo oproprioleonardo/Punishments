@@ -26,7 +26,7 @@ public class ChatListener implements Listener {
             final ProxiedPlayer p = (ProxiedPlayer) e.getSender();
             final Contexts contexts = Contexts.getInstance();
             final String message = e.getMessage();
-            final General generalLib = General.getGeneralLib();
+            final General generalLib = General.get();
             if (!contexts.exists(p.getName())) return;
             final Context context = contexts.get(p.getName());
             if (context.getPlugin() == 1) {
