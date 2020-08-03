@@ -1,7 +1,7 @@
 package me.centralworks.bungee.modules.punishments.listeners;
 
 import me.centralworks.bungee.Main;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.modules.punishments.models.supliers.cached.AddressIP;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -17,7 +17,7 @@ public class RegisterAddressListener implements Listener {
             try {
                 final ProxiedPlayer p = e.getPlayer();
                 final AddressIP adr = AddressIP.getInstance();
-                final General generalLib = General.get();
+                final Functionalities generalLib = Functionalities.get();
                 final String identifier = generalLib.easyInstance(p.getName(), p.getUniqueId().toString()).getPrimaryIdentifier();
                 final String hostAddress = p.getAddress().getAddress().getHostAddress();
                 if (adr.existsIPAndAccount(hostAddress, identifier)) {

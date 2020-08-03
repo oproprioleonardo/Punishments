@@ -1,6 +1,6 @@
 package me.centralworks.bungee.modules.punishments.cmds;
 
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.Message;
 import me.centralworks.bungee.modules.punishments.PunishmentPlugin;
 import me.centralworks.bungee.modules.punishments.enums.Permission;
@@ -21,7 +21,7 @@ public class CmdHistory extends Command {
     @Override
     public void execute(CommandSender s, String[] args) {
         final Configuration cfg = PunishmentPlugin.getMessages();
-        final General gnrlLib = General.get();
+        final Functionalities gnrlLib = Functionalities.get();
         if (!Permission.hasPermission(s, Permission.PUNISHHISTORY)) return;
         new Message(cfg.getString("Messages.wait")).send(s);
         try {

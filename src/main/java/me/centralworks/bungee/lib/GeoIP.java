@@ -21,9 +21,8 @@ public class GeoIP {
 
     @SneakyThrows
     private GeoIP() {
-        final URL url = new URL("https://api.ipdata.co");
         ipInfo = IPInfo.builder().setToken("95794de92053b8").build();
-        ipdataService = Ipdata.builder().url(url)
+        ipdataService = Ipdata.builder().url(new URL("https://api.ipdata.co"))
                 .withCache()
                 .timeout(30, TimeUnit.MINUTES)
                 .maxSize(500)

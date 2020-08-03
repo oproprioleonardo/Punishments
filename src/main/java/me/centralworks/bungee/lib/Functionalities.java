@@ -32,12 +32,12 @@ import java.util.stream.Stream;
  * Class with children without a place to live,
  * not recommended to use without developer assistance.
  */
-public class General {
+public class Functionalities {
 
-    protected static General instance;
+    protected static Functionalities instance;
 
-    public static General get() {
-        return instance == null ? instance = new General() : instance;
+    public static Functionalities get() {
+        return instance == null ? instance = new Functionalities() : instance;
     }
 
     public void sendPunishmentStatus(CommandSender s, Punishment p) {
@@ -196,13 +196,6 @@ public class General {
         return Pattern.compile("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$").matcher(text).find();
     }
 
-    /**
-     * This method creates a new instance for a punishment.
-     *
-     * @param nick nickname player
-     * @param uuid uuid player
-     * @return instance onlinemode (uuid) or offlinemode (nick).
-     */
     public Punishment easyInstance(String nick, String uuid) {
         Punishment punishment;
         if (Main.isOnlineMode()) {
@@ -212,6 +205,20 @@ public class General {
         } else {
             final OfflinePunishment offlinePunishment = new OfflinePunishment();
             offlinePunishment.setPrimaryIdentifier(nick);
+            punishment = offlinePunishment;
+        }
+        return punishment;
+    }
+
+    public Punishment easyInstance(String id) {
+        Punishment punishment;
+        if (Main.isOnlineMode()) {
+            final OnlinePunishment onlinePunishment = new OnlinePunishment();
+            onlinePunishment.setPrimaryIdentifier(id);
+            punishment = onlinePunishment;
+        } else {
+            final OfflinePunishment offlinePunishment = new OfflinePunishment();
+            offlinePunishment.setPrimaryIdentifier(id);
             punishment = offlinePunishment;
         }
         return punishment;

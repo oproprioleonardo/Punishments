@@ -2,7 +2,7 @@ package me.centralworks.bungee.modules.punishments.cmds;
 
 import com.google.common.collect.Lists;
 import me.centralworks.bungee.Main;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.Message;
 import me.centralworks.bungee.modules.punishments.PunishmentPlugin;
 import me.centralworks.bungee.modules.punishments.enums.Permission;
@@ -20,7 +20,7 @@ public class CmdKick extends Command {
     public void execute(CommandSender s, String[] args) {
         try {
             if (!Permission.hasPermission(s, Permission.KICK)) return;
-            final General lib = General.get();
+            final Functionalities lib = Functionalities.get();
             final ProxiedPlayer p = Main.getInstance().getProxy().getPlayer(args[0]);
             if (args.length == 1) {
                 lib.kickPlayer(p, s instanceof ProxiedPlayer ? s.getName() : "Sistema", "");

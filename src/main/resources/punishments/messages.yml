@@ -22,6 +22,7 @@ Messages: #Mensagens estão um pouco bizarras, recomendo mudar, hahaha.
   warns: "&eAvisos do jogador {nickname}: {ids}."
   already-revoked: "&cEssa punição já está revogada."
   immune: "&cEsse jogador não pode ser punido."
+  invalid-address: "&cNão foi encontrado nenhum jogador registrado com esse endereço IP."
   punish:
     title:
       - "       &6&lRede Arcanth - Punições\n"
@@ -111,7 +112,6 @@ Runners: #Precisa \n para pular a linha.
     - "&aEndereço IP: {ip}"
     - "&aLocalização: {country}"
     - "&aOnline: {response}."
-    - "&aRegistro: {ids}.@&cNenhuma punição."
     - "&aContas: {accounts}\n"
   warn-alert:
     - "       &6&lRede Arcanth\n"

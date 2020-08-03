@@ -1,7 +1,7 @@
 package me.centralworks.bungee.modules.punishments.listeners.withAddressIP.join;
 
 import com.google.common.collect.Lists;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.LongMessage;
 import me.centralworks.bungee.modules.punishments.models.Punishment;
 import me.centralworks.bungee.modules.punishments.models.supliers.CheckUp;
@@ -22,7 +22,7 @@ public class MuteIPListener implements Listener {
     @EventHandler
     public void js(PostLoginEvent e) {
         final ProxiedPlayer connection = e.getPlayer();
-        final Punishment punishment = General.get().easyInstance();
+        final Punishment punishment = Functionalities.get().easyInstance();
         punishment.setIp(connection.getAddress().getAddress().getHostAddress());
         final Request request = new Request(punishment);
         if (request.existsByAddress()) {

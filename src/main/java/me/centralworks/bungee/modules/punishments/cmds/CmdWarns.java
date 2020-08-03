@@ -1,7 +1,7 @@
 package me.centralworks.bungee.modules.punishments.cmds;
 
 import me.centralworks.bungee.Main;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.Message;
 import me.centralworks.bungee.modules.punishments.PunishmentPlugin;
 import me.centralworks.bungee.modules.punishments.dao.WarnDAO;
@@ -25,7 +25,7 @@ public class CmdWarns extends Command {
             new Message(cfg.getString("Messages.wait")).send(s);
             Main.getInstance().getProxy().getScheduler().runAsync(Main.getInstance(), () -> {
                 if (WarnDAO.getInstance().existsNickname(target)) {
-                    final General lib = General.get();
+                    final Functionalities lib = Functionalities.get();
                     lib.sendHistoryWarn(s, lib.updateAllWarns(WarnDAO.getInstance().loadAllWarns(target)));
                 } else new Message("Messages.warn-not-found").send(s);
             });

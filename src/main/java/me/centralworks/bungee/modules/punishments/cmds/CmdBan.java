@@ -1,7 +1,7 @@
 package me.centralworks.bungee.modules.punishments.cmds;
 
 import com.google.common.collect.Lists;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.Message;
 import me.centralworks.bungee.lib.UUIDManager;
 import me.centralworks.bungee.modules.punishments.PunishmentPlugin;
@@ -34,7 +34,7 @@ public class CmdBan extends Command {
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
             final Service ban = new Service(PunishmentType.BAN);
-            final General generalLib = General.get();
+            final Functionalities generalLib = Functionalities.get();
             final String target = generalLib.identifierCompare(args[0], uuid.getOriginalUUID(args[0]));
             ban.setPunisher(punisher);
             ban.setPermanent(true);

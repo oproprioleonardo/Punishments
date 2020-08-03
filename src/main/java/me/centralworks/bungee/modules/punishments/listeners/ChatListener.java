@@ -3,7 +3,7 @@ package me.centralworks.bungee.modules.punishments.listeners;
 import com.google.common.collect.Lists;
 import me.centralworks.bungee.lib.Context;
 import me.centralworks.bungee.lib.Contexts;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.Message;
 import me.centralworks.bungee.modules.punishments.PunishmentPlugin;
 import me.centralworks.bungee.modules.punishments.models.supliers.Service;
@@ -26,7 +26,7 @@ public class ChatListener implements Listener {
             final ProxiedPlayer p = (ProxiedPlayer) e.getSender();
             final Contexts contexts = Contexts.getInstance();
             final String message = e.getMessage();
-            final General generalLib = General.get();
+            final Functionalities generalLib = Functionalities.get();
             if (!contexts.exists(p.getName())) return;
             final Context context = contexts.get(p.getName());
             if (context.getPlugin() == 0) {

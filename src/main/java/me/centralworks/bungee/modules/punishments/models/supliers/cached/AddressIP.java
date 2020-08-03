@@ -1,6 +1,7 @@
 package me.centralworks.bungee.modules.punishments.models.supliers.cached;
 
 import com.google.common.collect.Lists;
+import me.centralworks.bungee.Main;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -114,6 +115,11 @@ public class AddressIP {
 
         public Timestamp getLastUsageTime() {
             return new Timestamp(getLastUsage());
+        }
+
+        public boolean isOnline() {
+            return accounts.stream().anyMatch(s -> Main.getInstance().getProxy().getPlayer(s) != null)
+                    || Main.getInstance().getProxy().getPlayers().stream().anyMatch(p -> p.getAddress().getAddress().getHostAddress().equalsIgnoreCase(hostName));
         }
 
         public void remove(String account) {

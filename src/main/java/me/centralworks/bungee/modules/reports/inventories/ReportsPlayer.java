@@ -7,7 +7,7 @@ import de.exceptionflug.protocolize.items.ItemStack;
 import de.exceptionflug.protocolize.items.ItemType;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.InventoryBuilder;
 import me.centralworks.bungee.modules.reports.enums.Permission;
 import me.centralworks.bungee.modules.reports.models.Report;
@@ -57,7 +57,7 @@ public class ReportsPlayer {
                         "§fVítima: §7" + r.getVictim(),
                         "§fMotivo: §7" + r.getReason(),
                         "§fProvas: ",
-                        General.get().formatEvidences(r.getEvidences())
+                        Functionalities.get().formatEvidences(r.getEvidences())
                 ));
                 i.setItem(slot, book);
             }

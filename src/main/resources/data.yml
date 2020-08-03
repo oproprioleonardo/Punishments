@@ -6,8 +6,8 @@ MySQL:
   Database: 'arcanth_db'
 Discord: #Beta system
   toggle: false
-  token: "token"
-  guild-id: "guild";
+  token: ""
+  guild-id: "";
   channel-announcement: "anunciar"
   author-name: "ModerationBot"
   author-img: "https://4.bp.blogspot.com/-3RCyij9dTZE/VgyMKaQJtQI/AAAAAAAACjc/n1_7s_pka84/s1600/tag%2Bbrincadeira%2Bstop.png"

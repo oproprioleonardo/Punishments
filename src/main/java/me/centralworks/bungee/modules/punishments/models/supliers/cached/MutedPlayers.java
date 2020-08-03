@@ -3,7 +3,7 @@ package me.centralworks.bungee.modules.punishments.models.supliers.cached;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.modules.punishments.models.Punishment;
 import me.centralworks.bungee.modules.punishments.models.supliers.Request;
 import me.centralworks.bungee.modules.punishments.models.supliers.enums.PunishmentState;
@@ -70,7 +70,7 @@ public class MutedPlayers {
         if (exists(playerMuted)) {
             final MuteObject muteObject = get(playerMuted);
             if (!muteObject.isPermanent() && muteObject.getFinishAt() < System.currentTimeMillis()) {
-                final Punishment o = General.get().easyInstance(playerMuted, playerMuted);
+                final Punishment o = Functionalities.get().easyInstance(playerMuted, playerMuted);
                 o.setId(muteObject.getId());
                 final Request request = new Request(o);
                 final Punishment punishment = request.requireById();
@@ -85,7 +85,7 @@ public class MutedPlayers {
         if (existsByAddress(address)) {
             final MuteObject muteObject = getByAddress(address);
             if (!muteObject.isPermanent() && muteObject.getFinishAt() < System.currentTimeMillis()) {
-                final Punishment o = General.get().easyInstance(muteObject.getPlayerMuted(), muteObject.getPlayerMuted());
+                final Punishment o = Functionalities.get().easyInstance(muteObject.getPlayerMuted(), muteObject.getPlayerMuted());
                 o.setId(muteObject.getId());
                 final Request request = new Request(o);
                 final Punishment punishment = request.requireById();

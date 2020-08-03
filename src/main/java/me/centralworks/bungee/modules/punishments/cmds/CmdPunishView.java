@@ -1,6 +1,6 @@
 package me.centralworks.bungee.modules.punishments.cmds;
 
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.Message;
 import me.centralworks.bungee.modules.punishments.PunishmentPlugin;
 import me.centralworks.bungee.modules.punishments.enums.Permission;
@@ -27,7 +27,7 @@ public class CmdPunishView extends Command {
             return;
         }
         if (!Permission.hasPermission(s, Permission.PUNISHVIEW)) return;
-        final General lib = General.get();
+        final Functionalities lib = Functionalities.get();
         new Message(msg.getString("Messages.wait")).send(s);
         try {
             final Punishment punishment = lib.easyInstance();

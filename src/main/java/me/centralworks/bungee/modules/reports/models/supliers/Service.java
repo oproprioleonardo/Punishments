@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import me.centralworks.bungee.Main;
 import me.centralworks.bungee.lib.Context;
 import me.centralworks.bungee.lib.Contexts;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.Message;
 import me.centralworks.bungee.modules.reports.ReportPlugin;
 import me.centralworks.bungee.modules.reports.models.Report;
@@ -80,7 +80,7 @@ public class Service implements Context {
         report.setId(ThreadLocalRandom.current().nextInt(0, 100000));
         rp.attachReport(report);
         new Request(rp).save();
-        General.get().sendReport(rp, report.getId());
+        Functionalities.get().sendReport(rp, report.getId());
         new Message(ReportPlugin.getMessages().getString("Messages.reported").replace("{player}", getTarget())).send(Main.getInstance().getProxy().getPlayer(getVictim()));
         Delay.getInstance().add(getVictim());
     }

@@ -2,7 +2,7 @@ package me.centralworks.bungee.modules.punishments.cmds;
 
 import com.google.common.collect.Lists;
 import me.centralworks.bungee.lib.Date;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.Message;
 import me.centralworks.bungee.lib.UUIDManager;
 import me.centralworks.bungee.modules.punishments.PunishmentPlugin;
@@ -37,7 +37,7 @@ public class CmdTempMuteIP extends Command {
             }
             final String punisher = s instanceof ProxiedPlayer ? s.getName() : "Sistema";
             final Service mute = new Service(PunishmentType.TEMPMUTE);
-            final General generalLib = General.get();
+            final Functionalities generalLib = Functionalities.get();
             final String target = generalLib.identifierCompare(args[0], uuid.getOriginalUUID(args[0]));
             final Long duration = Date.getInstance().convertPunishmentDuration(Lists.newArrayList(args[1].split(",")));
             final AddressIP adr = AddressIP.getInstance();

@@ -1,7 +1,7 @@
 package me.centralworks.bungee.modules.punishments.listeners.withoutAddressIP.join;
 
 import me.centralworks.bungee.Main;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.modules.punishments.models.Punishment;
 import me.centralworks.bungee.modules.punishments.models.supliers.CheckUp;
 import me.centralworks.bungee.modules.punishments.models.supliers.Filter;
@@ -21,7 +21,7 @@ public class MuteListener implements Listener {
         Main.getInstance().getProxy().getScheduler().runAsync(Main.getInstance(), () -> {
             try {
                 final ProxiedPlayer connection = e.getPlayer();
-                final Punishment punishment = General.get().easyInstance(connection.getName(), connection.getUniqueId().toString());
+                final Punishment punishment = Functionalities.get().easyInstance(connection.getName(), connection.getUniqueId().toString());
                 final Request request = new Request(punishment);
                 if (request.existsPrimaryIdentifier()) {
                     final List<Punishment> instance = request.requireAllByPrimaryIdentifier();

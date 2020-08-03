@@ -2,7 +2,7 @@ package me.centralworks.bungee.modules.punishments.models.supliers.warns;
 
 import com.google.common.collect.Lists;
 import me.centralworks.bungee.Main;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.modules.punishments.dao.WarnDAO;
 import me.centralworks.bungee.modules.punishments.models.Warn;
 
@@ -39,8 +39,8 @@ public class Warns {
         task = true;
         Main.getInstance().getProxy().getScheduler().runAsync(Main.getInstance(), () -> {
             final Warn warn = warns.get(0);
-            General.get().getFunctionAnnouncerWarn().accept(warn);
-            General.get().getFunctionWarnIfOn().accept(warn);
+            Functionalities.get().getFunctionAnnouncerWarn().accept(warn);
+            Functionalities.get().getFunctionWarnIfOn().accept(warn);
             warn.saveSync();
             final List<Warn> w = Lists.newArrayList(warns);
             w.remove(warn);
@@ -60,7 +60,7 @@ public class Warns {
 
     private void purify(String target) {
         final WarnDAO wd = WarnDAO.getInstance();
-        final List<Warn> wl = General.get().updateAllWarns(wd.loadAllWarns(target));
+        final List<Warn> wl = Functionalities.get().updateAllWarns(wd.loadAllWarns(target));
         final List<WarnPunishment> wps = WarnLoader.getWps();
         wps.sort(Comparator.comparingInt(WarnPunishment::getAmount));
         Collections.reverse(wps);

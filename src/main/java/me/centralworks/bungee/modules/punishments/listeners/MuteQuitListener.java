@@ -1,7 +1,7 @@
 package me.centralworks.bungee.modules.punishments.listeners;
 
 import me.centralworks.bungee.Main;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.modules.punishments.models.supliers.cached.AddressIP;
 import me.centralworks.bungee.modules.punishments.models.supliers.cached.MutedPlayers;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -14,7 +14,7 @@ public class MuteQuitListener implements Listener {
     @EventHandler
     public void quit(PlayerDisconnectEvent e) {
         final ProxiedPlayer p = e.getPlayer();
-        final String identifier = General.get().identifierCompare(p.getName(), p.getUniqueId().toString());
+        final String identifier = Functionalities.get().identifierCompare(p.getName(), p.getUniqueId().toString());
         final MutedPlayers mp = MutedPlayers.getInstance();
         final String adr = p.getAddress().getAddress().getHostAddress();
         if (mp.exists(identifier)) mp.remove(identifier);

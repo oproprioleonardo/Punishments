@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import me.centralworks.bungee.lib.Context;
 import me.centralworks.bungee.lib.Contexts;
-import me.centralworks.bungee.lib.General;
+import me.centralworks.bungee.lib.Functionalities;
 import me.centralworks.bungee.lib.Message;
 import me.centralworks.bungee.modules.punishments.PunishmentPlugin;
 import me.centralworks.bungee.modules.punishments.models.Punishment;
@@ -105,8 +105,7 @@ public class Service implements Context {
     @Override
     public void execute() {
         if (!Immune.canGo(getPunisher(), target)) return;
-        final General generalLib = General.get();
-        final Punishment punishment = generalLib.easyInstance(getTarget(), getTarget());
+        final Punishment punishment = Functionalities.get().easyInstance(getTarget());
         final Elements pd = new Elements();
         final long now = System.currentTimeMillis();
         punishment.setIp(getIp());
