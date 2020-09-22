@@ -16,10 +16,10 @@ import java.util.List;
 
 public class PunishmentDAO {
 
-    protected static PunishmentDAO instance;
+    private static PunishmentDAO instance;
     private final Connection connection;
 
-    protected PunishmentDAO(Connection connection) {
+    private PunishmentDAO(Connection connection) {
         this.connection = connection;
     }
 

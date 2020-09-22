@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class ToggleAnnouncement implements Listener {
 
-    protected static ToggleAnnouncement instance;
+    private static ToggleAnnouncement instance;
     private final HashMap<String, Boolean> map = Maps.newHashMap();
 
     public static ToggleAnnouncement getInstance() {

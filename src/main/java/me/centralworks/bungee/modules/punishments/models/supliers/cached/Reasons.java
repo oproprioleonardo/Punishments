@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Reasons {
 
-    protected static Reasons instance;
+    private static Reasons instance;
     public List<Reason> reasons = Lists.newArrayList();
 
     public static Reasons getInstance() {

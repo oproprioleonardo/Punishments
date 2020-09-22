@@ -14,10 +14,10 @@ import java.nio.file.Files;
 
 public class Main extends Plugin {
 
-    protected static Main instance;
-    protected static boolean onlineMode;
-    protected static Configuration dataConfiguration;
-    protected static Gson gson;
+    private static Main instance;
+    private static boolean onlineMode;
+    private static Configuration dataConfiguration;
+    private static Gson gson;
 
     public static Configuration getDataConfiguration() {
         return dataConfiguration;

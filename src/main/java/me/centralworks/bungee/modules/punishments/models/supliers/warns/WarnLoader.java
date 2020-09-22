@@ -7,7 +7,7 @@ import java.util.List;
 
 public class WarnLoader {
 
-    protected static List<WarnPunishment> wps = Lists.newArrayList();
+    private static List<WarnPunishment> wps = Lists.newArrayList();
 
     public WarnLoader() {
     }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AddressIP {
 
-    protected static AddressIP instance;
+    private static AddressIP instance;
     public List<AddressIPObject> list = Lists.newArrayList();
 
     public static AddressIP getInstance() {

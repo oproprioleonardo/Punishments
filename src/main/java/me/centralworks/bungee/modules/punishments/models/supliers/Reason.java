@@ -4,7 +4,7 @@ import me.centralworks.bungee.modules.punishments.models.supliers.enums.Punishme
 
 public class Reason {
 
-    protected boolean none = false;
+    private boolean none = false;
     private String reason = "Não especificado.";
     private Long duration = 0L;
     private String permission = "";

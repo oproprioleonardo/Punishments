@@ -35,12 +35,12 @@ import java.util.function.Consumer;
 
 public class PunishmentPlugin {
 
-    protected static PunishmentPlugin instance;
-    protected static Configuration configuration;
-    protected static Configuration messages;
-    protected static Configuration usages;
-    protected static Configuration immune;
-    protected static Consumer<PunishmentPlugin> disable;
+    private static PunishmentPlugin instance;
+    private static Configuration configuration;
+    private static Configuration messages;
+    private static Configuration usages;
+    private static Configuration immune;
+    private static Consumer<PunishmentPlugin> disable;
 
     public PunishmentPlugin() {
         setDisable(punishmentPlugin -> AddressIPDAO.getInstance().saveAll());
@@ -89,7 +89,7 @@ public class PunishmentPlugin {
         return Main.getGson();
     }
 
-    protected void registerReasons() {
+    private void registerReasons() {
         final List<Reason> list = Lists.newArrayList();
         getConfiguration().getSection("Reasons").getKeys().forEach(s -> {
             final String path = "Reasons." + s + ".";
@@ -106,15 +106,15 @@ public class PunishmentPlugin {
         Reasons.getInstance().setReasons(list);
     }
 
-    protected void registerCommand(Command command) {
+    private void registerCommand(Command command) {
         Main.getInstance().getProxy().getPluginManager().registerCommand(Main.getInstance(), command);
     }
 
-    protected void registerListener(Listener listener) {
+    private void registerListener(Listener listener) {
         Main.getInstance().getProxy().getPluginManager().registerListener(Main.getInstance(), listener);
     }
 
-    protected void registerInstances() {
+    private void registerInstances() {
         instance = this;
         configuration = Main.getConfiguration("config.yml", "punishments", "/punishments/");
         messages = Main.getConfiguration("messages.yml", "punishments", "/punishments/");
@@ -122,7 +122,7 @@ public class PunishmentPlugin {
         immune = Main.getConfiguration("immune.yml", "punishments", "/punishments/");
     }
 
-    protected void registerCommands() {
+    private void registerCommands() {
         registerCommand(new CmdBan());
         registerCommand(new CmdTempBan());
         registerCommand(new CmdMute());
@@ -145,7 +145,7 @@ public class PunishmentPlugin {
         registerCommand(new CmdCheck());
     }
 
-    protected void registerListeners() {
+    private void registerListeners() {
         registerListener(new ChatListener());
         registerListener(new MuteListener());
         registerListener(new MuteIPListener());
@@ -163,7 +163,7 @@ public class PunishmentPlugin {
         }
     }
 
-    protected void registerData() {
+    private void registerData() {
         PunishmentDAO.getInstance().createTable();
         final AddressIPDAO adr = AddressIPDAO.getInstance();
         adr.createTable();

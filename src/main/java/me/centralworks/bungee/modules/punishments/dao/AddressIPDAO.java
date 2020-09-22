@@ -13,10 +13,10 @@ import java.sql.SQLException;
 
 public class AddressIPDAO {
 
-    protected static AddressIPDAO instance;
+    private static AddressIPDAO instance;
     private final Connection connection;
 
-    protected AddressIPDAO(Connection connection) {
+    private AddressIPDAO(Connection connection) {
         this.connection = connection;
     }
 

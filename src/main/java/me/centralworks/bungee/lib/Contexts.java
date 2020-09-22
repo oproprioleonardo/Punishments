@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Contexts implements Listener {
 
-    protected static Contexts instance;
-    protected List<Context> list = Lists.newArrayList();
+    private static Contexts instance;
+    private final List<Context> list = Lists.newArrayList();
 
     public static Contexts getInstance() {
         if (instance == null) instance = new Contexts();

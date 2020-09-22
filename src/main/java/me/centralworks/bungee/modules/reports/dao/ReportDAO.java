@@ -16,10 +16,10 @@ import java.util.List;
 
 public class ReportDAO {
 
-    protected static ReportDAO instance;
+    private static ReportDAO instance;
     private final Connection connection;
 
-    protected ReportDAO(Connection connection) {
+    private ReportDAO(Connection connection) {
         this.connection = connection;
     }
 

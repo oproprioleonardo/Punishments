@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Date {
 
-    protected static Date instance;
+    private static Date instance;
     private final long minutes;
     private final long hours;
     private final long days;
@@ -12,7 +12,7 @@ public class Date {
     private final long months;
     private final long years;
 
-    protected Date() {
+    private Date() {
         this.minutes = 1000L * 60;
         this.hours = 1000L * 60 * 60;
         this.days = 1000L * 60 * 60 * 24;

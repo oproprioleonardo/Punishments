@@ -41,6 +41,7 @@ public class ReportsPlayer {
             back.setLore(Lists.newArrayList("§7Clique para voltar ao menu do jogador."));
             i.setItem(36, back);
             final ItemStack ph = new ItemStack(ItemType.PLAYER_HEAD);
+            ph.setSkullOwner(rp.getUser());
             ph.setDisplayName("§eInformações: ");
             ph.setLore(Lists.newArrayList("§fTotal de denúncias: §7" + rp.getData().size()));
             i.setItem(4, ph);

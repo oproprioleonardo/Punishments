@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MutedPlayers {
 
-    protected static MutedPlayers instance;
+    private static MutedPlayers instance;
     public List<MuteObject> list = Lists.newArrayList();
 
     public static MutedPlayers getInstance() {
@@ -28,7 +28,7 @@ public class MutedPlayers {
         this.list = list;
     }
 
-    protected List<MuteObject> copy() {
+    private List<MuteObject> copy() {
         return Lists.newArrayList(getList());
     }
 

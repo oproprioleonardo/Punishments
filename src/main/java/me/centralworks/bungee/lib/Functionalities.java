@@ -34,7 +34,7 @@ import java.util.stream.Stream;
  */
 public class Functionalities {
 
-    protected static Functionalities instance;
+    private static Functionalities instance;
 
     public static Functionalities get() {
         return instance == null ? instance = new Functionalities() : instance;
@@ -70,7 +70,7 @@ public class Functionalities {
         for (String s1 : cfg.getStringList("Runners.kick")) {
             msg.append(s1
                     .replace("&", "§")
-                    .replace("{author}", author)
+                    .replace("{nickname}", author)
                     .replace("{reason}", reason.equals("") ? "Não informado" : reason));
         }
         p.disconnect(msg.create());

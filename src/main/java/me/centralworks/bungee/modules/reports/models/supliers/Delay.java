@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Delay {
 
-    protected static Delay instance;
+    private static Delay instance;
     public List<String> inDelay = Lists.newArrayList();
 
     public static Delay getInstance() {

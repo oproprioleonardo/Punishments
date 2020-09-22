@@ -9,10 +9,10 @@ import java.util.List;
 
 public class WarnDAO {
 
-    protected static WarnDAO instance;
+    private static WarnDAO instance;
     private final Connection connection;
 
-    protected WarnDAO(Connection connection) {
+    private WarnDAO(Connection connection) {
         this.connection = connection;
     }
 

@@ -17,12 +17,12 @@ import java.util.function.Consumer;
 
 public class ReportPlugin {
 
-    protected static ReportPlugin instance;
-    protected static Configuration configuration;
-    protected static Configuration usages;
-    protected static Configuration messages;
-    protected static List<String> reasons;
-    protected static Consumer<ReportPlugin> disable;
+    private static ReportPlugin instance;
+    private static Configuration configuration;
+    private static Configuration usages;
+    private static Configuration messages;
+    private static List<String> reasons;
+    private static Consumer<ReportPlugin> disable;
 
     public ReportPlugin() {
         instance = this;
@@ -70,11 +70,11 @@ public class ReportPlugin {
         return Main.getGson();
     }
 
-    protected void registerCommand(Command command) {
+    private void registerCommand(Command command) {
         Main.getInstance().getProxy().getPluginManager().registerCommand(Main.getInstance(), command);
     }
 
-    protected void registerListener(Listener listener) {
+    private void registerListener(Listener listener) {
         Main.getInstance().getProxy().getPluginManager().registerListener(Main.getInstance(), listener);
     }
 
